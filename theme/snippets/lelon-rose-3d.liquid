@@ -1,0 +1,35 @@
+{% doc %}
+  3D blooming rose, pure CSS 3D transforms (no WebGL, no JavaScript, ~30 DOM nodes).
+  Four petal rings open from bud to bloom, the head turns slowly. Static open rose when motion is reduced.
+
+  @param {string} [class] - Extra class ('rose3d--opening', 'rose3d--section').
+  @param {boolean} [falling] - Add a few drifting petals (opening only).
+{% enddoc %}
+{%- assign rings = '5,6,7,8' | split: ',' -%}
+<div class="rose3d{% if class %} {{ class }}{% endif %}" aria-hidden="true">
+  <div class="rose3d__scene">
+    <div class="rose3d__head">
+      <span class="rose3d__base"></span>
+      <span class="rose3d__core"></span>
+      {%- for ring in rings -%}
+        {%- assign layer = forloop.index0 -%}
+        {%- assign count = ring | plus: 0 -%}
+        {%- assign offset = layer | times: 23 -%}
+        {%- for i in (1..count) -%}
+          {%- assign angle = i | times: 360 | divided_by: count | plus: offset -%}
+          {%- assign ring_delay = layer | times: 180 -%}
+          {%- assign delay = i | times: 40 | plus: ring_delay -%}
+          <span class="rose3d__petal rose3d__petal--l{{ layer }}" style="--a:{{ angle }}deg;--d:{{ delay }}ms"></span>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+  <span class="rose3d__shadow"></span>
+  {%- if falling -%}
+    <div class="rose3d__drift">
+      {%- for i in (1..6) -%}
+        <span class="rose3d__fall" style="--x:{{ i | times: 17 | modulo: 100 }}%;--t:{{ i | times: 370 }}ms;--s:{{ i | modulo: 3 | plus: 7 }}"></span>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>

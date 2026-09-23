@@ -5,7 +5,7 @@
         {%- if settings.rose_image -%}
           {{ settings.rose_image | image_url: width: 240 | image_tag: widths: '120, 240', sizes: '96px', loading: 'lazy', alt: '' }}
         {%- else -%}
-          <img src="{{ 'lelon-rose.webp' | asset_url }}" alt="" width="96" height="116" loading="lazy">
+          {% render 'lelon-rose-3d', class: 'rose3d--section' %}
         {%- endif -%}
       </div>
     {%- endif -%}
