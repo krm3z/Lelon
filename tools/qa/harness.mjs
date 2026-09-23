@@ -50,6 +50,9 @@ class OptionValue extends Drop {
 }
 const raw = JSON.parse(fs.readFileSync(PRODUCTS_JSON, 'utf8')).data.products.nodes;
 const folders = fs.readdirSync(IMGS);
+const SHOPIFY_MEDIA = process.env.MEDIA_JSON
+  ? Object.fromEntries(JSON.parse(fs.readFileSync(process.env.MEDIA_JSON, 'utf8')).data.products.nodes.map((n) => [n.handle, n.media.nodes]))
+  : null;
 let variantSeq = 1;
 
 function buildProduct(p, simulateAvailable) {
@@ -62,6 +65,42 @@ function buildProduct(p, simulateAvailable) {
       for (const file of fs.readdirSync(path.join(IMGS, folder, color)).sort()) {
         media.push(new Img(path.join(IMGS, folder, color, file), `${p.title} — ${label} — Vue ${media.length + 1}`));
       }
+    }
+  }
+  /* MEDIA_JSON (Admin API export with media alts): mirror the real Shopify media list and alts, using a zip
+     photo of the same color as stand-in file (or any photo of the model when that color has none). */
+  if (SHOPIFY_MEDIA && folder) {
+    const nodes = SHOPIFY_MEDIA[p.handle] || [];
+    const pool = (color) => {
+      const dir = fs.readdirSync(path.join(IMGS, folder)).find((c) => color && (handleize(color).startsWith(c) || c.startsWith(handleize(color).split('-')[0])));
+      const base = dir ? path.join(IMGS, folder, dir) : path.join(IMGS, folder, fs.readdirSync(path.join(IMGS, folder))[0]);
+      return fs.readdirSync(base).sort().map((f) => path.join(base, f));
+    };
+    media.length = 0;
+    nodes.forEach((node, n) => {
+      const color = p.options[0].values.find((v) => node.alt.includes(v) || node.alt.includes(v.replace(' & ', ' et ')));
+      const files = pool(color);
+      media.push(new Img(files[n % files.length], node.alt));
+    });
+    return finish(p, media, simulateAvailable);
+  }
+  /* Free alts used in Shopify for the existing worn photos ("LELON ÉLÉA Cognac porté par une mannequin"). */
+  const wornAlts = { elea: 'Cognac', nova: 'Chocolat', solea: 'Beige et Cognac', velora: 'Ivoire' };
+  if (process.env.SHOPIFY_ALTS && wornAlts[p.handle]) {
+    const source = media.find((m) => m.alt.split(' — ')[1] === wornAlts[p.handle].replace(' et ', ' & '));
+    if (source) media.push(new Img(path.join(IMGS, decodeURIComponent(source.src.slice(5))), `${p.title} ${wornAlts[p.handle]} porté par une mannequin`));
+  }
+  return finish(p, media, simulateAvailable);
+}
+
+function finish(p, media, simulateAvailable) {
+  const folder = folders.find((f) => f.replace(/^\d+-/, '') === p.handle);
+  /* Test-only worn photos for the lelon.lifestyle_media metafield (real zip photos, test alts). */
+  const worn = [];
+  if (process.env.WITH_WORN && p.handle === 'mira') {
+    for (const [color, label] of [['noir', 'Noir'], ['taupe', 'Taupe']]) {
+      const dir = path.join(IMGS, folder, color);
+      fs.readdirSync(dir).sort().forEach((file, n) => worn.push(new Img(path.join(dir, file), `${p.title} — ${label} — Porté ${n + 1} (test)`)));
     }
   }
   const variants = p.variants.nodes.map((v, i) => {
@@ -90,7 +129,10 @@ function buildProduct(p, simulateAvailable) {
     has_only_default_variant: false, media, images: media, featured_image: media[0] || null, featured_media: media[0] || null,
     metafields: {
       global: { description_tag: { value: (p.metafields.nodes.find((m) => m.key === 'description_tag') || {}).value } },
-      lelon: process.env.WITH_DIMENSIONS && p.handle === 'luna' ? { width_cm: { value: 14 }, height_cm: { value: 16 }, depth_cm: { value: 14 }, capacity: { value: ['Téléphone', 'Clés'] } } : {},
+      lelon: Object.assign(
+        process.env.WITH_DIMENSIONS && p.handle === 'luna' ? { width_cm: { value: 14 }, height_cm: { value: 16 }, depth_cm: { value: 14 }, capacity: { value: ['Téléphone', 'Clés'] } } : {},
+        worn.length ? { lifestyle_media: { value: worn } } : {}
+      ),
       custom: {},
     },
   };
@@ -296,7 +338,21 @@ async function renderPage(url) {
   const [, kind, handle] = u.pathname.split('/');
   if (!kind) templateFile = 'index.json';
   else if (kind === 'products') {
-    Object.assign(globals, { product: DATA.byHandle[handle], page_title: DATA.byHandle[handle].title, template: { name: 'product' } });
+    const product = DATA.byHandle[handle];
+    /* Deep link ?variant= selects that variant, like Shopify. */
+    const requested = product.variants.find((v) => String(v.id) === u.searchParams.get('variant'));
+    if (requested) {
+      product.selected_or_first_available_variant = requested;
+      product.options_with_values.forEach((option, idx) => {
+        option.selected_value = requested.options[idx];
+        option.values.forEach((value) => {
+          value.selected = value.name === requested.options[idx];
+          const combo = requested.options.slice(); combo[idx] = value.name;
+          value.available = product.variants.some((v) => v.available && v.options.every((x, j) => x === combo[j]));
+        });
+      });
+    }
+    Object.assign(globals, { product, page_title: product.title, template: { name: 'product' } });
     globals.request.page_type = 'product'; templateFile = 'product.json';
   } else if (kind === 'collections') {
     Object.assign(globals, { collection: DATA.collections[handle], page_title: DATA.collections[handle].title, template: { name: 'collection' } });

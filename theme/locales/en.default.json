@@ -61,7 +61,7 @@
       "tracking": "Tracking number sent at dispatch",
       "return_costs": "Return costs are yours for a change of mind",
       "gallery": "Photos of {{ title }}",
-      "view_media": "Show photo {{ index }} of {{ count }}",
+      "other_color_photos": "No photo of the {{ color }} color yet: these images show another color.",
       "previous": "Previous photo",
       "next": "Next photo",
       "full_page": "View full product page"

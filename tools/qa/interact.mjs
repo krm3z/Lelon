@@ -57,8 +57,8 @@ async function ctx(width, { seenOpening = true, consent = true } = {}) {
   const url = p.url();
   check('URL updated with ?variant=', /variant=\d+/.test(url), url);
   await pick(p, 'Caramel');
-  const visibleSlides = await p.$$eval('[data-slide]', (s) => s.filter((x) => !x.hidden).map((x) => x.dataset.mediaAlt));
-  check('gallery shows only selected colour', visibleSlides.length > 0 && visibleSlides.every((a) => /Caramel/.test(a)), `${visibleSlides.length} slides`);
+  const visibleSlides = await p.$$eval('[data-slide]', (s) => s.filter((x) => !x.hidden).map((x) => x.dataset.mediaColor));
+  check('gallery shows only selected colour', visibleSlides.length > 0 && visibleSlides.every((c) => c === 'caramel' || c === ''), `${visibleSlides.length} slides`);
   await pick(p, 'M');
   const l3 = (await p.textContent('.pdp__buy [data-buy-label]')).trim();
   check('back to available → "Ajouter au panier"', l3 === 'Ajouter au panier', l3);
@@ -154,4 +154,66 @@ async function ctx(width, { seenOpening = true, consent = true } = {}) {
   check('opening skipped with prefers-reduced-motion', !(await rp.$('#Opening')));
   await r.close();
 }
+/* 6. Gallery robustness (run the harness with MEDIA_JSON + WITH_WORN for the real Shopify media list) */
+{
+  const { c, p, errors } = await ctx(1440);
+  const visible = () => p.$$eval('[data-slide]', (s) => s.filter((x) => !x.hidden).map((x) => x.dataset.mediaColor));
+  const note = () => p.$eval('[data-gallery-note]', (n) => (n.hidden ? '' : n.textContent.trim())).catch(() => '');
+
+  await p.goto(BASE + '/products/elea', { waitUntil: 'networkidle' });
+  await pick(p, 'Noir');
+  const elea = await visible();
+  check('ÉLÉA Noir: worn Cognac photo not shown', elea.length > 0 && elea.every((x) => x === 'noir'), elea.join(','));
+
+  await p.goto(BASE + '/products/aurea', { waitUntil: 'networkidle' });
+  await pick(p, 'Beige Sable');
+  const aurea = await visible();
+  const aureaNote = await note();
+  check('AURÉA Beige Sable (no photo): all photos + honest note', aurea.length > 1 && /Beige Sable/.test(aureaNote), `${aurea.join(',')} | ${aureaNote}`);
+  await pick(p, 'Taupe / Greige');
+  const aurea2 = await visible();
+  check('AURÉA Taupe / Greige: only its photo, note hidden', aurea2.every((x) => x === 'taupe / greige') && !(await note()), aurea2.join(','));
+  await p.screenshot({ path: `${OUT}/gallery-aurea-1440.png` });
+
+  await p.goto(BASE + '/products/mira', { waitUntil: 'networkidle' });
+  await pick(p, 'Noir');
+  const firstAlt = await p.$eval('[data-slide]:not([hidden]) img', (i) => i.alt);
+  const total = await p.textContent('[data-gallery-total]');
+  check('MIRA Noir (worn first): first visible slide is a worn photo', /Porté/.test(firstAlt), `${firstAlt} · total ${total}`);
+  const counterOk = Number(total) === (await visible()).length;
+  check('counter matches visible slides', counterOk, total);
+
+  for (let i = 0; i < 12; i++) await pick(p, ['Ivoire', 'Taupe', 'Noir'][i % 3]);
+  const rapid = await visible();
+  check('rapid colour switching ends consistent', rapid.every((x) => x === 'ivoire' || x === 'taupe' || x === 'noir') && new Set(rapid.filter(Boolean)).size === 1, rapid.join(','));
+
+  await p.goto(BASE + '/products/vera', { waitUntil: 'networkidle' });
+  const veraVariants = await p.$eval('script[data-product-json]', (s) => JSON.parse(s.textContent).variants);
+  const noirL = veraVariants.find((v) => v.options.join('/') === 'Noir/L');
+  await p.goto(BASE + '/products/vera?variant=' + noirL.id, { waitUntil: 'networkidle' });
+  const checked = await p.$$eval('input[data-option-input]:checked', (i) => i.map((x) => x.value));
+  const vera = await visible();
+  check('deep link ?variant= (VERA Noir / L) restores options and gallery', checked.join('/') === 'Noir/L' && vera.every((x) => x === 'noir'), `${checked.join('/')} · ${vera.join(',')}`);
+
+  await p.focus('[data-gallery-track]');
+  const before = await p.textContent('[data-gallery-index]');
+  await p.goto(BASE + '/products/nova', { waitUntil: 'networkidle' });
+  await p.focus('[data-gallery-track]');
+  await p.keyboard.press('ArrowRight');
+  await p.waitForTimeout(600);
+  const after = await p.textContent('[data-gallery-index]');
+  check('keyboard ArrowRight moves the gallery', after === '2', `${before} → ${after}`);
+  check('no JS errors', errors.length === 0, errors.join(' | '));
+  await c.close();
+
+  const nojs = await browser.newContext({ viewport: { width: 390, height: 844 }, javaScriptEnabled: false });
+  const np = await nojs.newPage();
+  await np.goto(BASE + '/products/elea', { waitUntil: 'load' });
+  const shown = await np.$$eval('[data-slide]', (s) => s.filter((x) => !x.hidden).map((x) => x.dataset.mediaColor));
+  check('no JS: gallery already filtered server-side', shown.length > 0 && shown.every((x) => x === 'cognac' || x === ''), shown.join(','));
+  const form = await np.$eval('form[action="/cart/add"]', (f) => Boolean(f.elements.namedItem('id')?.value)).catch(() => false);
+  check('no JS: product form still posts a variant id', form);
+  await nojs.close();
+}
+
 await browser.close();

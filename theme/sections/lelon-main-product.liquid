@@ -39,7 +39,7 @@
   </nav>
 
   <div class="pdp__grid page-width">
-    {% render 'lelon-product-gallery', product: product, current_variant: current_variant %}
+    {% render 'lelon-product-gallery', product: product, current_variant: current_variant, worn_first: section.settings.worn_first %}
 
     <div class="pdp__info">
       <div class="pdp__info-inner">
@@ -217,6 +217,14 @@
       "settings": [{ "type": "richtext", "id": "text", "label": "Texte" }]
     }
   ],
-  "settings": []
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "worn_first",
+      "label": "Photo portée en premier",
+      "info": "Les photos portées validées du metafield « lelon.lifestyle_media » passent avant le packshot du coloris sélectionné.",
+      "default": true
+    }
+  ]
 }
 {% endschema %}

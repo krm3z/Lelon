@@ -935,8 +935,12 @@ input[aria-invalid='true'] { border-color: #9e2b25; }
 }
 
 .gallery { display: grid; gap: 16px; min-width: 0; }
+.gallery__note { margin: 0; padding: 0 var(--gutter); font-size: 13px; line-height: 1.5; color: var(--muted); }
 @media (min-width: 990px) {
-  .gallery { grid-template-columns: 76px minmax(0, 1fr); align-items: start; }
+  /* Two columns only when there are thumbnails: a single photo keeps the full width. */
+  .gallery--thumbs { grid-template-columns: 76px minmax(0, 1fr); align-items: start; }
+  .gallery--thumbs .gallery__note { grid-column: 2; }
+  .gallery__note { padding: 0; }
 }
 .gallery__thumbs { display: none; }
 @media (min-width: 990px) {

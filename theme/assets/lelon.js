@@ -372,8 +372,9 @@ function initProduct(rootEl) {
     }
 
     if (gallery) {
-      if (colorIndex > -1) gallery.filterByColor(options[colorIndex], product);
-      if (fromUser && variant?.media) gallery.goToMedia(variant.media);
+      if (colorIndex > -1) gallery.filterByColor(options[colorIndex]);
+      /* Worn-first galleries open on the worn photo of the color, not on the packshot. */
+      if (fromUser && variant?.media && !gallery.wornFirst) gallery.goToMedia(variant.media);
     }
 
     if (fromUser && variant && !rootEl.hasAttribute('data-no-url-update')) {
@@ -459,20 +460,22 @@ function initGallery(gallery) {
       const index = slides().findIndex((slide) => slide.dataset.mediaId === String(mediaId));
       if (index > -1) goTo(index);
     },
-    /* Media alts follow "LELON X — Couleur — Vue n": show the selected color, keep neutral media. */
-    filterByColor(color, product) {
+    wornFirst: gallery.hasAttribute('data-worn-first'),
+    /* data-media-color is computed server-side from the media alt (snippet lelon-media-color). Media of another
+       color are hidden, neutral media stay. No photo for the color: show everything and say so. */
+    filterByColor(color) {
       if (!color) return;
-      const index = product.options.findIndex((name) => /^(coloris|couleur|colou?r)$/i.test(name));
-      const colors = [...new Set(product.variants.map((v) => v.options[index]).filter(Boolean))].map((c) => c.toLowerCase());
-      const colorOf = (alt) => (alt || '').split(' — ').map((part) => part.trim().toLowerCase()).find((part) => colors.includes(part));
+      const key = color.toLowerCase();
       const all = $$('[data-slide]', gallery);
-      const matches = (el) => {
-        const own = colorOf(el.dataset.mediaAlt);
-        return !own || own === color.toLowerCase();
-      };
-      const visibleCount = all.filter(matches).length;
-      all.forEach((slide) => (slide.hidden = visibleCount > 0 && !matches(slide)));
-      thumbs.forEach((thumb) => (thumb.hidden = visibleCount > 0 && !matches(thumb)));
+      const hasColor = all.some((el) => el.dataset.mediaColor === key);
+      const hide = (el) => hasColor && Boolean(el.dataset.mediaColor) && el.dataset.mediaColor !== key;
+      all.forEach((slide) => (slide.hidden = hide(slide)));
+      thumbs.forEach((thumb) => (thumb.hidden = hide(thumb)));
+      const note = $('[data-gallery-note]', gallery);
+      if (note) {
+        note.hidden = hasColor || !all.length;
+        note.textContent = (note.dataset.template || '').replace('__COLOR__', color);
+      }
       goTo(0, false);
       sync();
     },

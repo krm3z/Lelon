@@ -61,7 +61,7 @@
       "tracking": "Numéro de suivi communiqué à l’expédition",
       "return_costs": "Frais de retour à votre charge en cas de simple changement d’avis",
       "gallery": "Photos de {{ title }}",
-      "view_media": "Afficher la photo {{ index }} sur {{ count }}",
+      "other_color_photos": "Pas encore de photo du coloris {{ color }} : les images présentent un autre coloris.",
       "previous": "Photo précédente",
       "next": "Photo suivante",
       "full_page": "Voir la fiche complète"
