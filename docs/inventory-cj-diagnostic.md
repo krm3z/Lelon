@@ -8,7 +8,7 @@ d’expédition ni réglage n’a été modifié.** Rien ne doit être corrigé 
 | Élément | Constat |
 |---|---|
 | Produits | 17, tous `ACTIVE`, publiés sur la boutique en ligne |
-| Variantes | **55** (le rapport précédent indiquait 57 : erreur de comptage, corrigée) |
+| Variantes | **55** (dont 6 pour VERA : 3 coloris × 2 formats) |
 | Suivi du stock | activé (`tracked: true`) sur les 55 articles |
 | Politique hors stock | `DENY` sur les 55 (pas de vente sans stock) |
 | Quantités | `available = 0`, `on_hand = 0`, `committed = 0`, `incoming = 0`, `reserved = 0` partout |

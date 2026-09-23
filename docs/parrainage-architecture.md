@@ -106,3 +106,61 @@ Ne jamais coder « −10 % » dans le front. La règle vit dans le service (ou u
 Note : les comptes clients LELON sont les **nouveaux comptes Shopify** (`account.lelon.fr`). Leur
 interface (commandes, profil) n'est pas un template du thème : l'affichage du parrainage *dans*
 account.lelon.fr demande une extension **Customer Account UI** fournie par l'app.
+
+---
+
+## 8. Révision du 24/09/2026 — architecture simplifiée recommandée
+
+### 8.1 Le lien de parrainage = un lien de réduction Shopify natif
+
+Plutôt qu’une route `/r/:code` (redirection par code ou app proxy), chaque marraine reçoit **un code de réduction
+Shopify qui lui est propre**, partagé sous forme de lien natif :
+
+```
+https://lelon.fr/discount/AMI-AB12CD?redirect=/collections/lelon
+```
+
+- Shopify applique le code au panier et redirige : aucune route, aucun cookie maison, aucun app proxy.
+- L’attribution est portée par la commande elle-même (`discount_codes` de la commande) : le webhook `orders/paid`
+  retrouve la marraine à partir du code. Pas de cookie de suivi à justifier au titre du consentement.
+- Le code filleule est créé par le service (`discountCodeBasicCreate`) avec :
+  `appliesOncePerCustomer: true`, éligibilité limitée à un segment « aucune commande passée »
+  (`customerSelection.customerSegments`), valeur lue dans la règle configurable (§5), date de fin facultative.
+- Le thème reste inchangé : `lelon.referral_code` contient le code, et le réglage
+  *Thème › Parrainage › Base du lien personnel* devient `https://lelon.fr/discount/` (le lien affiché = base + code).
+
+### 8.2 Où la cliente trouve son espace
+
+- Avec les nouveaux comptes clients (`account.lelon.fr`), l’espace parrainage du thème vit sur une **page de la
+  boutique** (template `page.account`, ex. `/pages/mon-espace`). L’ajouter au menu `customer-account-main-menu`
+  (*Paramètres → Comptes clients → Menu*) pour qu’il soit accessible depuis le compte.
+- Le Liquid `customer` est bien renseigné sur la boutique quand la cliente est connectée à son compte.
+- Pour afficher le parrainage **dans** `account.lelon.fr`, il faut une extension *Customer Account UI* (fournie par
+  l’app retenue) : le thème ne peut pas le faire.
+
+### 8.3 États affichés par le thème (à tester avant activation)
+
+| Situation | Affichage |
+|---|---|
+| Réglage désactivé | rien |
+| Non connectée | invitation à se connecter |
+| Connectée, pas de code | « Votre lien personnel apparaîtra ici dès qu’il sera disponible. » (aucun code inventé) |
+| Code présent | lien + copier + partager (si le navigateur le permet) |
+| `referral_summary` présent | invitations, commandes validées, récompenses (`granted` → « Votre invitation a fleuri. », `pending_review` → mention de vérification) |
+
+Test en prévisualisation : cliente de test + metafields écrits à la main dans l’admin, puis suppression.
+
+### 8.4 Conditions à publier avant activation
+
+Page « Conditions du parrainage » (liée depuis la section) : bénéficiaires, récompense exacte, délai de validation
+(fin du délai de rétractation), cas d’annulation (remboursement, fraude), durée du programme, données traitées et
+durée de conservation (à reprendre dans la politique de confidentialité).
+
+### 8.5 Checklist d’activation
+
+1. Solution choisie (app ou service) — décision et coût marchand.
+2. Définitions de metafields client `lelon.referral_code` (texte) et `lelon.referral_summary` (JSON) créées.
+3. Règle de récompense écrite (§5), conditions publiées (§8.4).
+4. Webhooks `orders/paid`, `refunds/create`, `orders/cancelled` branchés et testés sur une commande test.
+5. Tests des 5 états (§8.3) en prévisualisation.
+6. Activation du réglage *Afficher l’espace parrainage*.
