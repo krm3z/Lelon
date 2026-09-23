@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "lelon-policy",
+      "settings": { "policy": "privacy-policy", "show_links": true }
+    }
+  },
+  "order": ["main"]
+}

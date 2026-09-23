@@ -1,0 +1,62 @@
+{% doc %}
+  Product gallery. Desktop: thumbnails left, large media center. Mobile: native scroll-snap swipe.
+  The selected variant media is rendered first (LCP). Media alts ("LELON X — Couleur — Vue n") let the
+  script show the photos of the selected color.
+
+  @param {product} product - Product.
+  @param {variant} current_variant - Selected variant.
+{% enddoc %}
+{%- liquid
+  assign first_media = current_variant.featured_media
+  if first_media == nil
+    assign first_media = product.featured_media
+  endif
+  assign media_count = product.media.size
+-%}
+<div class="gallery" data-gallery>
+  {%- if media_count > 1 -%}
+    <div class="gallery__thumbs" data-gallery-thumbs>
+      {%- assign index = 0 -%}
+      {%- if first_media -%}
+        {%- assign index = index | plus: 1 -%}
+        <button type="button" class="gallery__thumb" data-thumb data-media-id="{{ first_media.id }}" data-media-alt="{{ first_media.alt | escape }}" aria-current="true" aria-label="{{ 'lelon.product.view_media' | t: index: index, count: media_count }}">
+          {{ first_media.preview_image | image_url: width: 180 | image_tag: widths: '90, 180', sizes: '80px', loading: 'lazy', alt: '' }}
+        </button>
+      {%- endif -%}
+      {%- for media in product.media -%}
+        {%- if media.id == first_media.id -%}{%- continue -%}{%- endif -%}
+        {%- assign index = index | plus: 1 -%}
+        <button type="button" class="gallery__thumb{% if media.media_type != 'image' %} gallery__thumb--play{% endif %}" data-thumb data-media-id="{{ media.id }}" data-media-alt="{{ media.alt | escape }}" aria-current="false" aria-label="{{ 'lelon.product.view_media' | t: index: index, count: media_count }}">
+          {{ media.preview_image | image_url: width: 180 | image_tag: widths: '90, 180', sizes: '80px', loading: 'lazy', alt: '' }}
+        </button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="gallery__viewport">
+    <ul class="gallery__track" role="list" data-gallery-track tabindex="0" aria-label="{{ 'lelon.product.gallery' | t: title: product.title }}">
+      {%- if first_media -%}
+        <li class="gallery__slide" data-slide data-media-id="{{ first_media.id }}" data-media-alt="{{ first_media.alt | escape }}">
+          {% render 'lelon-media', media: first_media, eager: true, product: product %}
+        </li>
+      {%- endif -%}
+      {%- for media in product.media -%}
+        {%- if media.id == first_media.id -%}{%- continue -%}{%- endif -%}
+        <li class="gallery__slide" data-slide data-media-id="{{ media.id }}" data-media-alt="{{ media.alt | escape }}">
+          {% render 'lelon-media', media: media, eager: false, product: product %}
+        </li>
+      {%- else -%}
+        {%- unless first_media -%}
+          <li class="gallery__slide gallery__slide--empty"><span>{{ product.title | escape }}</span></li>
+        {%- endunless -%}
+      {%- endfor -%}
+    </ul>
+    {%- if media_count > 1 -%}
+      <div class="gallery__nav">
+        <button type="button" class="icon-btn icon-btn--round" data-gallery-prev aria-label="{{ 'lelon.product.previous' | t }}">{% render 'lelon-icon', name: 'arrow-left' %}</button>
+        <p class="gallery__counter" aria-hidden="true"><span data-gallery-index>1</span> / <span data-gallery-total>{{ media_count }}</span></p>
+        <button type="button" class="icon-btn icon-btn--round" data-gallery-next aria-label="{{ 'lelon.product.next' | t }}">{% render 'lelon-icon', name: 'arrow-right' %}</button>
+      </div>
+    {%- endif -%}
+  </div>
+</div>

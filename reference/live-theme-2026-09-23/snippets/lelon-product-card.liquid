@@ -1,0 +1,20 @@
+{% doc %}
+LELON reusable component.
+@param {product} product - Shopify product.
+{% enddoc %}
+{% assign primary_variant = product.selected_or_first_available_variant %}
+{% assign primary_color = primary_variant.option1 | split: '/' | first | strip %}
+{% assign secondary_image = blank %}
+{% for candidate in product.images %}
+  {% if candidate.id != product.featured_image.id and candidate.alt contains primary_color %}
+    {% assign secondary_image = candidate %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+{% if product %}<article class="product-card" data-depth-card>
+<div class="product-image-wrap{% if secondary_image != blank %} has-secondary-image{% endif %}" data-card-tilt><a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{% if product.featured_image %}{{ product.featured_image | image_url: width: 750 | image_tag: loading: 'lazy', widths: '240, 375, 550, 750', sizes: '(max-width: 767px) 45vw, 25vw' }}{% endif %}{% if secondary_image != blank %}{{ secondary_image | image_url: width: 750 | image_tag: class: 'secondary-image', loading: 'lazy', widths: '240, 375, 550, 750', sizes: '(max-width: 767px) 45vw, 25vw' }}{% endif %}</a>
+{% if settings.prelaunch == false and product.available == false %}<span class="product-status">{{ 'cinema.soldout' | t }}</span>{% endif %}
+<a class="quick-view" href="{{ product.url }}" data-quick-view aria-label="{{ 'cinema.quick_view' | t }} — {{ product.title | escape }}">{% render 'lelon-icon', name: 'plus' %}</a></div>
+<div class="product-meta"><div><p class="product-kicker">{% if product.tags contains 'lelon-signature' %}SIGNATURE{% else %}COLLECTION 01{% endif %}</p><h3 class="product-title"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3></div><span class="price">{% render 'lelon-price', product: product %}</span></div>
+<div class="card-options">{% for option in product.options_with_values %}{% if option.name == 'Coloris' %}<small>{{ option.values | join: ' · ' | escape }}</small>{% endif %}{% endfor %}</div>
+</article>{% endif %}

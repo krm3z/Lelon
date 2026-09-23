@@ -1,0 +1,115 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "LELON — Refonte 2026",
+    "theme_version": "2.0.0",
+    "theme_author": "LELON",
+    "theme_documentation_url": "https://lelon.fr",
+    "theme_support_url": "https://lelon.fr/pages/contact"
+  },
+  {
+    "name": "Palette LELON",
+    "settings": [
+      { "type": "paragraph", "content": "Palette d’origine LELON. Le champagne reste un accent très ponctuel." },
+      { "type": "color", "id": "ivory", "label": "Ivoire", "default": "#F6F0E8" },
+      { "type": "color", "id": "cream", "label": "Crème (fond principal)", "default": "#FBF8F3" },
+      { "type": "color", "id": "powder_pink", "label": "Rose poudré", "default": "#E7C4C8" },
+      { "type": "color", "id": "chocolate", "label": "Chocolat", "default": "#49332D" },
+      { "type": "color", "id": "ink", "label": "Encre (texte)", "default": "#171310" },
+      { "type": "color", "id": "champagne", "label": "Champagne (accent discret)", "default": "#C6A46B" },
+      { "type": "color", "id": "beige", "label": "Beige", "default": "#D9C8B7" },
+      { "type": "color", "id": "taupe", "label": "Taupe", "default": "#B7A293" }
+    ]
+  },
+  {
+    "name": "Boutique et disponibilité",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "prelaunch",
+        "label": "Mode pré-lancement",
+        "info": "Les variantes indisponibles affichent « Bientôt disponible » au lieu de « Épuisé ». Une variante réellement disponible dans Shopify reste toujours achetable.",
+        "default": true
+      },
+      { "type": "collection", "id": "main_collection", "label": "Collection principale" },
+      { "type": "collection", "id": "signature_collection", "label": "Collection Signature" },
+      {
+        "type": "header",
+        "content": "Livraison (doit refléter les réglages Shopify)"
+      },
+      {
+        "type": "paragraph",
+        "content": "Ces textes ne modifient pas vos tarifs. Ils doivent correspondre à Réglages › Expédition et à votre politique d’expédition."
+      },
+      { "type": "text", "id": "shipping_summary", "label": "Résumé livraison", "default": "Livraison en France · 0,99 € · offerte dès 90 €" },
+      { "type": "text", "id": "shipping_delay", "label": "Délai de livraison affiché", "default": "3 à 10 jours ouvrables" },
+      { "type": "text", "id": "returns_summary", "label": "Résumé retours", "default": "14 jours pour exercer votre droit de rétractation" },
+      {
+        "type": "range",
+        "id": "free_shipping_threshold",
+        "label": "Seuil de livraison offerte (panier)",
+        "info": "Mettre 0 pour masquer l’indication dans le panier.",
+        "min": 0,
+        "max": 300,
+        "step": 5,
+        "unit": "€",
+        "default": 90
+      }
+    ]
+  },
+  {
+    "name": "Liens et contact",
+    "settings": [
+      { "type": "text", "id": "contact_email", "label": "E-mail de contact", "default": "contact@lelon.fr" },
+      { "type": "text", "id": "contact_phone", "label": "Téléphone public (facultatif)" },
+      { "type": "url", "id": "story_url", "label": "Page Notre histoire" },
+      { "type": "url", "id": "contact_url", "label": "Page Contact" },
+      { "type": "url", "id": "faq_url", "label": "Page FAQ" },
+      { "type": "url", "id": "shipping_returns_url", "label": "Page Livraison & retours" },
+      { "type": "url", "id": "terms_url", "label": "Conditions générales de vente" },
+      { "type": "url", "id": "legal_url", "label": "Mentions légales" },
+      { "type": "url", "id": "privacy_url", "label": "Politique de confidentialité" },
+      { "type": "url", "id": "cookies_url", "label": "Politique de cookies" },
+      { "type": "url", "id": "withdrawal_url", "label": "Droit de rétractation" },
+      { "type": "header", "content": "Réseaux sociaux (comptes réels uniquement)" },
+      { "type": "url", "id": "instagram", "label": "Instagram" },
+      { "type": "url", "id": "tiktok", "label": "TikTok" }
+    ]
+  },
+  {
+    "name": "Ouverture et mouvement",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "intro_enabled",
+        "label": "Ouverture « Éclosion » sur l’accueil",
+        "info": "Jouée une seule fois par session, 4 secondes maximum, jamais si l’appareil demande moins d’animations.",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "intro_phrase",
+        "label": "Phrase d’ouverture",
+        "default": "Chaque femme possède\nsa propre manière\nde s’épanouir."
+      },
+      { "type": "image_picker", "id": "rose_image", "label": "Rose (facultatif, sinon la rose du thème)" },
+      {
+        "type": "checkbox",
+        "id": "motion_enabled",
+        "label": "Apparitions douces au défilement",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Parrainage",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Le parrainage nécessite un service serveur (application) qui attribue les codes et valide les récompenses. Le thème n’affiche l’espace qu’à partir des données écrites par ce service."
+      },
+      { "type": "checkbox", "id": "referral_enabled", "label": "Afficher l’espace parrainage", "default": false },
+      { "type": "text", "id": "referral_base_url", "label": "Base du lien personnel", "default": "https://lelon.fr/r/" }
+    ]
+  }
+]

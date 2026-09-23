@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "lelon-main-page",
+      "settings": { "show_cookie_button": true, "narrow": true }
+    }
+  },
+  "order": ["main"]
+}

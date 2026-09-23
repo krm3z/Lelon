@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "ivory": "#F6F0E8",
+    "cream": "#FBF8F3",
+    "powder_pink": "#E7C4C8",
+    "chocolate": "#49332D",
+    "black": "#111111",
+    "champagne": "#C6A46B",
+    "prelaunch": true,
+    "launch_price_label": true,
+    "review_mode": false,
+    "intro_enabled": true,
+    "motion_intensity": 70,
+    "instagram": "https://www.instagram.com/lelon_officiel/",
+    "tiktok": "https://www.tiktok.com/@lelon_officiel",
+    "contact_email": "contact@lelon.fr",
+    "contact_phone": "",
+    "business_address": "",
+    "support_hours": "",
+    "story_url": "/pages/notre-histoire",
+    "main_collection": "lelon",
+    "signature_collection": "signature",
+    "contact_url": "/pages/contact",
+    "faq_url": "/pages/faq",
+    "shipping_returns_url": "/pages/livraison-retours",
+    "terms_url": "/pages/conditions-generales-de-vente",
+    "legal_url": "/pages/mentions-legales",
+    "privacy_url": "/policies/privacy-policy",
+    "cookies_url": "/pages/politique-de-cookies",
+    "withdrawal_url": "/pages/droit-de-retractation",
+    "legal_business_name": "",
+    "legal_registration": "",
+    "legal_vat": "",
+    "publication_director": "",
+    "consumer_mediator_name": "",
+    "consumer_mediator_address": "",
+    "consumer_mediator_url": ""
+  },
+  "presets": {}
+}

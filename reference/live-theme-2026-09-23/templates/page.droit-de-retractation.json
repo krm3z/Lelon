@@ -1,0 +1,63 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "lelon-legal-page",
+      "blocks": {
+        "right": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Votre droit de rétractation"
+          }
+        },
+        "period": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Délai et point de départ"
+          }
+        },
+        "exercise": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Comment exercer ce droit"
+          }
+        },
+        "form": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Modèle de formulaire de rétractation",
+            "body": "<p>À adresser à l’adresse vérifiée indiquée par LELON : « Je vous notifie par la présente ma rétractation du contrat portant sur la vente du bien suivant : [produit], commandé le [date] et reçu le [date]. Nom, adresse, numéro de commande, date et signature si formulaire papier. »</p>"
+          }
+        },
+        "effects": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Effets et retour des produits"
+          }
+        }
+      },
+      "block_order": [
+        "right",
+        "period",
+        "exercise",
+        "form",
+        "effects"
+      ],
+      "settings": {
+        "title": "Droit de rétractation",
+        "intro": "Les modalités, délais, exceptions et frais applicables doivent être vérifiés avant l’ouverture des ventes."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

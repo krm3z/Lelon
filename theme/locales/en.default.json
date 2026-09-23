@@ -1,0 +1,250 @@
+{
+  "lelon": {
+    "meta": {
+      "home_title": "LELON — Women’s bags · Elegance in every detail",
+      "home_description": "LELON, a French brand of women’s bags. Silhouettes designed to accompany you every day, with style and intention."
+    },
+    "a11y": {
+      "skip": "Skip to content",
+      "close": "Close",
+      "new_window": "opens in a new tab",
+      "reduce_motion": "Reduce motion",
+      "enable_motion": "Enable motion",
+      "breadcrumb": "Breadcrumb"
+    },
+    "nav": {
+      "primary": "Main navigation",
+      "menu": "Menu",
+      "open_menu": "Open menu",
+      "home": "Home",
+      "home_label": "LELON — home",
+      "collection": "Collection",
+      "signature": "Signature",
+      "story": "Our story",
+      "contact": "Contact",
+      "search": "Search",
+      "account": "My account",
+      "cart": "Bag",
+      "faq": "FAQ",
+      "shipping_returns": "Shipping & returns",
+      "help": "AT YOUR SIDE"
+    },
+    "price": {
+      "from": "From",
+      "sale": "Sale price",
+      "regular": "Regular price"
+    },
+    "product": {
+      "add": "Add to bag",
+      "soon": "Coming soon",
+      "soldout": "Sold out",
+      "unavailable": "Unavailable",
+      "in_stock": "Available",
+      "soon_note": "Coming soon — orders open when stock arrives.",
+      "soldout_note": "This colour is sold out for now.",
+      "unavailable_note": "This combination does not exist.",
+      "variant": "Variant",
+      "colors_count": {
+        "one": "{{ count }} colour",
+        "other": "{{ count }} colours"
+      },
+      "description": "Description",
+      "details": "Details & materials",
+      "dimensions": "Dimensions",
+      "dimensions_figure": "Bag dimensions diagram",
+      "capacity": "What it holds",
+      "capacity_note": "Indicative, based on the items tested.",
+      "care": "Care",
+      "shipping_returns": "Shipping & returns",
+      "shipping_returns_link": "All shipping and returns information",
+      "delivery_delay": "Estimated delivery: {{ delay }}",
+      "tracking": "Tracking number sent at dispatch",
+      "return_costs": "Return costs are yours for a change of mind",
+      "gallery": "Photos of {{ title }}",
+      "view_media": "Show photo {{ index }} of {{ count }}",
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "full_page": "View full product page"
+    },
+    "specs": {
+      "material": "Material",
+      "lining": "Lining",
+      "structure": "Structure",
+      "closure": "Closure",
+      "interior": "Interior",
+      "strap": "Strap",
+      "carry": "Carry",
+      "details": "Details",
+      "width": "Width",
+      "height": "Height",
+      "depth": "Depth",
+      "strap_drop": "Strap drop"
+    },
+    "cart": {
+      "title": "Bag",
+      "count": {
+        "one": "{{ count }} item in bag",
+        "other": "{{ count }} items in bag"
+      },
+      "empty": "Your bag is empty.",
+      "discover": "Discover the collection",
+      "subtotal": "Subtotal",
+      "shipping_note": "Shipping calculated at the next step.",
+      "checkout": "Check out",
+      "view": "View bag",
+      "update": "Update",
+      "summary": "Summary",
+      "note_label": "Order note",
+      "remove": "Remove",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity",
+      "quantity_for": "Quantity — {{ title }}",
+      "unit_price": "{{ price }} each",
+      "free_shipping_remaining": "{{ amount }} away from free shipping.",
+      "free_shipping_reached": "Shipping is on us.",
+      "added": "The bag was added to your cart.",
+      "updated": "Bag updated.",
+      "error": "The bag could not be updated. Please try again.",
+      "network_error": "The connection was interrupted. Check your bag before trying again."
+    },
+    "collection": {
+      "count": {
+        "one": "{{ count }} bag",
+        "other": "{{ count }} bags"
+      },
+      "filters": "Filter",
+      "sort": "Sort by",
+      "apply": "Apply",
+      "clear": "Clear all",
+      "price_min": "Min price (€)",
+      "price_max": "Max price (€)",
+      "active_filters": "Active filters",
+      "remove_filter": "Remove filter",
+      "empty": "No bag matches this selection."
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {{ number }}"
+    },
+    "search": {
+      "title": "Search",
+      "label": "Search for a bag",
+      "placeholder": "A model, a colour…",
+      "submit": "Search",
+      "products": "Bags",
+      "view_all": "View all results for “{{ terms }}”",
+      "no_results": "No results for “{{ terms }}”.",
+      "results": {
+        "one": "{{ count }} result for “{{ terms }}”",
+        "other": "{{ count }} results for “{{ terms }}”"
+      },
+      "loading": "Searching…",
+      "error": "Search is temporarily unavailable.",
+      "suggestions": "Suggestions available"
+    },
+    "footer": {
+      "maison": "The house",
+      "help": "Help",
+      "legal": "Legal",
+      "payment": "Accepted payment methods"
+    },
+    "legal": {
+      "eyebrow": "INFORMATION",
+      "terms": "Terms of sale",
+      "notice": "Legal notice",
+      "privacy": "Privacy policy",
+      "cookies": "Cookie policy",
+      "manage_cookies": "Manage cookies",
+      "withdrawal": "Right of withdrawal",
+      "official": "View the official document"
+    },
+    "newsletter": {
+      "label": "Your email address",
+      "placeholder": "name@example.com",
+      "submit": "Subscribe",
+      "success": "Thank you, you are subscribed.",
+      "note": "Unsubscribe at any time using the link in every email."
+    },
+    "consent": {
+      "title": "Your cookie preferences",
+      "text": "We use cookies required for the store to work. With your consent, other cookies measure traffic, remember preferences or support our communications.",
+      "learn": "Learn more",
+      "categories": "Cookie categories",
+      "necessary": "Necessary — always active",
+      "analytics": "Analytics",
+      "marketing": "Marketing",
+      "preferences": "Preferences",
+      "reject": "Reject all",
+      "customize": "Customize",
+      "accept": "Accept all",
+      "save": "Save my choices",
+      "saved": "Your preferences are saved.",
+      "unavailable": "The consent manager is temporarily unavailable."
+    },
+    "opening": {
+      "label": "LELON opening",
+      "discover": "Discover",
+      "skip": "Skip"
+    },
+    "contact": {
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "subject": "Subject",
+      "subjects": "Order|Product|Shipping|Return|Press / partnership|Other",
+      "order": "Order number (optional)",
+      "message": "Message",
+      "privacy": "Your information is only used to handle your request. Learn more:",
+      "send": "Send",
+      "success": "Thank you. Your message has been sent."
+    },
+    "faq": {
+      "categories": "Categories",
+      "more": "Can’t find your answer?",
+      "contact": "Write to us"
+    },
+    "account": {
+      "eyebrow": "MY ACCOUNT",
+      "hello": "Hello {{ name }}",
+      "orders": "Orders",
+      "orders_text": "Track and view your orders",
+      "profile": "Profile",
+      "profile_text": "Your details and addresses",
+      "returns": "Returns",
+      "returns_text": "How to exercise your right of withdrawal",
+      "login": "Sign in or create an account",
+      "login_note": "Secure email sign-in with a one-time code."
+    },
+    "referral": {
+      "eyebrow": "REFERRAL",
+      "link_label": "Your personal link",
+      "copy": "Copy",
+      "copied": "Link copied.",
+      "share": "Share",
+      "invited": "Invitations",
+      "completed": "Validated first orders",
+      "bloomed": "Your invitation has blossomed.",
+      "pending": "Under review.",
+      "not_yet": "Your personal link will appear here as soon as it is available.",
+      "terms": "Referral terms"
+    },
+    "story": {
+      "cta": "Discover the collection"
+    },
+    "landing": {
+      "choose_product": "Choose a product in the section settings."
+    },
+    "error": {
+      "title": "This page has flown away.",
+      "text": "The link may be outdated, or the page has moved."
+    },
+    "password": {
+      "title": "LELON is coming soon.",
+      "label": "Store password",
+      "enter": "Enter"
+    }
+  }
+}

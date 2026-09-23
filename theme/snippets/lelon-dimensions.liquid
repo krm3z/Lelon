@@ -1,0 +1,63 @@
+{% doc %}
+  Dimensions component driven only by metafields lelon.width_cm / height_cm / depth_cm (/ strap_drop_cm).
+  Nothing is displayed when values are missing: no estimated or fictitious values.
+
+  @param {product} product - Product.
+{% enddoc %}
+{%- liquid
+  assign width = product.metafields.lelon.width_cm.value
+  assign height = product.metafields.lelon.height_cm.value
+  assign depth = product.metafields.lelon.depth_cm.value
+  assign drop = product.metafields.lelon.strap_drop_cm.value
+-%}
+{%- if width != blank and height != blank -%}
+  <details class="accordion">
+    <summary>{{ 'lelon.product.dimensions' | t }}{% render 'lelon-icon', name: 'plus' %}</summary>
+    <div class="accordion__body dimensions">
+      {%- liquid
+        comment
+          Proportional drawing: the bag outline keeps the real width/height ratio (max 160 × 100 units).
+        endcomment
+        assign w = width | times: 1.0
+        assign h = height | times: 1.0
+        assign scale_w = 160.0 | divided_by: w
+        assign scale_h = 100.0 | divided_by: h
+        assign scale = scale_w
+        if scale_h < scale_w
+          assign scale = scale_h
+        endif
+        assign rw = w | times: scale | round: 1
+        assign rh = h | times: scale | round: 1
+        assign half = rw | divided_by: 2.0
+        assign x = 120 | minus: half | round: 1
+        assign right = x | plus: rw
+        assign bottom = 150
+        assign top = bottom | minus: rh
+        assign handle_left = rw | times: 0.25 | plus: x | round: 1
+        assign handle_right = rw | times: 0.75 | plus: x | round: 1
+        assign handle_peak = top | minus: 34
+        if handle_peak < 4
+          assign handle_peak = 4
+        endif
+        assign mid_y = top | plus: bottom | divided_by: 2.0 | round: 1
+        assign left_arrow = x | minus: 14
+      -%}
+      <svg class="dimensions__figure" viewBox="0 0 240 190" role="img" aria-labelledby="DimTitle-{{ product.id }}">
+        <title id="DimTitle-{{ product.id }}">{{ 'lelon.product.dimensions_figure' | t }}</title>
+        <path d="M{{ handle_left }} {{ top }} Q120 {{ handle_peak }} {{ handle_right }} {{ top }}" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="{{ x }}" y="{{ top }}" width="{{ rw }}" height="{{ rh }}" rx="6" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        {%- if depth != blank -%}<path d="M{{ right }} {{ top | plus: 6 }} l14 -8 v{{ rh }} l-14 8" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>{%- endif -%}
+        <path d="M{{ x }} 170 H{{ right }}" stroke="currentColor" stroke-width=".9"/><path d="M{{ x }} 165v10M{{ right }} 165v10" stroke="currentColor" stroke-width=".9"/>
+        <text x="120" y="186" text-anchor="middle" font-size="11" fill="currentColor">{{ width }} cm</text>
+        <path d="M{{ left_arrow }} {{ top }} V{{ bottom }}" stroke="currentColor" stroke-width=".9"/><path d="M{{ left_arrow | minus: 5 }} {{ top }}h10M{{ left_arrow | minus: 5 }} {{ bottom }}h10" stroke="currentColor" stroke-width=".9"/>
+        <text x="{{ left_arrow | minus: 8 }}" y="{{ mid_y }}" text-anchor="middle" font-size="11" fill="currentColor" transform="rotate(-90 {{ left_arrow | minus: 8 }} {{ mid_y }})">{{ height }} cm</text>
+      </svg>
+      <dl class="specs">
+        <div class="specs__row"><dt>{{ 'lelon.specs.width' | t }}</dt><dd>{{ width }} cm</dd></div>
+        <div class="specs__row"><dt>{{ 'lelon.specs.height' | t }}</dt><dd>{{ height }} cm</dd></div>
+        {%- if depth != blank -%}<div class="specs__row"><dt>{{ 'lelon.specs.depth' | t }}</dt><dd>{{ depth }} cm</dd></div>{%- endif -%}
+        {%- if drop != blank -%}<div class="specs__row"><dt>{{ 'lelon.specs.strap_drop' | t }}</dt><dd>{{ drop }} cm</dd></div>{%- endif -%}
+      </dl>
+    </div>
+  </details>
+{%- endif -%}

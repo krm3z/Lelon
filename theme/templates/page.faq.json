@@ -1,0 +1,127 @@
+{
+  "sections": {
+    "main": {
+      "type": "lelon-faq",
+      "blocks": {
+        "c1": {
+          "type": "question",
+          "settings": {
+            "category": "Commande",
+            "question": "Puis-je modifier ou annuler ma commande ?",
+            "answer": "<p>Contactez-nous au plus vite à <a href=\"mailto:contact@lelon.fr\">contact@lelon.fr</a>. Si la commande n’a pas encore été traitée, nous ferons notre possible pour prendre en compte votre demande. Une modification ou une annulation ne peut pas être garantie lorsque la préparation ou l’expédition a déjà commencé. Cela ne limite pas votre droit légal de rétractation.</p>"
+          }
+        },
+        "c2": {
+          "type": "question",
+          "settings": {
+            "category": "Commande",
+            "question": "Comment suivre ma commande ?",
+            "answer": "<p>Une fois votre commande expédiée, les informations de suivi disponibles vous sont communiquées par e-mail. Le suivi peut également être accessible depuis la page de statut de la commande ou votre compte client.</p>"
+          }
+        },
+        "p1": {
+          "type": "question",
+          "settings": {
+            "category": "Paiement",
+            "question": "Quels moyens de paiement sont acceptés ?",
+            "answer": "<p>Les moyens de paiement disponibles sont affichés au moment du paiement. Les paiements sont traités par les prestataires de paiement de la boutique : LELON ne conserve pas les données complètes de votre carte bancaire.</p>"
+          }
+        },
+        "l1": {
+          "type": "question",
+          "settings": {
+            "category": "Livraison",
+            "question": "Où livrez-vous ?",
+            "answer": "<p>LELON livre actuellement en France. Les méthodes de livraison disponibles sont affichées lors de la commande, après saisie de l’adresse.</p>"
+          }
+        },
+        "l2": {
+          "type": "question",
+          "settings": {
+            "category": "Livraison",
+            "question": "Combien coûte la livraison ?",
+            "answer": "<p>Livraison standard : 0,99 €. Livraison offerte à partir de 90 € d’achat. Le montant total, frais de livraison compris, est affiché avant le paiement.</p>"
+          }
+        },
+        "l3": {
+          "type": "question",
+          "settings": {
+            "category": "Livraison",
+            "question": "Quels sont les délais de livraison ?",
+            "answer": "<p>Le délai de livraison estimatif est de 3 à 10 jours ouvrables. Il peut varier selon le traitement de la commande, le transporteur ou les circonstances d’acheminement.</p>"
+          }
+        },
+        "l4": {
+          "type": "question",
+          "settings": {
+            "category": "Livraison",
+            "question": "Mon colis est en retard, perdu ou endommagé",
+            "answer": "<p>Écrivez-nous à <a href=\"mailto:contact@lelon.fr\">contact@lelon.fr</a> en indiquant votre numéro de commande et, si le colis ou le produit est endommagé, des photographies du problème. Cette procédure ne limite pas vos droits au titre des garanties légales.</p>"
+          }
+        },
+        "r1": {
+          "type": "question",
+          "settings": {
+            "category": "Retours",
+            "question": "Comment retourner un article ?",
+            "answer": "<p>Vous disposez de 14 jours à compter de la réception pour nous informer de votre décision de vous rétracter, puis de 14 jours pour renvoyer le produit. Avant tout envoi, contactez-nous à <a href=\"mailto:contact@lelon.fr\">contact@lelon.fr</a> pour recevoir les instructions et l’adresse de retour.</p>"
+          }
+        },
+        "r2": {
+          "type": "question",
+          "settings": {
+            "category": "Retours",
+            "question": "Qui prend en charge les frais de retour ?",
+            "answer": "<p>En cas de simple changement d’avis, les frais directs de retour sont à votre charge. Pour un produit défectueux, endommagé ou non conforme, les frais sont pris en charge conformément à la réglementation applicable.</p>"
+          }
+        },
+        "r3": {
+          "type": "question",
+          "settings": {
+            "category": "Retours",
+            "question": "Quand serai-je remboursée ?",
+            "answer": "<p>Au plus tard dans les 14 jours suivant l’information de votre rétractation. Le remboursement peut être différé jusqu’à la récupération du produit ou la preuve de son expédition. Il est effectué avec le moyen de paiement utilisé lors de la commande.</p>"
+          }
+        },
+        "r4": {
+          "type": "question",
+          "settings": {
+            "category": "Retours",
+            "question": "Puis-je échanger un sac ?",
+            "answer": "<p>LELON ne propose pas systématiquement d’échange direct. Contactez-nous pour connaître la procédure, ou retournez le produit et passez une nouvelle commande.</p>"
+          }
+        },
+        "pr1": {
+          "type": "question",
+          "settings": {
+            "category": "Produits",
+            "question": "Où trouver les dimensions et les matières ?",
+            "answer": "<p>Dans la rubrique « Détails » de chaque fiche produit.</p>"
+          }
+        },
+        "pr2": {
+          "type": "question",
+          "settings": {
+            "category": "Produits",
+            "question": "Mon sac présente un défaut",
+            "answer": "<p>Contactez-nous dès que possible à <a href=\"mailto:contact@lelon.fr\">contact@lelon.fr</a> avec votre numéro de commande et une description du problème. Vos droits au titre de la garantie légale de conformité et de la garantie des vices cachés s’appliquent.</p>"
+          }
+        },
+        "a1": {
+          "type": "question",
+          "settings": {
+            "category": "Compte",
+            "question": "À quoi sert mon compte client ?",
+            "answer": "<p>Votre compte vous permet de consulter vos commandes et de gérer votre profil.</p>"
+          }
+        }
+      },
+      "block_order": ["c1", "c2", "p1", "l1", "l2", "l3", "l4", "r1", "r2", "r3", "r4", "pr1", "pr2", "a1"],
+      "settings": {
+        "title": "Questions fréquentes",
+        "intro": "Les réponses reprennent nos politiques publiées. Pour toute autre question, nous sommes à votre écoute."
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,73 @@
+{%- liquid
+  assign landing = section.settings.product
+  assign current_variant = landing.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section.id
+  assign hero_image = section.settings.image | default: landing.featured_image
+  assign description = landing.description | remove: '<p>Collection en préparation. Bientôt disponible.</p>'
+  assign description_details = ''
+  if description contains '<h3>Les détails</h3>'
+    assign description_parts = description | split: '<h3>Les détails</h3>'
+    assign description_details = description_parts[1]
+  endif
+-%}
+{%- if landing != blank -%}
+  <section class="landing-hero">
+    <div class="landing-hero__media">
+      {%- if hero_image -%}
+        {{ hero_image | image_url: width: 2000 | image_tag: widths: '600, 900, 1200, 1600, 2000', sizes: '(min-width: 990px) 55vw, 100vw', loading: 'eager', fetchpriority: 'high', alt: hero_image.alt | default: landing.title }}
+      {%- endif -%}
+    </div>
+    <div class="landing-hero__copy">
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h1 class="display-1">{{ landing.title | remove: 'LELON Signature ' | remove: 'LELON ' | escape }}</h1>
+      {%- if section.settings.headline != blank -%}<p class="landing-hero__headline">{{ section.settings.headline | escape }}</p>{%- endif -%}
+      {% render 'lelon-price', product: landing, class: 'landing-hero__price' %}
+      <a class="btn btn--primary" href="#Buy-{{ section.id }}">{{ section.settings.cta_label | escape }}</a>
+    </div>
+  </section>
+
+  <div class="pdp pdp--landing" id="Buy-{{ section.id }}" data-product-root data-section-id="{{ section.id }}" data-product-url="{{ landing.url }}" data-no-url-update>
+    <div class="pdp__grid page-width">
+      {% render 'lelon-product-gallery', product: landing, current_variant: current_variant %}
+      <div class="pdp__info">
+        <div class="pdp__info-inner">
+          <div class="pdp__title-wrap">
+            <p class="eyebrow">LELON{% if landing.type != blank %} · {{ landing.type | escape }}{% endif %}</p>
+            <h2 class="pdp__title">{{ landing.title | remove: 'LELON Signature ' | remove: 'LELON ' | escape }}</h2>
+          </div>
+          <div class="pdp__price" data-price-wrap>{% render 'lelon-price', product: landing, variant: current_variant %}</div>
+          {% render 'lelon-variant-picker', product: landing, section_id: section.id, block: section %}
+          <div class="pdp__buy">{% render 'lelon-buy-buttons', product: landing, variant: current_variant, form_id: form_id, show_dynamic_checkout: false %}</div>
+          <ul class="reassurance-list" role="list">
+            {%- if settings.shipping_summary != blank -%}<li>{% render 'lelon-icon', name: 'truck' %}<span>{{ settings.shipping_summary | escape }}</span></li>{%- endif -%}
+            {%- if settings.shipping_delay != blank -%}<li>{% render 'lelon-icon', name: 'track' %}<span>{{ 'lelon.product.delivery_delay' | t: delay: settings.shipping_delay }}</span></li>{%- endif -%}
+            {%- if settings.returns_summary != blank -%}<li>{% render 'lelon-icon', name: 'return' %}<span>{{ settings.returns_summary | escape }}</span></li>{%- endif -%}
+          </ul>
+          <div class="accordions">
+            {% render 'lelon-product-specs', product: landing, description_details: description_details %}
+            {% render 'lelon-dimensions', product: landing %}
+          </div>
+          <a class="link" href="{{ landing.url }}">{{ 'lelon.product.full_page' | t }}{% render 'lelon-icon', name: 'arrow-right' %}</a>
+        </div>
+      </div>
+    </div>
+    {% render 'lelon-product-json', product: landing %}
+  </div>
+{%- elsif request.design_mode -%}
+  <p class="page-width section">{{ 'lelon.landing.choose_product' | t }}</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "LELON · Landing produit",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Produit" },
+    { "type": "image_picker", "id": "image", "label": "Photographie portée (hero)" },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "LELON" },
+    { "type": "text", "id": "headline", "label": "Phrase", "default": "L’élégance dans chaque détail." },
+    { "type": "text", "id": "cta_label", "label": "Bouton", "default": "Choisir mon coloris" },
+    { "type": "checkbox", "id": "show_swatches", "label": "Pastilles de couleur", "default": true }
+  ],
+  "presets": [{ "name": "LELON · Landing produit" }]
+}
+{% endschema %}

@@ -1,0 +1,47 @@
+<section class="section page-width account">
+  <header class="page-head">
+    <p class="eyebrow">{{ 'lelon.account.eyebrow' | t }}</p>
+    {%- if customer -%}
+      {%- assign first_name = customer.first_name | default: '' | escape -%}
+      <h1 class="page-head__title">{{ 'lelon.account.hello' | t: name: first_name }}</h1>
+    {%- else -%}
+      <h1 class="page-head__title">{{ page.title | default: section.settings.title | escape }}</h1>
+    {%- endif -%}
+    <p class="page-head__lead">{{ section.settings.text | escape }}</p>
+  </header>
+
+  <div class="account__grid">
+    {%- if customer -%}
+      <a class="account__card" href="{{ routes.account_url }}">
+        <span class="eyebrow">{{ 'lelon.account.orders' | t }}</span>
+        <span>{{ 'lelon.account.orders_text' | t }}</span>
+        {% render 'lelon-icon', name: 'arrow-right' %}
+      </a>
+      <a class="account__card" href="{{ routes.account_url }}">
+        <span class="eyebrow">{{ 'lelon.account.profile' | t }}</span>
+        <span>{{ 'lelon.account.profile_text' | t }}</span>
+        {% render 'lelon-icon', name: 'arrow-right' %}
+      </a>
+      <a class="account__card" href="{{ settings.shipping_returns_url | default: '/pages/livraison-retours' }}">
+        <span class="eyebrow">{{ 'lelon.account.returns' | t }}</span>
+        <span>{{ 'lelon.account.returns_text' | t }}</span>
+        {% render 'lelon-icon', name: 'arrow-right' %}
+      </a>
+    {%- else -%}
+      <div class="account__login">
+        <a class="btn btn--primary" href="{{ routes.account_login_url }}">{{ 'lelon.account.login' | t }}</a>
+        <p class="muted small">{{ 'lelon.account.login_note' | t }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LELON · Compte",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Votre espace LELON" },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Vos commandes, leur suivi et vos coordonnées, au même endroit." }
+  ]
+}
+{% endschema %}

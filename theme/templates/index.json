@@ -1,0 +1,162 @@
+{
+  "sections": {
+    "hero": {
+      "type": "lelon-hero",
+      "settings": {
+        "layout": "split",
+        "image": "shopify://shop_images/lelon-elea-cognac-02-mannequin.png",
+        "product": "elea",
+        "show_product": true,
+        "eyebrow": "",
+        "title": "L’élégance\ndans chaque détail.",
+        "subtitle": "Des sacs pensés pour vous accompagner\nchaque jour, avec style et intention.",
+        "cta_label": "Découvrir la collection",
+        "cta_url": "shopify://collections/lelon"
+      }
+    },
+    "collection": {
+      "type": "lelon-featured-collection",
+      "settings": {
+        "collection": "lelon",
+        "products": ["elea", "nova", "luna"],
+        "limit": 3,
+        "eyebrow": "",
+        "title": "Notre collection",
+        "subtitle": "Des silhouettes pensées pour accompagner chaque histoire.",
+        "link_label": "Voir toute la collection",
+        "tone": "light"
+      }
+    },
+    "lifestyle": {
+      "type": "lelon-lifestyle",
+      "settings": {
+        "image": "shopify://shop_images/lelon-nova-chocolat-02-mannequin.png",
+        "caption": "",
+        "height": "tall",
+        "focal": "object-position: 50% 50%"
+      }
+    },
+    "story": {
+      "type": "lelon-image-text",
+      "settings": {
+        "image": "shopify://shop_images/lelon-solea-beige-cognac-02-mannequin.png",
+        "image_position": "left",
+        "tone": "ivory",
+        "eyebrow": "LELON",
+        "title": "Des histoires à porter.",
+        "text": "<p>Un rendez-vous, une journée qui commence tôt, une soirée qui se prolonge. Chaque sac LELON accompagne ces moments sans jamais les définir.</p>",
+        "link_label": "Notre histoire",
+        "link": "shopify://pages/notre-histoire"
+      }
+    },
+    "featured": {
+      "type": "lelon-featured-product",
+      "settings": {
+        "product": "velora",
+        "image": "shopify://shop_images/lelon-velora-ivoire-02-mannequin.png",
+        "eyebrow": "UN SAC, UNE PRÉSENCE",
+        "text": "Une silhouette dessinée, trois façons de la porter.",
+        "cta_label": "Découvrir"
+      }
+    },
+    "details": {
+      "type": "lelon-detail-mosaic",
+      "blocks": {
+        "worn": {
+          "type": "detail",
+          "settings": { "image": "shopify://shop_images/lelon-norea-ivoire-9989bc9a7f.jpg", "product": "norea", "media_position": 1, "caption": "Porté" }
+        },
+        "texture": {
+          "type": "detail",
+          "settings": { "image": "shopify://shop_images/lelon-nova-chocolat-1ee98f0ecf.jpg", "product": "nova", "media_position": 1, "caption": "Texture" }
+        },
+        "detail": {
+          "type": "detail",
+          "settings": { "image": "shopify://shop_images/lelon-elara-cognac-9927cca023.jpg", "product": "elara", "media_position": 1, "caption": "Détail" }
+        },
+        "silhouette": {
+          "type": "detail",
+          "settings": { "image": "shopify://shop_images/lelon-norea-ivoire-92b6977494.jpg", "product": "norea", "media_position": 1, "caption": "Silhouette" }
+        },
+        "interior": {
+          "type": "detail",
+          "settings": { "image": "shopify://shop_images/lelon-celene-taupe-d4a963efe6.jpg", "product": "celene", "media_position": 1, "caption": "Intérieur" }
+        }
+      },
+      "block_order": ["worn", "texture", "detail", "silhouette", "interior"],
+      "settings": {
+        "eyebrow": "PORTÉ · TEXTURE · DÉTAIL · SILHOUETTE · INTÉRIEUR",
+        "title": "Au plus près des détails."
+      }
+    },
+    "philosophy": {
+      "type": "lelon-philosophy",
+      "settings": {
+        "show_rose": true,
+        "eyebrow": "L’ESPRIT LELON",
+        "quote": "Chaque femme possède sa propre manière de s’épanouir.",
+        "text": "LELON ne définit pas la femme. LELON l’accompagne.",
+        "link_label": "Notre histoire",
+        "link": "shopify://pages/notre-histoire"
+      }
+    },
+    "signature": {
+      "type": "lelon-signature",
+      "settings": {
+        "collection": "signature",
+        "products": ["amara", "celene", "norea"],
+        "limit": 3,
+        "title": "Une autre expression.",
+        "text": "Des lignes plus composées, un rythme plus lent. Signature prolonge l’univers LELON.",
+        "cta_label": "Découvrir Signature"
+      }
+    },
+    "art": {
+      "type": "lelon-triptych",
+      "blocks": {
+        "libre": { "type": "word", "settings": { "word": "Libre", "text": "Un sac qui suit le rythme de la journée, sans le contraindre." } },
+        "confidente": { "type": "word", "settings": { "word": "Confidente", "text": "L’essentiel à portée de main, au plus près de soi." } },
+        "elle": { "type": "word", "settings": { "word": "Elle-même", "text": "Une allure qui ne cherche pas à ressembler. Seulement à exprimer." } }
+      },
+      "block_order": ["libre", "confidente", "elle"],
+      "settings": { "eyebrow": "L’ART DE S’ÉPANOUIR", "title": "À votre manière." }
+    },
+    "journal": {
+      "type": "lelon-journal",
+      "blocks": {
+        "j1": { "type": "image", "settings": { "image": "shopify://shop_images/lelon-celene-cognac-6f91edf9fe.jpg", "product": "celene", "caption": "CÉLÈNE · Cognac" } },
+        "j2": { "type": "image", "settings": { "image": "shopify://shop_images/lelon-elara-cognac-e4d1362f7b.jpg", "product": "elara", "caption": "ELARA · Cognac" } },
+        "j3": { "type": "image", "settings": { "image": "shopify://shop_images/lelon-naya-chocolat-82f8fd5751.jpg", "product": "naya", "caption": "NAYA · Chocolat" } },
+        "j4": { "type": "image", "settings": { "image": "shopify://shop_images/lelon-celene-taupe-452990b959.jpg", "product": "celene", "caption": "CÉLÈNE · Taupe" } }
+      },
+      "block_order": ["j1", "j2", "j3", "j4"],
+      "settings": {
+        "eyebrow": "LELON — JOURNAL",
+        "title": "Suivez notre univers.",
+        "link_label": "@lelon_officiel",
+        "link": "",
+        "disclosure": "Sélection éditoriale LELON — pas un flux Instagram en direct."
+      }
+    },
+    "reassurance": {
+      "type": "lelon-reassurance",
+      "blocks": {
+        "r1": { "type": "item", "settings": { "icon": "truck", "title": "Livraison en France", "text": "0,99 € · offerte dès 90 €", "link": "shopify://pages/livraison-retours" } },
+        "r2": { "type": "item", "settings": { "icon": "track", "title": "Suivi de commande", "text": "Numéro de suivi communiqué à l’expédition", "link": "" } },
+        "r3": { "type": "item", "settings": { "icon": "return", "title": "14 jours pour changer d’avis", "text": "Droit de rétractation", "link": "shopify://pages/livraison-retours" } },
+        "r4": { "type": "item", "settings": { "icon": "mail", "title": "Une question ?", "text": "contact@lelon.fr", "link": "shopify://pages/contact" } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4"],
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "lelon-newsletter",
+      "settings": {
+        "eyebrow": "",
+        "title": "Entrez dans l’univers LELON.",
+        "text": "Recevez nos nouvelles, collections et inspirations."
+      }
+    }
+  },
+  "order": ["hero", "collection", "lifestyle", "story", "featured", "details", "philosophy", "signature", "art", "journal", "reassurance", "newsletter"]
+}

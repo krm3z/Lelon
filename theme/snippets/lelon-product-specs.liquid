@@ -1,0 +1,40 @@
+{% doc %}
+  "Détails & matières". Structured metafields (namespace lelon, then legacy custom) take priority;
+  otherwise the details list written in the product description is shown as-is.
+
+  @param {product} product - Product.
+  @param {string} [description_details] - Details HTML extracted from the description.
+{% enddoc %}
+{%- liquid
+  assign keys = 'material,lining,structure,closure,interior,strap,carry,details' | split: ','
+  assign has_meta = false
+  for key in keys
+    if product.metafields.lelon[key] != blank or product.metafields.custom[key] != blank
+      assign has_meta = true
+      break
+    endif
+  endfor
+-%}
+{%- if has_meta or description_details != blank -%}
+  <details class="accordion">
+    <summary>{{ 'lelon.product.details' | t }}{% render 'lelon-icon', name: 'plus' %}</summary>
+    <div class="accordion__body">
+      {%- if has_meta -%}
+        <dl class="specs">
+          {%- for key in keys -%}
+            {%- assign spec = product.metafields.lelon[key] | default: product.metafields.custom[key] -%}
+            {%- if spec != blank -%}
+              {%- assign label_key = 'lelon.specs.' | append: key -%}
+              <div class="specs__row">
+                <dt>{{ label_key | t }}</dt>
+                <dd>{{ spec | metafield_text | newline_to_br }}</dd>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </dl>
+      {%- else -%}
+        <div class="specs specs--rte rte">{{ description_details }}</div>
+      {%- endif -%}
+    </div>
+  </details>
+{%- endif -%}

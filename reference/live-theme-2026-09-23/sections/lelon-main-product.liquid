@@ -1,0 +1,4 @@
+<div class="page-width product-page"><div class="product-page-mast"><span>LELON · FICHE PIÈCE</span><a href="{% if product.tags contains 'lelon-signature' %}{{ settings.signature_collection.url }}{% else %}{{ settings.main_collection.url }}{% endif %}">{% if product.tags contains 'lelon-signature' %}SIGNATURE{% else %}COLLECTION 01{% endif %}</a></div>{% render 'lelon-product-detail', product: product, section_id: section.id, show_dynamic_checkout: section.settings.show_dynamic_checkout %}</div>{% for block in section.blocks %}{% if block.type == '@app' %}{% render block %}{% endif %}{% endfor %}{% if product.price > 0 %}<script type="application/ld+json">{{ product | structured_data }}</script>{% endif %}
+{% schema %}
+{"name": "LELON · main-product", "blocks": [{"type": "@app"}], "settings": [{"type": "checkbox", "id": "show_dynamic_checkout", "label": "Paiement accéléré lorsque disponible", "default": false}]}
+{% endschema %}

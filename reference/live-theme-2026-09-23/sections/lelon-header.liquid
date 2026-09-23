@@ -1,0 +1,20 @@
+{% assign story_url = settings.story_url | default: '/pages/notre-histoire' %}{% assign contact_url = settings.contact_url | default: '/pages/contact' %}
+{% if settings.prelaunch %}<div class="announcement">LA PREMIÈRE ÉCLOSION · PROCHAINEMENT</div>{% endif %}
+<header class="header"><div class="header-inner">
+<a class="icon-button mobile-only" href="#MobileNavFallback" data-dialog-open="MobileMenu" aria-label="{{ 'cinema.menu' | t }}">{% render 'lelon-icon', name: 'menu' %}</a>
+<nav aria-label="{{ 'cinema.navigation' | t }}" class="desktop-only"><a href="{{ settings.main_collection.url | default: routes.all_products_collection_url }}">{{ 'cinema.collection' | t }}</a><a href="{% if settings.signature_collection %}{{ settings.signature_collection.url }}{% else %}{{ routes.root_url }}#signature{% endif %}">{{ 'cinema.signature' | t }}</a><a href="{{ story_url }}">{{ 'cinema.story' | t }}</a><a href="{{ contact_url }}">{{ 'cinema.contact' | t }}</a></nav>
+<a class="brand" href="{{ routes.root_url }}" aria-label="LELON — {{ 'cinema.home' | t }}">LELON</a>
+<div class="header-actions"><a class="icon-button desktop-only" href="{{ routes.search_url }}" data-dialog-open="SearchDialog" aria-label="{{ 'cinema.search' | t }}">{% render 'lelon-icon', name: 'search' %}</a><a class="icon-button" href="{{ routes.account_url }}" aria-label="{{ 'cinema.account' | t }}">{% render 'lelon-icon', name: 'user-round' %}</a><a class="icon-button" href="{{ routes.cart_url }}" data-dialog-open="CartDrawer" aria-label="{{ 'cinema.cart' | t }}">{% render 'lelon-icon', name: 'shopping-bag' %}<span class="cart-count" data-cart-count>{{ cart.item_count }}</span></a></div>
+</div></header>
+<noscript><nav id="MobileNavFallback" class="nojs-nav"><a href="{{ settings.main_collection.url | default: routes.all_products_collection_url }}">{{ 'cinema.collection' | t }}</a><a href="{{ routes.search_url }}">{{ 'cinema.search' | t }}</a><a href="{{ story_url }}">{{ 'cinema.story' | t }}</a></nav></noscript>
+{% schema %}
+{
+  "name": "LELON · header",
+  "settings": [],
+  "presets": [
+    {
+      "name": "LELON · header"
+    }
+  ]
+}
+{% endschema %}

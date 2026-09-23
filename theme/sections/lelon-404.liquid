@@ -1,0 +1,16 @@
+<section class="section page-width empty empty--page">
+  <p class="eyebrow">404</p>
+  <h1 class="display-2">{{ 'lelon.error.title' | t }}</h1>
+  <p>{{ 'lelon.error.text' | t }}</p>
+  <div class="empty__actions">
+    <a class="btn btn--primary" href="{{ settings.main_collection.url | default: routes.all_products_collection_url }}">{{ 'lelon.cart.discover' | t }}</a>
+    <a class="link" href="{{ routes.root_url }}">{{ 'lelon.nav.home' | t }}</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LELON · 404",
+  "settings": []
+}
+{% endschema %}
