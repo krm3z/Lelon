@@ -66,7 +66,7 @@ des médias Shopify et de leurs alts**, photos du zip en remplacement des fichie
 | Theme Check (Shopify) | **0** erreur, 0 avertissement |
 
 Passage complet n° 1 (18 × 10) : propre. Il a fait apparaître 3 défauts visuels, corrigés ensuite : accroche tronquée
-(320 px), menu contre le logo (1024 px), galerie étroite (1920 px). Passage final sur le code définitif : **en cours au moment de ce commit** (93 / 180 pages, toutes propres) — résultat reporté ci-dessous dès la fin.
+(320 px), menu contre le logo (1024 px), galerie étroite (1920 px). Passage final sur le code définitif : **180 / 180 pages propres** (0 débordement, 0 violation axe, 0 erreur JS).
 
 Captures inspectées : 320 px (accueil, fiche, landing, 404, panier), 1024 / 1100 px (en-tête), 1280 et 1920 px (accueil, fiche).
 Non testé : rendu Shopify réel (Liquid Shopify, CDN d’images, checkout), vrais appareils, Safari iOS.
