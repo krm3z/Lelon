@@ -1,0 +1,41 @@
+{% if section.settings.image != blank %}<section class="section page-width"><div class="section-heading"><div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.title | escape }}</h2></div></div><div class="lookbook"><figure data-image-reveal>{{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '480, 750, 1000, 1400', sizes: '(max-width: 767px) 90vw, 60vw' }}<figcaption>{{ section.settings.caption | escape }}</figcaption></figure>{% if section.settings.second_image %}<figure data-image-reveal>{{ section.settings.second_image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '480, 750, 1000', sizes: '(max-width: 767px) 90vw, 35vw' }}</figure>{% endif %}</div></section>{% endif %}
+{% schema %}
+{
+  "name": "LELON · lookbook",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "LE REGARD LELON"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Une allure, au fil des jours."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image approuvée"
+    },
+    {
+      "type": "image_picker",
+      "id": "second_image",
+      "label": "Seconde image approuvée"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Légende",
+      "default": "À votre manière."
+    }
+  ],
+  "presets": [
+    {
+      "name": "LELON · lookbook"
+    }
+  ]
+}
+{% endschema %}

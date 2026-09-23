@@ -1,0 +1,21 @@
+{% doc %}
+  Renders one product media (image, video, external video, 3D model).
+
+  @param {media} media - Product media.
+  @param {product} product - Product (alt fallback).
+  @param {boolean} [eager] - LCP media.
+{% enddoc %}
+{%- case media.media_type -%}
+  {%- when 'image' -%}
+    {%- if eager -%}
+      {{ media | image_url: width: 1800 | image_tag: widths: '400, 600, 800, 1000, 1200, 1500, 1800', sizes: '(min-width: 990px) 55vw, 100vw', loading: 'eager', fetchpriority: 'high', alt: media.alt | default: product.title, class: 'gallery__img' }}
+    {%- else -%}
+      {{ media | image_url: width: 1800 | image_tag: widths: '400, 600, 800, 1000, 1200, 1500, 1800', sizes: '(min-width: 990px) 55vw, 100vw', loading: 'lazy', alt: media.alt | default: product.title, class: 'gallery__img' }}
+    {%- endif -%}
+  {%- when 'video' -%}
+    {{ media | video_tag: controls: true, preload: 'none', playsinline: true, image_size: '1200x', class: 'gallery__video' }}
+  {%- when 'external_video' -%}
+    <div class="gallery__embed">{{ media | external_video_tag: loading: 'lazy' }}</div>
+  {%- when 'model' -%}
+    <div class="gallery__model">{{ media | model_viewer_tag: image_size: '1200x', reveal: 'interaction', toggleable: true }}</div>
+{%- endcase -%}

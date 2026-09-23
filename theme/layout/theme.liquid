@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="{{ settings.cream }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- liquid
+      if request.page_type == 'index'
+        assign seo_title = 'lelon.meta.home_title' | t
+        assign seo_description = 'lelon.meta.home_description' | t
+        if shop.description != blank
+          assign seo_description = shop.description
+        endif
+      else
+        assign seo_title = page_title | append: ' — LELON'
+        if current_page != 1
+          assign seo_title = seo_title | append: ' · Page ' | append: current_page
+        endif
+        assign seo_description = page_description | default: shop.description
+      endif
+    -%}
+    <title>{{ seo_title | escape }}</title>
+    {%- if seo_description != blank -%}
+      <meta name="description" content="{{ seo_description | strip_html | escape }}">
+    {%- endif -%}
+    {% render 'lelon-social-meta', title: seo_title, description: seo_description %}
+
+    {{ 'lelon-serif.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+    {{ 'lelon-sans.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+    {{ 'lelon.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {% style %}
+      @font-face { font-family: 'LELON Serif'; src: url('{{ 'lelon-serif.woff2' | asset_url }}') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+      @font-face { font-family: 'LELON Serif'; src: url('{{ 'lelon-serif-italic.woff2' | asset_url }}') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+      @font-face { font-family: 'LELON Sans'; src: url('{{ 'lelon-sans.woff2' | asset_url }}') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+      :root {
+        --ivory: {{ settings.ivory }};
+        --cream: {{ settings.cream }};
+        --powder: {{ settings.powder_pink }};
+        --chocolate: {{ settings.chocolate }};
+        --ink: {{ settings.ink }};
+        --champagne: {{ settings.champagne }};
+        --beige: {{ settings.beige }};
+        --taupe: {{ settings.taupe }};
+      }
+    {% endstyle %}
+
+    <script>
+      document.documentElement.classList.replace('no-js', 'js');
+    </script>
+
+    {{ content_for_header }}
+
+    {%- if request.page_type == 'index' -%}
+      {% render 'lelon-organization-schema' %}
+    {%- endif -%}
+  </head>
+
+  <body class="template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}--{{ template.suffix }}{% endif %}">
+    <a class="skip-link" href="#MainContent">{{ 'lelon.a11y.skip' | t }}</a>
+
+    {%- if request.page_type == 'index' and settings.intro_enabled -%}
+      {% render 'lelon-opening' %}
+    {%- endif -%}
+
+    {% section 'lelon-header' %}
+
+    <main id="MainContent" class="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'lelon-footer' %}
+    {% section 'lelon-cart-drawer' %}
+    {% render 'lelon-menu-drawer' %}
+    {% render 'lelon-search-dialog' %}
+    {% render 'lelon-cookie-consent' %}
+
+    <div id="LiveRegion" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <script type="application/json" id="LelonConfig">
+      {
+        "root": {{ routes.root_url | json }},
+        "cartUrl": {{ routes.cart_url | json }},
+        "searchUrl": {{ routes.predictive_search_url | json }},
+        "motion": {{ settings.motion_enabled | json }},
+        "prelaunch": {{ settings.prelaunch | json }},
+        "moneyFormat": {{ shop.money_format | json }},
+        "text": {
+          "add": {{ 'lelon.product.add' | t | json }},
+          "soon": {{ 'lelon.product.soon' | t | json }},
+          "soldout": {{ 'lelon.product.soldout' | t | json }},
+          "unavailable": {{ 'lelon.product.unavailable' | t | json }},
+          "inStock": {{ 'lelon.product.in_stock' | t | json }},
+          "soonNote": {{ 'lelon.product.soon_note' | t | json }},
+          "soldoutNote": {{ 'lelon.product.soldout_note' | t | json }},
+          "unavailableNote": {{ 'lelon.product.unavailable_note' | t | json }},
+          "added": {{ 'lelon.cart.added' | t | json }},
+          "updated": {{ 'lelon.cart.updated' | t | json }},
+          "cartError": {{ 'lelon.cart.error' | t | json }},
+          "networkError": {{ 'lelon.cart.network_error' | t | json }},
+          "searchLoading": {{ 'lelon.search.loading' | t | json }},
+          "searchError": {{ 'lelon.search.error' | t | json }},
+          "copied": {{ 'lelon.referral.copied' | t | json }},
+          "searchSuggestions": {{ 'lelon.search.suggestions' | t | json }},
+          "consentUnavailable": {{ 'lelon.consent.unavailable' | t | json }}
+        }
+      }
+    </script>
+    <script src="{{ 'lelon.js' | asset_url }}" type="module"></script>
+  </body>
+</html>

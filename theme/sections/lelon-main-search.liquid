@@ -1,0 +1,43 @@
+<section class="section page-width search-page">
+  <header class="page-head">
+    <p class="eyebrow">LELON</p>
+    <h1 class="page-head__title">{{ 'lelon.search.title' | t }}</h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-form search-form--page">
+      <input type="hidden" name="type" value="product">
+      <label class="visually-hidden" for="SearchPageInput">{{ 'lelon.search.label' | t }}</label>
+      <div class="search-form__field">
+        {% render 'lelon-icon', name: 'search' %}
+        <input id="SearchPageInput" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'lelon.search.placeholder' | t }}" autocomplete="off">
+        <button type="submit" class="search-form__submit">{{ 'lelon.search.submit' | t }}</button>
+      </div>
+    </form>
+  </header>
+
+  {%- if search.performed -%}
+    {%- paginate search.results by 24 -%}
+      <p class="toolbar__count" role="status">{{ 'lelon.search.results' | t: count: search.results_count, terms: search.terms }}</p>
+      {%- if search.results_count > 0 -%}
+        <div class="grid grid--products grid--3">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'lelon-product-card', product: item %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}{% render 'lelon-pagination', paginate: paginate %}{%- endif -%}
+      {%- else -%}
+        <div class="empty">
+          <p class="empty__title">{{ 'lelon.search.no_results' | t: terms: search.terms }}</p>
+          <a class="btn btn--ghost" href="{{ settings.main_collection.url | default: routes.all_products_collection_url }}">{{ 'lelon.cart.discover' | t }}</a>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "LELON · Recherche",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,97 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "lelon-legal-page",
+      "blocks": {
+        "controller": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Responsable du traitement"
+          }
+        },
+        "data": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Données collectées"
+          }
+        },
+        "purposes": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Finalités et bases légales"
+          }
+        },
+        "recipients": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Destinataires et sous-traitants"
+          }
+        },
+        "transfers": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Transferts internationaux"
+          }
+        },
+        "retention": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Durées de conservation"
+          }
+        },
+        "rights": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Vos droits"
+          }
+        },
+        "contact": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Exercer vos droits"
+          }
+        },
+        "complaint": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Réclamation auprès de l’autorité de contrôle"
+          }
+        },
+        "cookies": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Cookies et traceurs"
+          }
+        }
+      },
+      "block_order": [
+        "controller",
+        "data",
+        "purposes",
+        "recipients",
+        "transfers",
+        "retention",
+        "rights",
+        "contact",
+        "complaint",
+        "cookies"
+      ],
+      "settings": {
+        "title": "Politique de confidentialité",
+        "intro": "Cette page doit refléter les traitements réellement opérés par la boutique, Shopify et les applications installées."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

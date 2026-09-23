@@ -1,0 +1,77 @@
+{%- liquid
+  assign menu = section.settings.menu
+  if menu == blank
+    assign menu = linklists['main-menu']
+  endif
+  assign announcement = section.settings.announcement
+  if announcement == blank and section.settings.show_announcement
+    assign announcement = settings.shipping_summary
+  endif
+-%}
+{%- if section.settings.show_announcement and announcement != blank -%}
+  <div class="announcement">
+    {%- if section.settings.announcement_link != blank -%}
+      <a href="{{ section.settings.announcement_link }}">{{ announcement | escape }}</a>
+    {%- else -%}
+      <p>{{ announcement | escape }}</p>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+<header class="header" data-header>
+  <div class="header__inner">
+    <div class="header__start">
+      <button type="button" class="icon-btn header__menu-btn" data-open="MenuDrawer" aria-controls="MenuDrawer" aria-expanded="false" aria-label="{{ 'lelon.nav.open_menu' | t }}">
+        {% render 'lelon-icon', name: 'menu' %}
+      </button>
+      <nav class="header__nav" aria-label="{{ 'lelon.nav.primary' | t }}">
+        <ul role="list">
+          {%- if menu.links.size > 0 -%}
+            {%- for link in menu.links -%}
+              <li><a href="{{ link.url }}"{% if link.active or link.child_active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+            {%- endfor -%}
+          {%- else -%}
+            <li><a href="{{ settings.main_collection.url | default: routes.all_products_collection_url }}">{{ 'lelon.nav.collection' | t }}</a></li>
+            {%- if settings.signature_collection -%}<li><a href="{{ settings.signature_collection.url }}">{{ 'lelon.nav.signature' | t }}</a></li>{%- endif -%}
+            <li><a href="{{ settings.story_url | default: '/pages/notre-histoire' }}">{{ 'lelon.nav.story' | t }}</a></li>
+            <li><a href="{{ settings.contact_url | default: '/pages/contact' }}">{{ 'lelon.nav.contact' | t }}</a></li>
+          {%- endif -%}
+        </ul>
+      </nav>
+    </div>
+
+    <a class="brand" href="{{ routes.root_url }}" aria-label="{{ 'lelon.nav.home_label' | t }}">LELON</a>
+
+    <div class="header__end">
+      <a class="icon-btn" href="{{ routes.search_url }}" data-open="SearchDialog" aria-label="{{ 'lelon.nav.search' | t }}">
+        {% render 'lelon-icon', name: 'search' %}
+      </a>
+      <a class="icon-btn header__account" href="{{ routes.account_url }}" aria-label="{{ 'lelon.nav.account' | t }}">
+        {% render 'lelon-icon', name: 'user' %}
+      </a>
+      <a class="icon-btn header__cart" href="{{ routes.cart_url }}" data-open="CartDrawer" aria-label="{{ 'lelon.nav.cart' | t }}">
+        {% render 'lelon-icon', name: 'bag' %}
+        <span class="header__count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+        <span class="visually-hidden" data-cart-count-label>{{ 'lelon.cart.count' | t: count: cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "LELON · En-tête",
+  "class": "section-header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu principal", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_announcement", "label": "Afficher le bandeau d’information", "default": true },
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Texte du bandeau",
+      "info": "Laisser vide pour reprendre le résumé livraison des réglages du thème. Uniquement des informations vérifiées."
+    },
+    { "type": "url", "id": "announcement_link", "label": "Lien du bandeau" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,72 @@
+{%- comment -%}
+  Referral space. The theme never computes eligibility, codes or rewards: it only displays what the
+  server-side referral service writes on the customer (metafields lelon.referral_code and
+  lelon.referral_summary, JSON). See docs/parrainage-architecture.md.
+{%- endcomment -%}
+{%- liquid
+  assign code = customer.metafields.lelon.referral_code.value
+  assign summary = customer.metafields.lelon.referral_summary.value
+  assign base = settings.referral_base_url | default: 'https://lelon.fr/r/'
+-%}
+{%- if settings.referral_enabled -%}
+  <section class="section page-width referral" data-referral>
+    <div class="referral__card">
+      <p class="eyebrow">{{ 'lelon.referral.eyebrow' | t }}</p>
+      <h2 class="display-2">{{ section.settings.title | escape }}</h2>
+      <p>{{ section.settings.text | escape }}</p>
+
+      {%- if customer == nil -%}
+        <a class="btn btn--ghost" href="{{ routes.account_login_url }}">{{ 'lelon.account.login' | t }}</a>
+      {%- elsif code != blank -%}
+        {%- assign referral_url = base | append: code -%}
+        <div class="referral__link">
+          <label class="field-label" for="ReferralLink">{{ 'lelon.referral.link_label' | t }}</label>
+          <div class="referral__row">
+            <input id="ReferralLink" type="text" value="{{ referral_url | escape }}" readonly data-referral-url>
+            <button type="button" class="btn btn--primary" data-referral-copy>{% render 'lelon-icon', name: 'copy' %}{{ 'lelon.referral.copy' | t }}</button>
+            <button type="button" class="btn btn--ghost" data-referral-share hidden>{% render 'lelon-icon', name: 'share' %}{{ 'lelon.referral.share' | t }}</button>
+          </div>
+        </div>
+
+        {%- if summary != blank -%}
+          <dl class="referral__stats">
+            <div><dt>{{ 'lelon.referral.invited' | t }}</dt><dd>{{ summary.invited | default: 0 }}</dd></div>
+            <div><dt>{{ 'lelon.referral.completed' | t }}</dt><dd>{{ summary.completed | default: 0 }}</dd></div>
+          </dl>
+          {%- if summary.rewards.size > 0 -%}
+            <ul class="referral__rewards" role="list">
+              {%- for reward in summary.rewards -%}
+                <li class="referral__reward referral__reward--{{ reward.status | handleize }}">
+                  {%- if reward.status == 'granted' -%}
+                    <p class="referral__bloom">{{ 'lelon.referral.bloomed' | t }}</p>
+                  {%- endif -%}
+                  <p>{{ reward.label | escape }}</p>
+                  {%- if reward.status == 'pending_review' -%}<p class="muted small">{{ 'lelon.referral.pending' | t }}</p>{%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        {%- endif -%}
+      {%- else -%}
+        <p class="muted">{{ 'lelon.referral.not_yet' | t }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.terms_link != blank -%}
+        <a class="link small" href="{{ section.settings.terms_link }}">{{ 'lelon.referral.terms' | t }}</a>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "LELON · Parrainage",
+  "settings": [
+    { "type": "paragraph", "content": "Visible uniquement si le parrainage est activé dans les réglages du thème. Les codes et récompenses proviennent exclusivement du service serveur." },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Partagez LELON" },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Invitez une personne à découvrir notre univers." },
+    { "type": "url", "id": "terms_link", "label": "Conditions du parrainage" }
+  ],
+  "presets": [{ "name": "LELON · Parrainage" }]
+}
+{% endschema %}

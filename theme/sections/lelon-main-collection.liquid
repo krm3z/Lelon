@@ -1,0 +1,149 @@
+{%- liquid
+  assign is_signature = false
+  if collection.handle == settings.signature_collection.handle or collection.handle == 'signature'
+    assign is_signature = true
+  endif
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign active_count = 0
+  for filter in collection.filters
+    assign active_count = active_count | plus: filter.active_values.size
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_count = active_count | plus: 1
+      endif
+    endif
+  endfor
+-%}
+<div class="collection{% if is_signature %} collection--signature{% endif %}">
+  <header class="collection__hero">
+    <div class="page-width">
+      <p class="eyebrow">{% if is_signature %}{{ section.settings.signature_eyebrow | escape }}{% else %}LELON{% endif %}</p>
+      {%- if is_signature -%}
+        <h1 class="collection__title">LELON <em>Signature</em></h1>
+      {%- else -%}
+        {%- if collection.handle == settings.main_collection.handle and section.settings.main_title != blank -%}
+          <h1 class="collection__title">{{ section.settings.main_title | escape }}</h1>
+        {%- else -%}
+          <h1 class="collection__title">{{ collection.title | escape }}</h1>
+        {%- endif -%}
+      {%- endif -%}
+      {%- if collection.description != blank -%}
+        <div class="collection__intro rte">{{ collection.description }}</div>
+      {%- elsif is_signature and section.settings.signature_intro != blank -%}
+        <p class="collection__intro">{{ section.settings.signature_intro | escape }}</p>
+      {%- elsif is_signature == false and section.settings.main_intro != blank -%}
+        <p class="collection__intro">{{ section.settings.main_intro | escape }}</p>
+      {%- endif -%}
+    </div>
+  </header>
+
+  <div class="page-width collection__body">
+    {%- paginate collection.products by section.settings.per_page -%}
+      <form class="toolbar" action="{{ collection.url }}" method="get" data-collection-form>
+        <p class="toolbar__count">{{ 'lelon.collection.count' | t: count: collection.products_count }}</p>
+        <div class="toolbar__actions">
+          {%- if section.settings.show_filters and collection.filters.size > 0 -%}
+            <details class="filters" data-filters>
+              <summary class="toolbar__btn">
+                {% render 'lelon-icon', name: 'filters' %}{{ 'lelon.collection.filters' | t }}
+                {%- if active_count > 0 %} <span class="toolbar__badge">{{ active_count }}</span>{% endif -%}
+              </summary>
+              <div class="filters__panel">
+                {%- for filter in collection.filters -%}
+                  <fieldset class="filters__group">
+                    <legend>{{ filter.label | escape }}</legend>
+                    {%- case filter.type -%}
+                      {%- when 'price_range' -%}
+                        <div class="filters__price">
+                          <label>
+                            <span>{{ 'lelon.collection.price_min' | t }}</span>
+                            <input type="number" inputmode="decimal" name="{{ filter.min_value.param_name }}" min="0" max="{{ filter.range_max | divided_by: 100.0 }}" step="0.01" placeholder="0"{% if filter.min_value.value %} value="{{ filter.min_value.value | divided_by: 100.0 }}"{% endif %}>
+                          </label>
+                          <label>
+                            <span>{{ 'lelon.collection.price_max' | t }}</span>
+                            <input type="number" inputmode="decimal" name="{{ filter.max_value.param_name }}" min="0" max="{{ filter.range_max | divided_by: 100.0 }}" step="0.01" placeholder="{{ filter.range_max | divided_by: 100.0 }}"{% if filter.max_value.value %} value="{{ filter.max_value.value | divided_by: 100.0 }}"{% endif %}>
+                          </label>
+                        </div>
+                      {%- else -%}
+                        {%- for value in filter.values -%}
+                          <label class="check{% if value.count == 0 and value.active == false %} check--disabled{% endif %}">
+                            <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value | escape }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}>
+                            <span>{{ value.label | escape }}</span>
+                            <small>{{ value.count }}</small>
+                          </label>
+                        {%- endfor -%}
+                    {%- endcase -%}
+                  </fieldset>
+                {%- endfor -%}
+                <div class="filters__actions">
+                  <button type="submit" class="btn btn--primary">{{ 'lelon.collection.apply' | t }}</button>
+                  <a class="link" href="{{ collection.url }}?sort_by={{ sort_by }}">{{ 'lelon.collection.clear' | t }}</a>
+                </div>
+              </div>
+            </details>
+          {%- endif -%}
+          <div class="sort">
+            <label class="toolbar__label" for="SortBy">{{ 'lelon.collection.sort' | t }}</label>
+            <select id="SortBy" name="sort_by" data-auto-submit>
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+              {%- endfor -%}
+            </select>
+            <noscript><button type="submit" class="btn btn--ghost">{{ 'lelon.collection.apply' | t }}</button></noscript>
+          </div>
+        </div>
+      </form>
+
+      {%- if active_count > 0 -%}
+        <ul class="active-filters" role="list" aria-label="{{ 'lelon.collection.active_filters' | t }}">
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}
+              <li><a href="{{ value.url_to_remove }}">{{ value.label | escape }}{% render 'lelon-icon', name: 'x' %}<span class="visually-hidden">{{ 'lelon.collection.remove_filter' | t }}</span></a></li>
+            {%- endfor -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                <li><a href="{{ filter.url_to_remove }}">{{ filter.label | escape }}{% render 'lelon-icon', name: 'x' %}<span class="visually-hidden">{{ 'lelon.collection.remove_filter' | t }}</span></a></li>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if collection.products.size > 0 -%}
+        <div class="grid grid--products grid--3" id="ProductGrid">
+          {%- for product in collection.products -%}
+            {%- if forloop.index <= 2 -%}
+              {% render 'lelon-product-card', product: product, eager: true %}
+            {%- else -%}
+              {% render 'lelon-product-card', product: product %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}
+          {% render 'lelon-pagination', paginate: paginate %}
+        {%- endif -%}
+      {%- else -%}
+        <div class="empty">
+          <p class="empty__title">{{ 'lelon.collection.empty' | t }}</p>
+          {%- if active_count > 0 -%}<a class="btn btn--ghost" href="{{ collection.url }}">{{ 'lelon.collection.clear' | t }}</a>{%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "LELON · Collection",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Produits par page", "min": 6, "max": 36, "step": 3, "default": 24 },
+    { "type": "checkbox", "id": "show_filters", "label": "Filtres Shopify", "default": true },
+    { "type": "header", "content": "Collection principale" },
+    { "type": "text", "id": "main_title", "label": "Titre", "default": "Notre collection" },
+    { "type": "textarea", "id": "main_intro", "label": "Introduction de repli", "info": "Utilisée si la collection n’a pas de description.", "default": "Des silhouettes pensées pour accompagner chaque histoire." },
+    { "type": "header", "content": "Signature" },
+    { "type": "text", "id": "signature_eyebrow", "label": "Surtitre", "default": "UNE AUTRE EXPRESSION" },
+    { "type": "textarea", "id": "signature_intro", "label": "Introduction de repli", "default": "Des lignes plus composées, un rythme plus lent. Le chapitre Signature prolonge l’univers LELON." }
+  ]
+}
+{% endschema %}

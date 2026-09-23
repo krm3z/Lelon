@@ -1,0 +1,24 @@
+{% doc %}
+Renders the LELON consent interface. Preferences are applied through Shopify Customer Privacy when available.
+{% enddoc %}
+<aside class="cookie-consent" data-cookie-consent hidden aria-labelledby="CookieTitle">
+  <div class="cookie-consent__copy">
+    <p class="eyebrow">{{ 'cinema.cookies_eyebrow' | t }}</p>
+    <h2 id="CookieTitle">{{ 'cinema.cookies_title' | t }}</h2>
+    <p>{{ 'cinema.cookies_copy' | t }}</p>
+    <a class="text-link" href="{{ settings.cookies_url | default: '/pages/politique-de-cookies' }}">{{ 'cinema.cookies_learn' | t }}</a>
+  </div>
+  <div class="cookie-consent__choices" data-cookie-details hidden>
+    <label><input type="checkbox" checked disabled> <span>{{ 'cinema.cookies_necessary' | t }}</span></label>
+    <label><input type="checkbox" data-cookie-category="analytics"> <span>{{ 'cinema.cookies_analytics' | t }}</span></label>
+    <label><input type="checkbox" data-cookie-category="marketing"> <span>{{ 'cinema.cookies_marketing' | t }}</span></label>
+    <label><input type="checkbox" data-cookie-category="preferences"> <span>{{ 'cinema.cookies_preferences' | t }}</span></label>
+  </div>
+  <div class="cookie-consent__actions">
+    <button class="button button--outline" type="button" data-cookie-action="reject">{{ 'cinema.cookies_reject' | t }}</button>
+    <button class="button button--outline" type="button" data-cookie-action="customize">{{ 'cinema.cookies_customize' | t }}</button>
+    <button class="button" type="button" data-cookie-action="accept">{{ 'cinema.cookies_accept' | t }}</button>
+    <button class="button" type="button" data-cookie-action="save" hidden>{{ 'cinema.cookies_save' | t }}</button>
+  </div>
+  <p class="cookie-consent__status" data-cookie-status role="status" aria-live="polite"></p>
+</aside>

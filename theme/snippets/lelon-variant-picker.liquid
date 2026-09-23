@@ -1,0 +1,58 @@
+{% doc %}
+  Option picker (radio chips, color dots) with a native select fallback that works without JavaScript.
+
+  @param {product} product - Product.
+  @param {string} section_id - Section id.
+  @param {block} block - Block (settings + attributes).
+{% enddoc %}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+<div class="variant-picker" data-variant-picker{% if settings.prelaunch %} data-prelaunch{% endif %} {{ block.shopify_attributes }}>
+  {%- unless product.has_only_default_variant -%}
+    {%- for option in product.options_with_values -%}
+      {%- assign option_key = option.name | downcase -%}
+      {%- assign is_color = false -%}
+      {%- if option_key == 'coloris' or option_key == 'couleur' or option_key == 'color' -%}
+        {%- assign is_color = true -%}
+      {%- endif -%}
+      <fieldset class="option{% if is_color %} option--color{% endif %}" data-option="{{ forloop.index0 }}">
+        <legend class="option__legend">
+          {{ option.name | escape }} <span class="option__value" data-option-value>{{ option.selected_value | escape }}</span>
+        </legend>
+        <div class="option__values">
+          {%- for value in option.values -%}
+            {%- assign input_id = 'Option-' | append: section_id | append: '-' | append: option.position | append: '-' | append: forloop.index -%}
+            <input
+              class="option__input"
+              type="radio"
+              id="{{ input_id }}"
+              name="Option-{{ section_id }}-{{ option.position }}"
+              value="{{ value | escape }}"
+              {% if value.selected %}checked{% endif %}
+              data-option-input
+            >
+            <label class="chip{% unless value.available %} chip--unavailable{% endunless %}" for="{{ input_id }}">
+              {%- if is_color and block.settings.show_swatches -%}{% render 'lelon-swatch', value: value %}{%- endif -%}
+              <span>{{ value | escape }}</span>
+              {%- unless value.available -%}<span class="visually-hidden">, {% if settings.prelaunch %}{{ 'lelon.product.soon' | t }}{% else %}{{ 'lelon.product.soldout' | t }}{% endif %}</span>{%- endunless -%}
+            </label>
+          {%- endfor -%}
+        </div>
+      </fieldset>
+    {%- endfor -%}
+  {%- endunless -%}
+
+  {%- if product.has_only_default_variant -%}
+    <input type="hidden" name="id" value="{{ current_variant.id }}" form="ProductForm-{{ section_id }}" data-variant-select>
+  {%- else -%}
+    <div class="variant-select js-hidden">
+      <label class="field-label" for="VariantSelect-{{ section_id }}">{{ 'lelon.product.variant' | t }}</label>
+      <select id="VariantSelect-{{ section_id }}" name="id" form="ProductForm-{{ section_id }}" data-variant-select>
+        {%- for variant in product.variants -%}
+          <option value="{{ variant.id }}"{% if variant.id == current_variant.id %} selected{% endif %}{% unless variant.available %} disabled{% endunless %}>
+            {{ variant.title | escape }}{% unless variant.available %} — {% if settings.prelaunch %}{{ 'lelon.product.soon' | t }}{% else %}{{ 'lelon.product.soldout' | t }}{% endif %}{% endunless %}
+          </option>
+        {%- endfor -%}
+      </select>
+    </div>
+  {%- endif -%}
+</div>

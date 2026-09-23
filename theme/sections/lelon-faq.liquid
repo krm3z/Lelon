@@ -1,0 +1,82 @@
+{%- liquid
+  assign categories = ''
+  for block in section.blocks
+    unless categories contains block.settings.category
+      assign categories = categories | append: block.settings.category | append: '|'
+    endunless
+  endfor
+  assign categories = categories | split: '|'
+-%}
+<section class="section page-width faq">
+  <header class="page-head">
+    <p class="eyebrow">{{ 'lelon.nav.help' | t }}</p>
+    <h1 class="page-head__title">{{ page.title | default: section.settings.title | escape }}</h1>
+    {%- if section.settings.intro != blank -%}<p class="page-head__lead">{{ section.settings.intro | escape }}</p>{%- endif -%}
+  </header>
+
+  {%- if categories.size > 1 -%}
+    <nav class="faq__nav" aria-label="{{ 'lelon.faq.categories' | t }}">
+      <ul role="list">
+        {%- for category in categories -%}
+          <li><a class="chip" href="#faq-{{ category | handleize }}">{{ category | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+
+  {%- for category in categories -%}
+    <div class="faq__group" id="faq-{{ category | handleize }}">
+      <h2 class="faq__category">{{ category | escape }}</h2>
+      <div class="accordions">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.category == category -%}
+            <details class="accordion" {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.question | escape }}{% render 'lelon-icon', name: 'plus' %}</summary>
+              <div class="accordion__body rte">{{ block.settings.answer }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endfor -%}
+
+  <aside class="faq__contact">
+    <p>{{ 'lelon.faq.more' | t }}</p>
+    <a class="btn btn--ghost" href="{{ settings.contact_url | default: '/pages/contact' }}">{{ 'lelon.faq.contact' | t }}</a>
+  </aside>
+</section>
+
+{% schema %}
+{
+  "name": "LELON · FAQ",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre de repli", "default": "Questions fréquentes" },
+    { "type": "textarea", "id": "intro", "label": "Introduction" },
+    { "type": "paragraph", "content": "Chaque réponse doit reprendre vos politiques publiées. Ne jamais promettre ce qui n’est pas configuré." }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Catégorie",
+          "options": [
+            { "value": "Commande", "label": "Commande" },
+            { "value": "Paiement", "label": "Paiement" },
+            { "value": "Livraison", "label": "Livraison" },
+            { "value": "Retours", "label": "Retours" },
+            { "value": "Produits", "label": "Produits" },
+            { "value": "Compte", "label": "Compte" }
+          ],
+          "default": "Commande"
+        },
+        { "type": "text", "id": "question", "label": "Question", "default": "Question" },
+        { "type": "richtext", "id": "answer", "label": "Réponse" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,22 @@
+<article class="section page-width content-page{% if section.settings.narrow %} content-page--narrow{% endif %}">
+  <header class="page-head page-head--narrow">
+    <p class="eyebrow">LELON</p>
+    <h1 class="page-head__title">{{ page.title | escape }}</h1>
+  </header>
+  <div class="rte">{{ page.content }}</div>
+  {%- if section.settings.show_cookie_button -%}
+    <p class="content-page__action">
+      <button type="button" class="btn btn--ghost" data-cookie-manage>{{ 'lelon.legal.manage_cookies' | t }}</button>
+    </p>
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "LELON · Page",
+  "settings": [
+    { "type": "checkbox", "id": "narrow", "label": "Colonne de lecture étroite", "default": true },
+    { "type": "checkbox", "id": "show_cookie_button", "label": "Bouton « Gérer mes cookies »", "default": false }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,64 @@
+{% doc %}
+  Color dot for an option value. Uses the native Shopify swatch when set, otherwise a LELON color map.
+
+  @param {product_option_value} value - Option value.
+{% enddoc %}
+{%- liquid
+  assign key = value.name | handleize
+  assign fill = ''
+  if value.swatch.color
+    assign fill = value.swatch.color
+  elsif value.swatch.image
+    assign fill = value.swatch.image | image_url: width: 48 | prepend: 'url(' | append: ') center/cover'
+  else
+    case key
+      when 'noir'
+        assign fill = '#1b1715'
+      when 'ivoire'
+        assign fill = '#efe7da'
+      when 'blanc'
+        assign fill = '#f4f0e8'
+      when 'creme'
+        assign fill = '#efe4d2'
+      when 'cognac'
+        assign fill = '#9a5b34'
+      when 'caramel'
+        assign fill = '#a0673b'
+      when 'camel'
+        assign fill = '#b07a45'
+      when 'sable'
+        assign fill = '#cdba98'
+      when 'beige-sable'
+        assign fill = '#c9b08e'
+      when 'taupe'
+        assign fill = '#9c8c7e'
+      when 'taupe-greige'
+        assign fill = '#9a9085'
+      when 'chocolat'
+        assign fill = '#5a3a2e'
+      when 'bordeaux'
+        assign fill = '#6b1f2a'
+      when 'rouge'
+        assign fill = '#9e2b25'
+      when 'vert'
+        assign fill = '#1f6b45'
+      when 'sauge'
+        assign fill = '#a7ae8f'
+      when 'bleu'
+        assign fill = '#a9bccb'
+      when 'rose-poudre'
+        assign fill = '#e7c4c8'
+      when 'beige-cognac'
+        assign fill = 'linear-gradient(135deg, #e3d6bd 50%, #9a5b34 50%)'
+      when 'beige-noir'
+        assign fill = 'linear-gradient(135deg, #e3d6bd 50%, #1b1715 50%)'
+      when 'creme-chocolat'
+        assign fill = 'linear-gradient(135deg, #efe4d2 50%, #5a3a2e 50%)'
+      when 'taupe-chocolat'
+        assign fill = 'linear-gradient(135deg, #9c8c7e 50%, #5a3a2e 50%)'
+    endcase
+  endif
+-%}
+{%- if fill != blank -%}
+  <span class="swatch" style="--swatch: {{ fill }}" aria-hidden="true"></span>
+{%- endif -%}

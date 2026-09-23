@@ -1,0 +1,60 @@
+{%- liquid
+  assign handle = section.settings.policy
+  assign policy = nil
+  for candidate in shop.policies
+    if candidate.url contains handle
+      assign policy = candidate
+      break
+    endif
+  endfor
+-%}
+<article class="section page-width legal">
+  <header class="page-head page-head--narrow">
+    <p class="eyebrow">{{ 'lelon.legal.eyebrow' | t }}</p>
+    <h1 class="page-head__title">{{ page.title | default: policy.title | escape }}</h1>
+  </header>
+  <div class="legal__body rte">
+    {%- if policy != nil and policy.body != blank -%}
+      {% render 'lelon-policy-body', body: policy.body %}
+    {%- else -%}
+      {%- comment -%} Policy not exposed to Liquid: link to the official Shopify page rather than show a placeholder. {%- endcomment -%}
+      <p><a class="link" href="/policies/{{ handle }}">{{ 'lelon.legal.official' | t }}</a></p>
+    {%- endif -%}
+  </div>
+  {%- if section.settings.show_links -%}
+    <nav class="legal__links" aria-label="{{ 'lelon.footer.legal' | t }}">
+      <ul role="list">
+        {%- for other in shop.policies -%}
+          {%- unless other.url contains handle -%}
+            <li><a href="{{ other.url }}">{{ other.title | escape }}</a></li>
+          {%- endunless -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "LELON · Politique",
+  "settings": [
+    {
+      "type": "select",
+      "id": "policy",
+      "label": "Politique Shopify affichée",
+      "info": "Le texte vient de Réglages › Politiques. Il n’est jamais modifié par le thème.",
+      "options": [
+        { "value": "terms-of-sale", "label": "Conditions générales de vente" },
+        { "value": "legal-notice", "label": "Mentions légales" },
+        { "value": "privacy-policy", "label": "Politique de confidentialité" },
+        { "value": "refund-policy", "label": "Retour et remboursement" },
+        { "value": "shipping-policy", "label": "Expédition" },
+        { "value": "terms-of-service", "label": "Conditions d’utilisation" },
+        { "value": "contact-information", "label": "Coordonnées" }
+      ],
+      "default": "terms-of-sale"
+    },
+    { "type": "checkbox", "id": "show_links", "label": "Liens vers les autres politiques", "default": true }
+  ]
+}
+{% endschema %}

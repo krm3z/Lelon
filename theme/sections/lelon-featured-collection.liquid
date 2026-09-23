@@ -1,0 +1,57 @@
+{%- liquid
+  assign source = section.settings.collection | default: settings.main_collection
+  assign products = section.settings.products
+  assign tone = section.settings.tone
+-%}
+<section class="section featured-collection{% if tone == 'chocolate' %} surface-chocolate{% endif %}" id="collection-{{ section.id }}">
+  <div class="page-width">
+    <header class="section-head section-head--split" data-reveal>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h2 class="section-head__title">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.subtitle != blank -%}<p class="section-head__deck">{{ section.settings.subtitle | escape }}</p>{%- endif -%}
+      </div>
+      {%- if source -%}
+        <a class="link" href="{{ source.url }}">{{ section.settings.link_label | escape }}{% render 'lelon-icon', name: 'arrow-right' %}</a>
+      {%- endif -%}
+    </header>
+
+    <div class="grid grid--products grid--3 grid--scroll-mobile">
+      {%- if products != blank -%}
+        {%- for product in products limit: section.settings.limit -%}
+          {% render 'lelon-product-card', product: product, tone: tone %}
+        {%- endfor -%}
+      {%- elsif source.products.size > 0 -%}
+        {%- for product in source.products limit: section.settings.limit -%}
+          {% render 'lelon-product-card', product: product, tone: tone %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "02 · Notre collection",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection (si aucun produit choisi)" },
+    { "type": "product_list", "id": "products", "label": "Produits mis en avant", "limit": 6 },
+    { "type": "range", "id": "limit", "label": "Nombre de produits", "min": 2, "max": 6, "step": 1, "default": 3 },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Notre collection" },
+    { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Des silhouettes pensées pour accompagner chaque histoire." },
+    { "type": "text", "id": "link_label", "label": "Libellé du lien", "default": "Voir toute la collection" },
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Surface",
+      "options": [
+        { "value": "light", "label": "Crème" },
+        { "value": "chocolate", "label": "Chocolat" }
+      ],
+      "default": "light"
+    }
+  ],
+  "presets": [{ "name": "02 · Notre collection" }]
+}
+{% endschema %}

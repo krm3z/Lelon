@@ -1,0 +1,39 @@
+{% doc %}
+  "Éclosion" opening. CSS-only animation (no WebGL), max ~4 s, once per session, skipped with
+  prefers-reduced-motion, in the theme editor, or when motion was switched off by the visitor.
+  The inline script runs before paint so returning visitors never see a flash.
+{% enddoc %}
+{%- unless request.design_mode -%}
+  <div class="opening" id="Opening" data-opening role="region" aria-label="{{ 'lelon.opening.label' | t }}">
+    <div class="opening__inner">
+      {%- if settings.rose_image -%}
+        <div class="opening__rose" aria-hidden="true">
+          {{ settings.rose_image | image_url: width: 320 | image_tag: widths: '160, 320', sizes: '140px', alt: '', loading: 'eager' }}
+        </div>
+      {%- else -%}
+        <div class="opening__rose--3d">{% render 'lelon-rose-3d', class: 'rose3d--opening', falling: true %}</div>
+      {%- endif -%}
+      <p class="opening__brand" aria-hidden="true">LELON</p>
+      <p class="opening__phrase">{{ settings.intro_phrase | escape | newline_to_br }}</p>
+      <div class="opening__actions">
+        <button type="button" class="btn btn--primary" data-opening-close>{{ 'lelon.opening.discover' | t }}</button>
+        <button type="button" class="opening__skip" data-opening-close>{{ 'lelon.opening.skip' | t }}</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var el = document.getElementById('Opening');
+      var seen = false;
+      try {
+        seen = sessionStorage.getItem('lelon-opening') === '1' || localStorage.getItem('lelon-motion') === 'off';
+        sessionStorage.setItem('lelon-opening', '1');
+      } catch (e) {}
+      if (seen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.remove();
+        return;
+      }
+      document.documentElement.classList.add('is-opening');
+    })();
+  </script>
+{%- endunless -%}

@@ -1,0 +1,248 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section.id
+  assign is_signature = false
+  if product.tags contains 'lelon-signature'
+    assign is_signature = true
+  endif
+
+  comment
+    Split the merchant description into intro / details. The fixed availability sentence written in
+    descriptions is removed: the real state is carried by the button and the availability line.
+  endcomment
+  assign description = product.description | remove: '<p>Collection en préparation. Bientôt disponible.</p>'
+  assign description_intro = description
+  assign description_details = ''
+  if description contains '<h3>Les détails</h3>'
+    assign description_parts = description | split: '<h3>Les détails</h3>'
+    assign description_intro = description_parts[0]
+    assign description_details = description_parts[1]
+  endif
+
+  assign parent_collection = collection
+  if parent_collection == nil
+    if is_signature
+      assign parent_collection = settings.signature_collection
+    else
+      assign parent_collection = settings.main_collection
+    endif
+  endif
+-%}
+
+<div class="pdp{% if is_signature %} pdp--signature{% endif %}" data-product-root data-section-id="{{ section.id }}" data-product-url="{{ product.url }}">
+  <nav class="breadcrumb page-width" aria-label="{{ 'lelon.a11y.breadcrumb' | t }}">
+    <ol role="list">
+      <li><a href="{{ routes.root_url }}">{{ 'lelon.nav.home' | t }}</a></li>
+      {%- if parent_collection -%}<li><a href="{{ parent_collection.url }}">{{ parent_collection.title | escape }}</a></li>{%- endif -%}
+      <li><span aria-current="page">{{ product.title | escape }}</span></li>
+    </ol>
+  </nav>
+
+  <div class="pdp__grid page-width">
+    {% render 'lelon-product-gallery', product: product, current_variant: current_variant, worn_first: section.settings.worn_first %}
+
+    <div class="pdp__info">
+      <div class="pdp__info-inner">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {% render block %}
+
+            {%- when 'title' -%}
+              <div class="pdp__title-wrap" {{ block.shopify_attributes }}>
+                <p class="eyebrow">{% if is_signature %}LELON Signature{% else %}LELON{% endif %}{% if product.type != blank %} · {{ product.type | escape }}{% endif %}</p>
+                <h1 class="pdp__title">{{ product.title | remove: 'LELON Signature ' | remove: 'LELON ' | escape }}</h1>
+              </div>
+
+            {%- when 'price' -%}
+              <div class="pdp__price" {{ block.shopify_attributes }} data-price-wrap>
+                {% render 'lelon-price', product: product, variant: current_variant %}
+              </div>
+
+            {%- when 'short_description' -%}
+              {%- liquid
+                assign short = product.metafields.lelon.short_description.value
+                if short == blank
+                  comment
+                    Fallback: first sentence of the merchant description. The SEO description is not used here:
+                    Shopify keeps it cut at 160 characters, often in the middle of a word.
+                  endcomment
+                  assign intro_text = description_intro | strip_html | replace: '&nbsp;', ' ' | replace: '&amp;', '&' | replace: '&#39;', '’' | replace: '&quot;', '"' | strip
+                  assign first_sentence = intro_text | split: '. ' | first | strip
+                  if first_sentence != blank
+                    assign last_char = first_sentence | slice: -1
+                    if last_char == '.' or last_char == '!' or last_char == '?' or last_char == '…'
+                      assign short = first_sentence
+                    else
+                      assign short = first_sentence | append: '.'
+                    endif
+                  endif
+                endif
+              -%}
+              {%- if short != blank -%}
+                <p class="pdp__lead" {{ block.shopify_attributes }}>{{ short | escape | newline_to_br }}</p>
+              {%- endif -%}
+
+            {%- when 'variant_picker' -%}
+              {% render 'lelon-variant-picker', product: product, section_id: section.id, block: block %}
+
+            {%- when 'buy_buttons' -%}
+              <div class="pdp__buy" {{ block.shopify_attributes }}>
+                {% render 'lelon-buy-buttons', product: product, variant: current_variant, form_id: form_id, show_dynamic_checkout: block.settings.show_dynamic_checkout %}
+              </div>
+
+            {%- when 'reassurance' -%}
+              <ul class="reassurance-list" role="list" {{ block.shopify_attributes }}>
+                {%- if settings.shipping_summary != blank -%}<li>{% render 'lelon-icon', name: 'truck' %}<span>{{ settings.shipping_summary | escape }}</span></li>{%- endif -%}
+                {%- if settings.shipping_delay != blank -%}<li>{% render 'lelon-icon', name: 'track' %}<span>{{ 'lelon.product.delivery_delay' | t: delay: settings.shipping_delay }}</span></li>{%- endif -%}
+                {%- if settings.returns_summary != blank -%}<li>{% render 'lelon-icon', name: 'return' %}<span>{{ settings.returns_summary | escape }}</span></li>{%- endif -%}
+              </ul>
+
+            {%- when 'text' -%}
+              {%- if block.settings.text != blank -%}
+                <div class="pdp__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+              {%- endif -%}
+
+            {%- when 'accordions' -%}
+              <div class="accordions" {{ block.shopify_attributes }}>
+                {%- if description_intro != blank -%}
+                  <details class="accordion" open>
+                    <summary>{{ 'lelon.product.description' | t }}{% render 'lelon-icon', name: 'plus' %}</summary>
+                    <div class="accordion__body rte">{{ description_intro }}</div>
+                  </details>
+                {%- endif -%}
+
+                {% render 'lelon-product-specs', product: product, description_details: description_details %}
+
+                {% render 'lelon-dimensions', product: product %}
+
+                {%- assign capacity = product.metafields.lelon.capacity.value -%}
+                {%- if capacity != blank -%}
+                  <details class="accordion">
+                    <summary>{{ 'lelon.product.capacity' | t }}{% render 'lelon-icon', name: 'plus' %}</summary>
+                    <div class="accordion__body">
+                      <ul class="capacity-list" role="list">
+                        {%- for item in capacity -%}
+                          <li>{% render 'lelon-icon', name: 'check' %}{{ item | escape }}</li>
+                        {%- endfor -%}
+                      </ul>
+                      <p class="muted small">{{ 'lelon.product.capacity_note' | t }}</p>
+                    </div>
+                  </details>
+                {%- endif -%}
+
+                <details class="accordion">
+                  <summary>{{ 'lelon.product.shipping_returns' | t }}{% render 'lelon-icon', name: 'plus' %}</summary>
+                  <div class="accordion__body rte">
+                    <ul>
+                      {%- if settings.shipping_summary != blank -%}<li>{{ settings.shipping_summary | escape }}</li>{%- endif -%}
+                      {%- if settings.shipping_delay != blank -%}<li>{{ 'lelon.product.delivery_delay' | t: delay: settings.shipping_delay }}</li>{%- endif -%}
+                      <li>{{ 'lelon.product.tracking' | t }}</li>
+                      {%- if settings.returns_summary != blank -%}<li>{{ settings.returns_summary | escape }}</li>{%- endif -%}
+                      <li>{{ 'lelon.product.return_costs' | t }}</li>
+                    </ul>
+                    <p>
+                      <a class="link" href="{{ settings.shipping_returns_url | default: '/pages/livraison-retours' }}">{{ 'lelon.product.shipping_returns_link' | t }}</a>
+                    </p>
+                  </div>
+                </details>
+
+                {%- assign care = product.metafields.lelon.care.value | default: product.metafields.custom.care.value -%}
+                {%- if care != blank -%}
+                  <details class="accordion">
+                    <summary>{{ 'lelon.product.care' | t }}{% render 'lelon-icon', name: 'plus' %}</summary>
+                    <div class="accordion__body rte">{{ care | newline_to_br }}</div>
+                  </details>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Mobile sticky purchase bar, shown once the main button leaves the viewport. {%- endcomment -%}
+  <div class="sticky-buy" data-sticky-buy hidden>
+    <div class="sticky-buy__info">
+      <span class="sticky-buy__title">{{ product.title | remove: 'LELON Signature ' | remove: 'LELON ' | escape }}</span>
+      <span data-price-wrap>{% render 'lelon-price', product: product, variant: current_variant %}</span>
+    </div>
+    <button type="submit" form="{{ form_id }}" class="btn btn--primary" data-buy-button{% unless current_variant.available %} disabled{% endunless %}>
+      <span data-buy-label>
+        {%- if current_variant.available -%}{{ 'lelon.product.add' | t }}{%- elsif settings.prelaunch -%}{{ 'lelon.product.soon' | t }}{%- else -%}{{ 'lelon.product.soldout' | t }}{%- endif -%}
+      </span>
+    </button>
+  </div>
+
+  {% render 'lelon-product-json', product: product %}
+</div>
+
+{%- if product.price > 0 -%}
+  <script type="application/ld+json">
+    {{ product | structured_data }}
+  </script>
+{%- endif -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": {{ 'lelon.nav.home' | t | json }}, "item": {{ shop.url | json }} }
+      {%- if parent_collection -%},
+      { "@type": "ListItem", "position": 2, "name": {{ parent_collection.title | json }}, "item": {{ shop.url | append: parent_collection.url | json }} }
+      {%- endif -%},
+      { "@type": "ListItem", "position": {% if parent_collection %}3{% else %}2{% endif %}, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
+    ]
+  }
+</script>
+
+{% schema %}
+{
+  "name": "LELON · Fiche produit",
+  "class": "section-product",
+  "blocks": [
+    { "type": "@app" },
+    { "type": "title", "name": "Titre", "limit": 1 },
+    { "type": "price", "name": "Prix", "limit": 1 },
+    { "type": "short_description", "name": "Description courte", "limit": 1 },
+    {
+      "type": "variant_picker",
+      "name": "Coloris et variantes",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_swatches", "label": "Pastilles de couleur", "default": true }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Bouton d’achat",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "label": "Paiement accéléré",
+          "info": "Affiché uniquement lorsque la variante est réellement disponible.",
+          "default": false
+        }
+      ]
+    },
+    { "type": "reassurance", "name": "Réassurance", "limit": 1 },
+    { "type": "accordions", "name": "Détails produit", "limit": 1 },
+    {
+      "type": "text",
+      "name": "Texte",
+      "settings": [{ "type": "richtext", "id": "text", "label": "Texte" }]
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "worn_first",
+      "label": "Photo portée en premier",
+      "info": "Les photos portées validées du metafield « lelon.lifestyle_media » passent avant le packshot du coloris sélectionné.",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

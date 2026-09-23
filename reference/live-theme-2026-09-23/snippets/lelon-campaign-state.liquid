@@ -1,0 +1,18 @@
+{% doc %}Server-side campaign gate. The month and checkout configuration must be verified before activation.{% enddoc %}
+{%- liquid
+  assign campaign = shop.metafields.lelon.launch_campaign.value
+  assign state = 'inactive'
+  assign now_s = 'now' | date: '%s' | plus: 0
+  assign start_s = campaign.starts_at | date: '%s' | plus: 0
+  assign end_s = campaign.ends_at | date: '%s' | plus: 0
+  if campaign.enabled and campaign.backend_verified and campaign.calendar_month_verified and campaign.currency == 'EUR' and campaign.time_zone == 'Europe/Paris' and campaign.starts_at != blank and campaign.ends_at != blank and end_s > start_s
+    if now_s < start_s
+      assign state = 'scheduled'
+    elsif now_s < end_s
+      assign state = 'active'
+    else
+      assign state = 'expired'
+    endif
+  endif
+  echo state
+-%}

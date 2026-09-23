@@ -1,0 +1,42 @@
+{
+  "sections": {
+    "main": {
+      "type": "lelon-story",
+      "blocks": {
+        "c1": {
+          "type": "chapter",
+          "settings": {
+            "eyebrow": "01 · EXPRESSION",
+            "title": "À votre manière.",
+            "text": "<p>LELON accompagne les gestes, les rythmes et les envies de chacune. La marque ne définit pas une allure unique : elle laisse à chaque femme la liberté de composer la sienne.</p>"
+          }
+        },
+        "c2": {
+          "type": "chapter",
+          "settings": {
+            "eyebrow": "02 · ÉCLOSION",
+            "title": "Un mouvement.",
+            "text": "<p>La rose traduit une idée simple : une présence se révèle à son rythme. Elle traverse l’univers LELON avec retenue, comme un signe plutôt qu’un ornement.</p>"
+          }
+        },
+        "c3": {
+          "type": "chapter",
+          "settings": {
+            "eyebrow": "03 · PRÉSENCE",
+            "title": "Des pièces à vivre.",
+            "text": "<p>Chaque silhouette est présentée avec clarté, sans promesse inventée : ses lignes, ses matières et ses dimensions telles qu’elles sont.</p>"
+          }
+        }
+      },
+      "block_order": ["c1", "c2", "c3"],
+      "settings": {
+        "eyebrow": "LA MAISON",
+        "lead": "Une vision féminine de l’allure, née du mouvement, de l’expression et de la liberté d’être soi.",
+        "image": "shopify://shop_images/lelon-solea-beige-cognac-02-mannequin.png",
+        "quote": "Chaque femme possède sa propre manière de s’épanouir.",
+        "closing": "Chaque femme écrit sa propre histoire. LELON l’accompagne."
+      }
+    }
+  },
+  "order": ["main"]
+}

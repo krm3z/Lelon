@@ -1,0 +1,146 @@
+{% assign featured = section.settings.featured_product %}
+{% assign hero_image = section.settings.image | default: featured.featured_image %}
+
+<section class="hero" data-hero>
+  <div class="hero-scene" data-webgl-host aria-hidden="true">
+    {% if settings.rose_image %}
+      {{ settings.rose_image | image_url: width: 800 | image_tag: class: 'rose-poster', alt: '', widths: '400, 600, 800', sizes: '(max-width: 767px) 60vw, 37vw' }}
+    {% endif %}
+  </div>
+
+  <div class="hero-word" data-hero-word aria-hidden="true">LELON</div>
+  <button type="button" class="intro-skip" data-intro-skip hidden>Passer l’éclosion</button>
+
+  <div class="hero-copy">
+    <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    <h1>{{ section.settings.title | escape }}<br><em>{{ section.settings.subtitle | escape }}</em></h1>
+    <p>{{ section.settings.copy | escape }}</p>
+    <a class="button" data-magnetic href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">
+      {{ section.settings.cta | escape }}
+    </a>
+    <a class="text-link" href="{{ routes.collections_url | append: '/signature' }}">Découvrir Signature</a>
+    {% if settings.intro_enabled %}
+      <button class="replay" type="button" data-replay>Revoir l’éclosion</button>
+    {% endif %}
+  </div>
+
+  {% if hero_image %}
+    <a class="hero-product-stage" href="{{ featured.url | default: routes.all_products_collection_url }}">
+      {{ hero_image | image_url: width: 1600 | image_tag: class: 'hero-primary', loading: 'eager', fetchpriority: 'high', widths: '375, 550, 750, 1000, 1400, 1600', sizes: '(max-width: 767px) 78vw, 44vw' }}
+    </a>
+  {% endif %}
+
+  {% if section.settings.secondary_image %}
+    {{ section.settings.secondary_image | image_url: width: 500 | image_tag: class: 'orbit-photo', widths: '180, 300, 500', sizes: '(max-width: 767px) 24vw, 13vw', loading: 'eager' }}
+  {% endif %}
+
+  {% if section.settings.third_image %}
+    {{ section.settings.third_image | image_url: width: 400 | image_tag: class: 'orbit-photo orbit-photo--second', widths: '160, 260, 400', sizes: '(max-width: 767px) 21vw, 10vw', loading: 'eager' }}
+  {% endif %}
+
+  {% if featured %}
+    <div class="hero-product-label">
+      <strong>{{ featured.title | escape }}</strong>
+      <a class="text-link" href="{{ featured.url }}">Découvrir</a>
+    </div>
+  {% endif %}
+
+  <span class="hero-aside">FÉMININE · LIBRE · SINGULIÈRE</span>
+  <div class="hero-bottom">
+    <span>{{ section.settings.chapter | escape }}</span>
+    <span>Défiler ↓</span>
+  </div>
+</section>
+
+<div class="page-width">
+  <div class="rule-note">
+    <span>{{ section.settings.ribbon_left | escape }}</span>
+    <span>{{ section.settings.ribbon_right | escape }}</span>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "LELON · hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "UNE NOUVELLE MANIÈRE DE S’ÉPANOUIR"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "L’allure en fleur."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Titre italique",
+      "default": "À votre manière."
+    },
+    {
+      "type": "textarea",
+      "id": "copy",
+      "label": "Texte",
+      "default": "Chaque femme possède sa propre manière de s’épanouir."
+    },
+    {
+      "type": "text",
+      "id": "cta",
+      "label": "Bouton",
+      "default": "Découvrir la collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo réelle principale"
+    },
+    {
+      "type": "image_picker",
+      "id": "secondary_image",
+      "label": "Deuxième photo réelle"
+    },
+    {
+      "type": "image_picker",
+      "id": "third_image",
+      "label": "Troisième photo réelle"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Produit principal"
+    },
+    {
+      "type": "text",
+      "id": "chapter",
+      "label": "Chapitre",
+      "default": "LELON · CHAPITRE 01"
+    },
+    {
+      "type": "text",
+      "id": "ribbon_left",
+      "label": "Texte gauche",
+      "default": "À CHAQUE ALLURE, SON EXPRESSION."
+    },
+    {
+      "type": "text",
+      "id": "ribbon_right",
+      "label": "Texte droite",
+      "default": "LELON & LELON SIGNATURE"
+    }
+  ],
+  "presets": [
+    {
+      "name": "LELON · hero"
+    }
+  ]
+}
+{% endschema %}

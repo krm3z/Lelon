@@ -1,0 +1,73 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "lelon-hero",
+      "settings": {
+        "eyebrow": "UNE NOUVELLE MANIÈRE DE S’ÉPANOUIR",
+        "title": "L’allure en fleur.",
+        "subtitle": "À votre manière.",
+        "copy": "Chaque femme possède sa propre manière de s’épanouir.",
+        "cta": "Découvrir la collection",
+        "cta_url": "shopify://collections/lelon",
+        "image": "shopify://shop_images/lelon-elea-cognac-02-mannequin.png",
+        "secondary_image": "shopify://shop_images/lelon-nova-chocolat-02-mannequin.png",
+        "third_image": "shopify://shop_images/lelon-solea-beige-cognac-02-mannequin.png",
+        "featured_product": "elea"
+      }
+    },
+    "collection": {
+      "type": "lelon-collection",
+      "settings": {
+        "collection": "lelon"
+      }
+    },
+    "feature-story": {
+      "type": "lelon-feature-story",
+      "settings": {
+        "product": "velora",
+        "image": "shopify://shop_images/lelon-velora-ivoire-02-mannequin.png"
+      }
+    },
+    "maison": {
+      "type": "lelon-maison",
+      "settings": {}
+    },
+    "signature": {
+      "type": "lelon-signature",
+      "settings": {
+        "collection": "signature"
+      }
+    },
+    "lookbook": {
+      "type": "lelon-lookbook",
+      "settings": {}
+    },
+    "duo": {
+      "type": "lelon-duo",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "lelon-newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "collection",
+    "feature-story",
+    "maison",
+    "signature",
+    "lookbook",
+    "duo",
+    "newsletter"
+  ]
+}
