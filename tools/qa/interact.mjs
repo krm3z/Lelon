@@ -216,4 +216,45 @@ async function ctx(width, { seenOpening = true, consent = true } = {}) {
   await nojs.close();
 }
 
+/* 7. Cart races and failures */
+{
+  const { c, p, errors } = await ctx(390);
+  const calls = { add: 0, change: 0 };
+  p.on('request', (r) => {
+    if (r.url().includes('/cart/add.js')) calls.add++;
+    if (r.url().includes('/cart/change.js')) calls.change++;
+  });
+  await p.goto(BASE + '/products/vera?avail=1', { waitUntil: 'networkidle' });
+  await p.dblclick('.pdp__buy [data-buy-button]');
+  await p.waitForSelector('#CartDrawer[open]', { timeout: 4000 }).catch(() => {});
+  check('double click on "Ajouter au panier" sends one request', calls.add === 1, `${calls.add} requests`);
+
+  const plus = '#CartDrawer [data-line-change]';
+  if (await p.$(plus)) {
+    await p.click(plus, { clickCount: 1 });
+    await p.click(plus, { clickCount: 1 }).catch(() => {});
+    await p.click(plus, { clickCount: 1 }).catch(() => {});
+    await p.waitForTimeout(800);
+    const badge = await p.$eval('[data-cart-count]', (b) => b.textContent.trim()).catch(() => '');
+    check('rapid quantity clicks: no error, count consistent', errors.length === 0 && /^\d+$/.test(badge), `${calls.change} change requests · badge ${badge}`);
+  }
+  await p.keyboard.press('Escape');
+
+  await p.route('**/cart/add.js', (route) => route.abort('internetdisconnected'));
+  await p.click('.pdp__buy [data-buy-button]');
+  await p.waitForTimeout(500);
+  const offline = await p.$eval('.pdp__buy [data-form-error]', (e) => (e.hidden ? '' : e.textContent.trim())).catch(() => '');
+  const busy = await p.$eval('.pdp__buy [data-buy-button]', (b) => b.getAttribute('aria-busy'));
+  check('network failure: message shown, button usable again', !!offline && busy === null, offline);
+  await p.unroute('**/cart/add.js');
+
+  await p.route('**/cart/add.js', (route) => route.fulfill({ status: 422, contentType: 'application/json', body: JSON.stringify({ status: 422, description: 'Stock insuffisant pour cette variante.' }) }));
+  await p.click('.pdp__buy [data-buy-button]');
+  await p.waitForTimeout(500);
+  const refused = await p.$eval('.pdp__buy [data-form-error]', (e) => (e.hidden ? '' : e.textContent.trim())).catch(() => '');
+  check('422 from Shopify: its message is shown', /Stock insuffisant/.test(refused), refused);
+  check('no JS errors', errors.length === 0, errors.join(' | '));
+  await c.close();
+}
+
 await browser.close();

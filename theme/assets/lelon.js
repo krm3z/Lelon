@@ -65,17 +65,24 @@ function initDialogs() {
     }
   });
 
-  $$('dialog').forEach((dialog) => {
-    dialog.addEventListener('close', () => {
+  /* 'close' does not bubble: listen in the capture phase so dialogs re-rendered by the theme editor are covered. */
+  document.addEventListener(
+    'close',
+    (event) => {
+      const dialog = event.target;
+      if (dialog.tagName !== 'DIALOG') return;
       const stillOpen = !!$('dialog[open]');
       document.documentElement.classList.toggle('dialog-open', stillOpen);
       $$(`[aria-controls="${dialog.id}"]`).forEach((el) => el.setAttribute('aria-expanded', 'false'));
       const opener = openers.get(dialog);
       if (!stillOpen && opener?.isConnected) opener.focus({ preventScroll: true });
-    });
-  });
+    },
+    true
+  );
 
-  $$('#MenuDrawer .menu-primary a').forEach((link) => link.addEventListener('click', () => $('#MenuDrawer')?.close()));
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('#MenuDrawer .menu-primary a')) $('#MenuDrawer')?.close();
+  });
 }
 
 /* ---------- Motion ---------- */
@@ -532,7 +539,15 @@ function initPredictiveSearch() {
       active.scrollIntoView({ block: 'nearest' });
     } else input.removeAttribute('aria-activedescendant');
   };
+  const state = (message) => {
+    const p = document.createElement('p');
+    p.className = 'predictive__state';
+    p.textContent = message || '';
+    results.replaceChildren(p);
+  };
   const close = () => {
+    clearTimeout(timer);
+    controller?.abort();
     results.innerHTML = '';
     input.setAttribute('aria-expanded', 'false');
     input.removeAttribute('aria-activedescendant');
@@ -546,9 +561,10 @@ function initPredictiveSearch() {
     timer = setTimeout(async () => {
       controller?.abort();
       controller = new AbortController();
-      results.innerHTML = `<p class="predictive__state">${text.searchLoading}</p>`;
+      state(text.searchLoading);
       try {
-        const url = `${config.searchUrl || `${root}search/suggest`}?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=6&resources[options][unavailable_products]=last&section_id=predictive-search`;
+        /* Public fields only: internal tags and supplier SKUs are never matched. */
+        const url = `${config.searchUrl || `${root}search/suggest`}?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=6&resources[options][unavailable_products]=last&resources[options][fields]=title,product_type,variants.title,vendor,body&section_id=predictive-search`;
         const response = await fetch(url, { signal: controller.signal });
         if (!response.ok) throw new Error(String(response.status));
         const html = await response.text();
@@ -560,7 +576,7 @@ function initPredictiveSearch() {
         if (status) status.textContent = count ? `${text.searchSuggestions} : ${count}` : panel?.textContent.trim() || '';
       } catch (error) {
         if (error.name === 'AbortError') return;
-        results.innerHTML = `<p class="predictive__state">${text.searchError}</p>`;
+        state(text.searchError);
         input.setAttribute('aria-expanded', 'false');
       }
     }, 220);
@@ -584,9 +600,12 @@ function initPredictiveSearch() {
 
 /* ---------- Collection ---------- */
 function initCollection() {
-  $$('[data-auto-submit]').forEach((field) =>
-    field.addEventListener('change', () => field.form?.requestSubmit ? field.form.requestSubmit() : field.form?.submit())
-  );
+  document.addEventListener('change', (event) => {
+    const field = event.target.closest('[data-auto-submit]');
+    if (!field?.form) return;
+    if (field.form.requestSubmit) field.form.requestSubmit();
+    else field.form.submit();
+  });
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
     const open = $('details[data-filters][open]');

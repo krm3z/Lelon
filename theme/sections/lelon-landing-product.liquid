@@ -2,7 +2,16 @@
   assign landing = section.settings.product
   assign current_variant = landing.selected_or_first_available_variant
   assign form_id = 'ProductForm-' | append: section.id
-  assign hero_image = section.settings.image | default: landing.featured_image
+  comment
+    Hero: chosen image, else the first validated worn photo (metafield lelon.lifestyle_media), else the packshot.
+  endcomment
+  assign hero_image = section.settings.image
+  if hero_image == blank
+    assign hero_image = landing.metafields.lelon.lifestyle_media.value.first
+  endif
+  if hero_image == blank
+    assign hero_image = landing.featured_image
+  endif
   assign description = landing.description | remove: '<p>Collection en préparation. Bientôt disponible.</p>'
   assign description_details = ''
   if description contains '<h3>Les détails</h3>'
@@ -28,7 +37,7 @@
 
   <div class="pdp pdp--landing" id="Buy-{{ section.id }}" data-product-root data-section-id="{{ section.id }}" data-product-url="{{ landing.url }}" data-no-url-update>
     <div class="pdp__grid page-width">
-      {% render 'lelon-product-gallery', product: landing, current_variant: current_variant %}
+      {% render 'lelon-product-gallery', product: landing, current_variant: current_variant, worn_first: true %}
       <div class="pdp__info">
         <div class="pdp__info-inner">
           <div class="pdp__title-wrap">
@@ -62,7 +71,12 @@
   "name": "LELON · Landing produit",
   "settings": [
     { "type": "product", "id": "product", "label": "Produit" },
-    { "type": "image_picker", "id": "image", "label": "Photographie portée (hero)" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photographie portée (hero)",
+      "info": "Vide : première photo portée validée du produit (metafield lelon.lifestyle_media), sinon le packshot."
+    },
     { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "LELON" },
     { "type": "text", "id": "headline", "label": "Phrase", "default": "L’élégance dans chaque détail." },
     { "type": "text", "id": "cta_label", "label": "Bouton", "default": "Choisir mon coloris" },

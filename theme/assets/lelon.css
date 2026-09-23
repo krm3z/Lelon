@@ -354,10 +354,13 @@ input[aria-invalid='true'] { border-color: #9e2b25; }
 .brand--large { font-size: clamp(56px, 12vw, 120px); }
 
 @media (min-width: 990px) {
-  .header__menu-btn { display: none; }
-  .header__nav { display: block; }
   .header__account { display: inline-grid; }
   .brand { font-size: 42px; }
+}
+/* Full menu only when it fits beside the centred logo (4 items need ~1100 px); the menu drawer serves below. */
+@media (min-width: 1100px) {
+  .header__menu-btn { display: none; }
+  .header__nav { display: block; }
 }
 
 /* ---------- Dialogs / drawers ---------- */
@@ -530,10 +533,11 @@ input[aria-invalid='true'] { border-color: #9e2b25; }
 .cart-line__price s, .cart-line__price small { color: var(--muted); font-size: 12px; }
 
 .qty { display: inline-flex; align-items: center; border: 1px solid var(--line-strong); border-radius: var(--radius); }
-.qty__btn { display: grid; place-items: center; width: 40px; height: 40px; }
+.qty__btn { display: grid; place-items: center; width: 44px; height: 44px; }
 .qty__btn .icon { width: 15px; height: 15px; }
 .qty__value { min-width: 28px; text-align: center; font-size: 14px; }
-.qty__input { width: 88px !important; min-height: 44px !important; }
+/* Beats the generic input[type='number'] rule by specificity, no !important needed. */
+.qty__input[type='number'] { width: 88px; min-height: 44px; }
 
 .cart-subtotal { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; }
 .cart-subtotal strong { font: 400 26px/1 var(--serif); }
@@ -932,6 +936,10 @@ input[aria-invalid='true'] { border-color: #9e2b25; }
 @media (min-width: 990px) {
   .pdp__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(40px, 5vw, 96px); align-items: start; }
   .pdp__info { position: sticky; top: calc(var(--header-h) + 24px); }
+}
+/* Large screens: the photos get the extra width (breadcrumb stays aligned with the grid). */
+@media (min-width: 1600px) {
+  .pdp > .page-width, .pdp .pdp__grid { max-width: 1680px; }
 }
 
 .gallery { display: grid; gap: 16px; min-width: 0; }

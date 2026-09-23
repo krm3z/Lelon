@@ -6,8 +6,8 @@ const OUT = process.env.OUT || 'shots';
 fs.mkdirSync(OUT, { recursive: true });
 const axeSource = fs.readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 
-const pages = (process.env.PAGES || '/,/products/luna,/products/vera?avail=1,/collections/lelon,/collections/signature,/pages/faq,/pages/contact,/pages/notre-histoire,/pages/livraison-retours,/pages/mentions-legales,/pages/landing,/cart?cart=1&avail=1,/search?q=a,/account').split(',');
-const widths = (process.env.WIDTHS || '375,390,430,768,1440').split(',').map(Number);
+const pages = (process.env.PAGES || '/,/products/luna,/products/vera?avail=1,/products/aurea,/products/isaure,/collections/lelon,/collections/signature,/pages/faq,/pages/contact,/pages/notre-histoire,/pages/livraison-retours,/pages/mentions-legales,/pages/politique-de-cookies,/pages/landing,/cart?cart=1&avail=1,/search?q=a,/account,/page-introuvable').split(',');
+const widths = (process.env.WIDTHS || '320,375,390,393,430,768,1024,1280,1440,1920').split(',').map(Number);
 const fullPage = process.env.FULL !== '0';
 
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM || undefined }).catch(() => chromium.launch());

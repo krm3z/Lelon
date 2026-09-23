@@ -60,7 +60,25 @@
               </div>
 
             {%- when 'short_description' -%}
-              {%- assign short = product.metafields.lelon.short_description.value | default: product.metafields.global.description_tag.value -%}
+              {%- liquid
+                assign short = product.metafields.lelon.short_description.value
+                if short == blank
+                  comment
+                    Fallback: first sentence of the merchant description. The SEO description is not used here:
+                    Shopify keeps it cut at 160 characters, often in the middle of a word.
+                  endcomment
+                  assign intro_text = description_intro | strip_html | replace: '&nbsp;', ' ' | replace: '&amp;', '&' | replace: '&#39;', '’' | replace: '&quot;', '"' | strip
+                  assign first_sentence = intro_text | split: '. ' | first | strip
+                  if first_sentence != blank
+                    assign last_char = first_sentence | slice: -1
+                    if last_char == '.' or last_char == '!' or last_char == '?' or last_char == '…'
+                      assign short = first_sentence
+                    else
+                      assign short = first_sentence | append: '.'
+                    endif
+                  endif
+                endif
+              -%}
               {%- if short != blank -%}
                 <p class="pdp__lead" {{ block.shopify_attributes }}>{{ short | escape | newline_to_br }}</p>
               {%- endif -%}

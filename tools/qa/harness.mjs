@@ -399,6 +399,12 @@ http.createServer(async (req, res) => {
       return res.end(await renderPredictive(u.searchParams.get('q') || ''));
     }
     if (u.pathname === '/cart.js') { res.writeHead(200, { 'Content-Type': 'application/json' }); return res.end('{"item_count":1}'); }
+    if (u.pathname === '/cart/change.js') {
+      const html = await renderPage('/?cart=1&avail=1');
+      const drawer = html.match(/<div id="shopify-section-lelon-cart-drawer"[\s\S]*?<\/dialog>\s*<\/div>/)?.[0] || '';
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ item_count: 3, items: [], sections: { 'lelon-cart-drawer': drawer } }));
+    }
     if (u.pathname === '/cart/add.js') {
       const html = await renderPage('/?cart=1&avail=1');
       const drawer = html.match(/<div id="shopify-section-lelon-cart-drawer"[\s\S]*?<\/dialog>\s*<\/div>/)?.[0] || '';
