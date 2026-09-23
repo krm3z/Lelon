@@ -15,3 +15,10 @@ Changements importants seulement. Heures UTC.
 | 22:14 | **Diagnostic CJ** : 54/55 variantes à l’emplacement manuel, 1 à `cjdropshipping` ; l’emplacement manuel est **absent du profil d’expédition** | GraphQL lecture seule |
 | 22:15 | Livraison vérifiée : France 0,99 €, offerte dès 90 € (confirmé) ; 0 commande | GraphQL |
 | 22:18 | `docs/inventory-cj-diagnostic.md`, `docs/product-data-audit.md`, `BLOCKED_BY_MERCHANT.md` | — |
+| 22:15 | QA locale 18 pages × 10 largeurs (320 → 1920) : 0 débordement, 0 violation axe, 0 erreur JS | banc local |
+| 22:18 | **Bug corrigé** : accroche PDP = description SEO tronquée (« …à la collectio ») | capture 320 px |
+| 22:20 | **Bug corrigé** : à 1024 px le menu touchait le logo → menu complet dès 1100 px | captures 1024 / 1100 |
+| 22:21 | Galerie produit élargie ≥ 1600 px ; boutons quantité 44 px ; robustesse JS (recherche, éditeur) | 47/47 tests |
+| 22:25 | Envoi DRAFT (4 fichiers) puis comparaison complète DRAFT ↔ dépôt | 86 MD5 identiques + settings_data identique |
+| 22:26 | Intégrité : thème publié, produits, prix, stocks, SKU, médias, CJ inchangés ; DRAFT non publié | Admin API |
+| 22:27 | QA finale sur le code définitif | voir MORNING-REPORT §4 |

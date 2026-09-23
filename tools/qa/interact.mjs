@@ -257,4 +257,30 @@ async function ctx(width, { seenOpening = true, consent = true } = {}) {
   await c.close();
 }
 
+/* 8. Keyboard: every element reached with Tab shows a focus indicator */
+{
+  const { c, p, errors } = await ctx(1440);
+  const missing = [];
+  let reached = 0;
+  for (const url of ['/', '/products/elea']) {
+    await p.goto(BASE + url, { waitUntil: 'networkidle' });
+    for (let i = 0; i < 45; i++) {
+      await p.keyboard.press('Tab');
+      const info = await p.evaluate(() => {
+        const el = document.activeElement;
+        if (!el || el === document.body) return null;
+        const s = getComputedStyle(el);
+        const visible = (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0) || (s.boxShadow && s.boxShadow !== 'none');
+        return { visible, label: `${el.tagName.toLowerCase()}${el.className ? '.' + String(el.className).split(' ')[0] : ''}` };
+      });
+      if (!info) continue;
+      reached++;
+      if (!info.visible) missing.push(`${url} ${info.label}`);
+    }
+  }
+  check('keyboard: visible focus on every tabbable element', missing.length === 0 && reached > 40, `${reached} focus stops · ${[...new Set(missing)].slice(0, 6).join(', ')}`);
+  check('no JS errors', errors.length === 0, errors.join(' | '));
+  await c.close();
+}
+
 await browser.close();
