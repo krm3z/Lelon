@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="LELON">
-  <rect width="32" height="32" rx="7" fill="#171310"/>
-  <g fill="#C6A46B">
-    <rect x="9" y="8" width="8" height="2.4"/>
-    <rect x="11.5" y="8" width="3" height="16"/>
-    <rect x="11.5" y="21.6" width="11" height="2.4"/>
-    <rect x="21" y="19.6" width="2.4" height="4.4"/>
-  </g>
-</svg>
