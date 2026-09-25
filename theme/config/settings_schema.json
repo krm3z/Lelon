@@ -8,6 +8,12 @@
     "theme_support_url": "https://lelon.fr/pages/contact"
   },
   {
+    "name": "Identité",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "Carré, 512×512 px recommandé. Si vide, le monogramme L de la marque est utilisé." }
+    ]
+  },
+  {
     "name": "Palette LELON",
     "settings": [
       { "type": "paragraph", "content": "Palette d’origine LELON. Le champagne reste un accent très ponctuel." },
