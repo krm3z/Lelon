@@ -1,0 +1,29 @@
+{%- if predictive_search.performed -%}
+  {%- assign products = predictive_search.resources.products -%}
+  <div class="predictive__panel" data-predictive-count="{{ products.size }}">
+    {%- if products.size > 0 -%}
+      <p class="eyebrow predictive__title" id="PredictiveProductsTitle">{{ 'lelon.search.products' | t }}</p>
+      <ul class="predictive__list" role="listbox" aria-labelledby="PredictiveProductsTitle">
+        {%- for product in products limit: 6 -%}
+          <li id="PredictiveOption-{{ forloop.index }}" class="predictive__item" role="option" aria-selected="false">
+            <a href="{{ product.url }}" tabindex="-1">
+              {%- if product.featured_image -%}
+                {{ product.featured_image | image_url: width: 160 | image_tag: widths: '80, 160', sizes: '72px', loading: 'lazy', alt: '' }}
+              {%- endif -%}
+              <span class="predictive__text">
+                <span class="predictive__name">{{ product.title | escape }}</span>
+                {% render 'lelon-price', product: product %}
+              </span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <a class="link predictive__all" href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&type=product">
+        {{- 'lelon.search.view_all' | t: terms: predictive_search.terms -}}
+        {% render 'lelon-icon', name: 'arrow-right' %}
+      </a>
+    {%- else -%}
+      <p class="predictive__empty">{{ 'lelon.search.no_results' | t: terms: predictive_search.terms }}</p>
+    {%- endif -%}
+  </div>
+{%- endif -%}

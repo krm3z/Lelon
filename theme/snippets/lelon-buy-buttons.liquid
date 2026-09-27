@@ -1,0 +1,49 @@
+{% doc %}
+  Product form. The button reflects the real Shopify availability of the selected variant:
+  available → "Ajouter au panier"; unavailable → "Bientôt disponible" (pre-launch setting) or "Épuisé".
+
+  @param {product} product - Product.
+  @param {variant} variant - Selected variant.
+  @param {string} form_id - Form id.
+  @param {boolean} [show_dynamic_checkout] - Accelerated checkout.
+{% enddoc %}
+{%- liquid
+  assign state = 'available'
+  unless variant.available
+    if settings.prelaunch
+      assign state = 'soon'
+    else
+      assign state = 'soldout'
+    endif
+  endunless
+-%}
+<p class="availability availability--{{ state }}" data-availability>
+  <span class="availability__dot" aria-hidden="true"></span>
+  <span data-availability-text>
+    {%- case state -%}
+      {%- when 'available' -%}{{ 'lelon.product.in_stock' | t }}
+      {%- when 'soon' -%}{{ 'lelon.product.soon_note' | t }}
+      {%- else -%}{{ 'lelon.product.soldout_note' | t }}
+    {%- endcase -%}
+  </span>
+</p>
+
+{%- form 'product', product, id: form_id, class: 'product-form', novalidate: 'novalidate', data-product-form: '' -%}
+  <input type="hidden" name="quantity" value="1">
+  <div class="product-form__error" role="alert" data-form-error hidden></div>
+  <button type="submit" name="add" class="btn btn--primary btn--full btn--lg" data-buy-button{% if state != 'available' %} disabled{% endif %}>
+    <span data-buy-label>
+      {%- case state -%}
+        {%- when 'available' -%}{{ 'lelon.product.add' | t }}
+        {%- when 'soon' -%}{{ 'lelon.product.soon' | t }}
+        {%- else -%}{{ 'lelon.product.soldout' | t }}
+      {%- endcase -%}
+    </span>
+    <span class="btn__spinner" aria-hidden="true"></span>
+  </button>
+  {%- if show_dynamic_checkout -%}
+    <div class="product-form__dynamic" data-dynamic-checkout{% if state != 'available' %} hidden{% endif %}>
+      {{ form | payment_button }}
+    </div>
+  {%- endif -%}
+{%- endform -%}

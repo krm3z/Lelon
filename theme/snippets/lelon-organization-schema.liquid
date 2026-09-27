@@ -1,0 +1,32 @@
+{% doc %}
+  Organization + WebSite structured data. Only real, public accounts are listed.
+{% enddoc %}
+{%- capture same_as -%}
+  {%- if settings.instagram != blank -%}{{ settings.instagram | json }}{%- endif -%}
+  {%- if settings.instagram != blank and settings.tiktok != blank -%},{%- endif -%}
+  {%- if settings.tiktok != blank -%}{{ settings.tiktok | json }}{%- endif -%}
+{%- endcapture -%}
+{%- capture search_target -%}{{ shop.url }}{{ routes.search_url }}?q={search_term_string}{%- endcapture -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "LELON",
+        "url": {{ shop.url | json }}{% if same_as != blank %},
+        "sameAs": [{{ same_as }}]{% endif %}
+      },
+      {
+        "@type": "WebSite",
+        "name": "LELON",
+        "url": {{ shop.url | json }},
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {{ search_target | json }},
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+</script>

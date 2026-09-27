@@ -1,0 +1,55 @@
+{%- liquid
+  assign featured = section.settings.product
+  assign image = section.settings.image | default: featured.featured_image
+  assign color_option = nil
+  for option in featured.options_with_values
+    assign option_key = option.name | downcase
+    if option_key == 'coloris' or option_key == 'couleur'
+      assign color_option = option
+    endif
+  endfor
+-%}
+{%- if featured != blank or request.design_mode -%}
+  <section class="section featured-product">
+    <div class="page-width featured-product__grid">
+      <a class="featured-product__media" href="{{ featured.url }}" tabindex="-1" aria-hidden="true" data-reveal="image">
+        {%- if image -%}
+          {{ image | image_url: width: 1800 | image_tag: widths: '600, 900, 1200, 1500, 1800', sizes: '(min-width: 990px) 58vw, 100vw', loading: 'lazy', alt: '' }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+        {%- endif -%}
+      </a>
+      <div class="featured-product__copy" data-reveal>
+        {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h2 class="display-1">
+          <a href="{{ featured.url }}">{{ featured.title | remove: 'LELON Signature ' | remove: 'LELON ' | default: 'Produit' | escape }}</a>
+        </h2>
+        {%- if featured -%}{% render 'lelon-price', product: featured, class: 'featured-product__price' %}{%- endif -%}
+        {%- if section.settings.text != blank -%}<p class="featured-product__text">{{ section.settings.text | escape }}</p>{%- endif -%}
+        {%- if color_option and color_option.values.size > 1 -%}
+          <p class="card__colors">
+            <span class="swatches" aria-hidden="true">
+              {%- for value in color_option.values -%}{% render 'lelon-swatch', value: value %}{%- endfor -%}
+            </span>
+            <span>{%- for value in color_option.values -%}{{ value | escape }}{%- unless forloop.last %} · {% endunless -%}{%- endfor -%}</span>
+          </p>
+        {%- endif -%}
+        <a class="btn btn--primary" href="{{ featured.url }}">{{ section.settings.cta_label | escape }}</a>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "05 · Produit phare",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Produit" },
+    { "type": "image_picker", "id": "image", "label": "Photographie (sinon image principale du produit)" },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "UN SAC, UNE PRÉSENCE" },
+    { "type": "textarea", "id": "text", "label": "Phrase courte", "default": "Une silhouette qui accompagne votre style et laisse toute la place à votre personnalité." },
+    { "type": "text", "id": "cta_label", "label": "Bouton", "default": "Découvrir" }
+  ],
+  "presets": [{ "name": "05 · Produit phare" }]
+}
+{% endschema %}

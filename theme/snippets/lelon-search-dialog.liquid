@@ -1,0 +1,36 @@
+{% doc %}
+  Search dialog with Shopify Predictive Search (combobox pattern, keyboard navigation).
+  Works without JavaScript as a plain GET form to /search.
+{% enddoc %}
+<dialog id="SearchDialog" class="drawer drawer--top search-dialog" aria-labelledby="SearchDialogTitle">
+  <div class="search-dialog__inner page-width">
+    <div class="drawer__head">
+      <h2 id="SearchDialogTitle" class="eyebrow">{{ 'lelon.search.title' | t }}</h2>
+      <button type="button" class="icon-btn" data-close aria-label="{{ 'lelon.a11y.close' | t }}">{% render 'lelon-icon', name: 'x' %}</button>
+    </div>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-form" data-predictive-search>
+      <input type="hidden" name="type" value="product">
+      <label class="visually-hidden" for="PredictiveSearchInput">{{ 'lelon.search.label' | t }}</label>
+      <div class="search-form__field">
+        {% render 'lelon-icon', name: 'search' %}
+        <input
+          id="PredictiveSearchInput"
+          type="search"
+          name="q"
+          placeholder="{{ 'lelon.search.placeholder' | t }}"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded="false"
+          aria-controls="PredictiveSearchResults"
+          aria-haspopup="listbox"
+        >
+        <button type="submit" class="search-form__submit">{{ 'lelon.search.submit' | t }}</button>
+      </div>
+      <div id="PredictiveSearchResults" class="predictive" data-predictive-results></div>
+      <p class="visually-hidden" role="status" aria-live="polite" data-predictive-status></p>
+    </form>
+  </div>
+</dialog>

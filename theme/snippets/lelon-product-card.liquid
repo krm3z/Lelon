@@ -1,0 +1,96 @@
+{% doc %}
+  Product card: image, name, real price, colors, real availability.
+
+  @param {product} product - Product.
+  @param {string} [sizes] - Image sizes attribute.
+  @param {boolean} [eager] - Load the first image eagerly.
+  @param {string} [tone] - 'dark' on chocolate surfaces.
+{% enddoc %}
+{%- liquid
+  assign sizes = sizes | default: '(min-width: 990px) 30vw, (min-width: 750px) 45vw, 50vw'
+  assign loading = 'lazy'
+  if eager
+    assign loading = 'eager'
+  endif
+  assign first_variant = product.selected_or_first_available_variant
+  assign primary_color = first_variant.option1
+
+  assign secondary = nil
+  for image in product.images
+    if image.id != product.featured_image.id and image.alt contains primary_color
+      assign secondary = image
+      break
+    endif
+  endfor
+  if secondary == nil and product.images.size > 1
+    assign secondary = product.images[1]
+  endif
+
+  assign color_option = nil
+  for option in product.options_with_values
+    assign option_key = option.name | downcase
+    if option_key == 'coloris' or option_key == 'couleur' or option_key == 'color'
+      assign color_option = option
+      break
+    endif
+  endfor
+
+  assign is_signature = false
+  if product.tags contains 'lelon-signature'
+    assign is_signature = true
+  endif
+-%}
+<article class="card{% if tone == 'dark' %} card--dark{% endif %}" data-reveal>
+  <a class="card__media{% if secondary %} card__media--hover{% endif %}" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+    {%- if product.featured_image -%}
+      {{
+        product.featured_image
+        | image_url: width: 900
+        | image_tag:
+          widths: '300, 450, 600, 750, 900',
+          sizes: sizes,
+          loading: loading,
+          class: 'card__img',
+          alt: product.featured_image.alt | default: product.title
+      }}
+      {%- if secondary -%}
+        {{
+          secondary
+          | image_url: width: 900
+          | image_tag:
+            widths: '300, 450, 600, 750, 900',
+            sizes: sizes,
+            loading: 'lazy',
+            class: 'card__img card__img--alt',
+            alt: ''
+        }}
+      {%- endif -%}
+    {%- else -%}
+      <span class="card__placeholder">{{ product.title | escape }}</span>
+    {%- endif -%}
+    {%- unless product.available -%}
+      <span class="card__badge">
+        {%- if settings.prelaunch -%}{{ 'lelon.product.soon' | t }}{%- else -%}{{ 'lelon.product.soldout' | t }}{%- endif -%}
+      </span>
+    {%- endunless -%}
+  </a>
+  <div class="card__body">
+    <p class="card__kicker">
+      {%- if is_signature -%}LELON Signature{%- else -%}{{ product.type | default: 'LELON' | escape }}{%- endif -%}
+    </p>
+    <h3 class="card__title">
+      <a href="{{ product.url }}">{{ product.title | remove: 'LELON Signature ' | remove: 'LELON ' | escape }}</a>
+    </h3>
+    {% render 'lelon-price', product: product, class: 'card__price' %}
+    {%- if color_option and color_option.values.size > 1 -%}
+      <p class="card__colors">
+        <span class="swatches" aria-hidden="true">
+          {%- for value in color_option.values limit: 5 -%}
+            {% render 'lelon-swatch', value: value %}
+          {%- endfor -%}
+        </span>
+        <span class="card__colors-label">{{ 'lelon.product.colors_count' | t: count: color_option.values.size }}</span>
+      </p>
+    {%- endif -%}
+  </div>
+</article>

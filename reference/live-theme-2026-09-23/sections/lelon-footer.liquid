@@ -1,0 +1,15 @@
+{% assign story_url = settings.story_url | default: '/pages/notre-histoire' %}
+{% assign contact_email = settings.contact_email | default: 'contact@lelon.fr' %}
+{% assign contact_url = settings.contact_url | default: '/pages/contact' %}{% assign faq_url = settings.faq_url | default: '/pages/faq' %}{% assign shipping_returns_url = settings.shipping_returns_url | default: '/pages/livraison-retours' %}{% assign terms_url = settings.terms_url | default: '/pages/conditions-generales-de-vente' %}{% assign legal_url = settings.legal_url | default: '/pages/mentions-legales' %}{% assign privacy_url = settings.privacy_url | default: shop.privacy_policy.url | default: '/pages/politique-de-confidentialite' %}{% assign cookies_url = settings.cookies_url | default: '/pages/politique-de-cookies' %}
+<footer class="footer"><div class="footer-mast" aria-hidden="true">LELON</div><div class="footer-top"><div class="footer-brand"><p class="eyebrow">L’ALLURE EN FLEUR</p><p>{{ 'cinema.page_description' | t }}</p></div><div><h3>{{ 'cinema.navigation' | t }}</h3><ul><li><a href="{{ settings.main_collection.url | default: routes.all_products_collection_url }}">{{ 'cinema.collection' | t }}</a></li><li><a href="{% if settings.signature_collection %}{{ settings.signature_collection.url }}{% else %}{{ routes.root_url }}#signature{% endif %}">{{ 'cinema.signature' | t }}</a></li><li><a href="{{ story_url }}">{{ 'cinema.story' | t }}</a></li><li><a href="{{ contact_url }}">{{ 'cinema.contact' | t }}</a></li></ul></div><div><h3>{{ 'cinema.practical' | t }}</h3><ul><li><a href="{{ faq_url }}">{{ 'cinema.faq' | t }}</a></li><li><a href="{{ shipping_returns_url }}">{{ 'cinema.shipping_returns' | t }}</a></li><li><a href="{{ routes.account_url }}">{{ 'cinema.account' | t }}</a></li><li><a href="mailto:{{ contact_email | escape }}">{{ contact_email | escape }}</a></li></ul></div><div><h3>{{ 'cinema.legal' | t }}</h3><ul><li><a href="{{ terms_url }}">{{ 'cinema.terms' | t }}</a></li><li><a href="{{ legal_url }}">{{ 'cinema.legal_notice' | t }}</a></li><li><a href="{{ privacy_url }}">{{ 'cinema.privacy' | t }}</a></li><li><a href="{{ cookies_url }}">{{ 'cinema.cookies' | t }}</a></li><li><button type="button" class="footer-link-button" data-cookie-manage>{{ 'cinema.manage_cookies' | t }}</button></li></ul></div><div><h3>{{ 'cinema.follow' | t }}</h3><ul>{% if settings.instagram != blank %}<li><a href="{{ settings.instagram }}" target="_blank" rel="noopener noreferrer">Instagram · @lelon_officiel</a></li>{% endif %}{% if settings.tiktok != blank %}<li><a href="{{ settings.tiktok }}" target="_blank" rel="noopener noreferrer">TikTok · @lelon_officiel</a></li>{% endif %}</ul></div></div><div class="footer-bottom"><span>© {{ 'now' | date: '%Y' }} {{ 'cinema.rights' | t }}</span><button type="button" class="motion-toggle" data-motion-toggle aria-pressed="false">{{ 'cinema.pause_motion' | t }}</button><span>FRANCE · EUR €</span></div></footer>
+{% schema %}
+{
+  "name": "LELON · footer",
+  "settings": [],
+  "presets": [
+    {
+      "name": "LELON · footer"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "lelon-contact",
+      "settings": {
+        "eyebrow": "À VOS CÔTÉS",
+        "text": "Une question sur un sac, une commande ou un retour ? Écrivez-nous, nous vous répondons dans les meilleurs délais."
+      }
+    }
+  },
+  "order": ["main"]
+}

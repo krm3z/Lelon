@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "lelon-policy",
+      "settings": { "policy": "terms-of-sale", "show_links": true }
+    }
+  },
+  "order": ["main"]
+}

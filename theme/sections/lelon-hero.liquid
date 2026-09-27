@@ -1,0 +1,78 @@
+{%- liquid
+  assign featured = section.settings.product
+  assign image = section.settings.image | default: featured.featured_image
+  assign image_mobile = section.settings.image_mobile | default: image
+  assign cta_url = section.settings.cta_url | default: settings.main_collection.url | default: routes.all_products_collection_url
+-%}
+<section class="hero hero--{{ section.settings.layout }}" data-hero>
+  <div class="hero__media">
+    {%- if image -%}
+      <picture>
+        {%- if section.settings.image_mobile -%}
+          <source media="(max-width: 749px)" srcset="{{ image_mobile | image_url: width: 750 }} 750w, {{ image_mobile | image_url: width: 1100 }} 1100w" sizes="100vw">
+        {%- endif -%}
+        {{
+          image
+          | image_url: width: 2400
+          | image_tag:
+            widths: '600, 800, 1000, 1300, 1600, 2000, 2400',
+            sizes: '(min-width: 990px) 60vw, 100vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            class: 'hero__img',
+            alt: image.alt | default: featured.title
+        }}
+      </picture>
+    {%- elsif request.design_mode -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' }}
+    {%- endif -%}
+  </div>
+
+  <div class="hero__content">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    <h1 class="hero__title">{{ section.settings.title | escape | newline_to_br }}</h1>
+    {%- if section.settings.subtitle != blank -%}
+      <p class="hero__subtitle">{{ section.settings.subtitle | escape | newline_to_br }}</p>
+    {%- endif -%}
+    {%- if section.settings.cta_label != blank -%}
+      <a class="btn btn--primary hero__cta" href="{{ cta_url }}">{{ section.settings.cta_label | escape }}</a>
+    {%- endif -%}
+    {%- if featured and section.settings.show_product -%}
+      <a class="hero__product" href="{{ featured.url }}">
+        <span class="hero__product-name">{{ featured.title | escape }}</span>
+        {% render 'lelon-price', product: featured %}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "01 · Hero",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Mise en page (ordinateur)",
+      "options": [
+        { "value": "split", "label": "Texte + photographie" },
+        { "value": "full", "label": "Photographie pleine largeur" }
+      ],
+      "default": "split"
+    },
+    { "type": "image_picker", "id": "image", "label": "Photographie portée", "info": "Le sac doit être identifiable. Format portrait conseillé (4:5), 2000 px minimum." },
+    { "type": "image_picker", "id": "image_mobile", "label": "Photographie mobile (facultatif)" },
+    { "type": "product", "id": "product", "label": "Produit photographié" },
+    { "type": "checkbox", "id": "show_product", "label": "Afficher le nom et le prix du produit", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "textarea", "id": "title", "label": "Titre", "default": "L’élégance\ndans chaque détail." },
+    { "type": "textarea", "id": "subtitle", "label": "Sous-titre", "default": "Des sacs pensés pour vous accompagner\nchaque jour, avec style et intention." },
+    { "type": "text", "id": "cta_label", "label": "Bouton", "default": "Découvrir la collection" },
+    { "type": "url", "id": "cta_url", "label": "Lien du bouton" }
+  ],
+  "presets": [{ "name": "01 · Hero" }]
+}
+{% endschema %}

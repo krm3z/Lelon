@@ -1,0 +1,43 @@
+{% doc %}
+  Displays a Shopify policy body. The published policies contain literal Markdown markers
+  ("# Title", "## 1.", "**bold**", "- item<br>") inside <p> tags. This snippet only converts those
+  markers for display; the wording is never altered.
+
+  @param {string} body - Policy HTML body.
+{% enddoc %}
+{%- liquid
+  assign chunks = body | split: '<p>'
+  assign html = ''
+  for chunk in chunks
+    assign head3 = chunk | slice: 0, 3
+    assign head2 = chunk | slice: 0, 2
+    if chunk == blank
+      continue
+    elsif head2 == '# '
+      continue
+    elsif head3 == '## '
+      assign heading = chunk | remove_first: '## ' | replace_first: '</p>', '</h2>'
+      assign html = html | append: '<h2>' | append: heading
+    elsif head3 == '###'
+      assign heading = chunk | remove_first: '### ' | replace_first: '</p>', '</h3>'
+      assign html = html | append: '<h3>' | append: heading
+    elsif head2 == '- '
+      assign items = chunk | remove_first: '- ' | replace: '<br>- ', '</li><li>' | replace: '<br>\n- ', '</li><li>' | replace_first: '</p>', '</li></ul>'
+      assign html = html | append: '<ul><li>' | append: items
+    else
+      assign html = html | append: '<p>' | append: chunk
+    endif
+  endfor
+
+  assign parts = html | split: '**'
+  assign output = ''
+  for part in parts
+    assign odd = forloop.index0 | modulo: 2
+    if odd == 1
+      assign output = output | append: '<strong>' | append: part | append: '</strong>'
+    else
+      assign output = output | append: part
+    endif
+  endfor
+-%}
+{{ output }}

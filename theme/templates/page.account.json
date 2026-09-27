@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "main": {
+      "type": "lelon-account",
+      "settings": {
+        "title": "Votre espace LELON",
+        "text": "Vos commandes, leur suivi et vos coordonnées, au même endroit."
+      }
+    },
+    "referral": {
+      "type": "lelon-referral",
+      "settings": {
+        "title": "Partagez LELON",
+        "text": "Invitez une personne à découvrir notre univers.",
+        "terms_link": ""
+      }
+    }
+  },
+  "order": ["main", "referral"]
+}

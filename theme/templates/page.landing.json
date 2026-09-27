@@ -1,0 +1,51 @@
+{
+  "sections": {
+    "product": {
+      "type": "lelon-landing-product",
+      "settings": {
+        "product": "luna",
+        "eyebrow": "LELON",
+        "headline": "Une silhouette douce pour les essentiels du quotidien.",
+        "cta_label": "Choisir mon coloris",
+        "show_swatches": true
+      }
+    },
+    "lifestyle": {
+      "type": "lelon-lifestyle",
+      "settings": { "caption": "", "height": "medium", "focal": "object-position: 50% 50%" }
+    },
+    "details": {
+      "type": "lelon-detail-mosaic",
+      "blocks": {
+        "d1": { "type": "detail", "settings": { "product": "luna", "media_position": 1, "caption": "Porté" } },
+        "d2": { "type": "detail", "settings": { "product": "luna", "media_position": 2, "caption": "Détail" } },
+        "d3": { "type": "detail", "settings": { "product": "luna", "media_position": 3, "caption": "Silhouette" } }
+      },
+      "block_order": ["d1", "d2", "d3"],
+      "settings": { "eyebrow": "DÉTAILS", "title": "Au plus près." }
+    },
+    "reassurance": {
+      "type": "lelon-reassurance",
+      "blocks": {
+        "r1": { "type": "item", "settings": { "icon": "truck", "title": "Livraison en France", "text": "0,99 € · offerte dès 90 €", "link": "shopify://pages/livraison-retours" } },
+        "r2": { "type": "item", "settings": { "icon": "track", "title": "Suivi de commande", "text": "Numéro de suivi communiqué à l’expédition", "link": "" } },
+        "r3": { "type": "item", "settings": { "icon": "return", "title": "14 jours pour changer d’avis", "text": "Droit de rétractation", "link": "shopify://pages/livraison-retours" } }
+      },
+      "block_order": ["r1", "r2", "r3"],
+      "settings": {}
+    },
+    "others": {
+      "type": "lelon-featured-collection",
+      "settings": {
+        "collection": "lelon",
+        "limit": 3,
+        "eyebrow": "LELON",
+        "title": "Les autres sacs",
+        "subtitle": "",
+        "link_label": "Voir toute la collection",
+        "tone": "light"
+      }
+    }
+  },
+  "order": ["product", "lifestyle", "details", "reassurance", "others"]
+}

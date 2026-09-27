@@ -1,0 +1,36 @@
+{% assign collection = section.settings.collection | default: settings.signature_collection %}{% assign curated_products = section.settings.products %}<section class="section signature" id="signature" data-signature-chapter><span class="signature-light" aria-hidden="true"></span><div class="page-width"><div class="section-heading" data-reveal><div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>LELON<br><em>Signature.</em></h2></div><div class="signature-copy"><span class="signature-index">CHAPITRE 02</span><p class="signature-intro">{{ section.settings.copy | escape }}</p></div></div>{% if curated_products != blank %}<div class="product-grid product-grid--curated">{% for product in curated_products %}{% render 'lelon-product-card', product: product %}{% endfor %}</div><div class="collection-more"><a class="button button--light" href="{{ collection.url }}">{{ 'cinema.discover_signature' | t }}{% render 'lelon-icon', name: 'arrow-up-right' %}</a></div>{% elsif collection.products.size > 0 %}<div class="product-grid product-grid--curated">{% for product in collection.products limit: 3 %}{% render 'lelon-product-card', product: product %}{% endfor %}</div><div class="collection-more"><a class="button button--light" href="{{ collection.url }}">{{ 'cinema.discover_signature' | t }}{% render 'lelon-icon', name: 'arrow-up-right' %}</a></div>{% else %}<p>{{ 'cinema.empty_collection_copy' | t }}</p>{% endif %}</div></section>
+{% schema %}
+{
+  "name": "LELON · signature",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection Signature"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Sélection Signature",
+      "limit": 3
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "UNE AUTRE EXPRESSION"
+    },
+    {
+      "type": "textarea",
+      "id": "copy",
+      "label": "Texte",
+      "default": "Des lignes choisies pour celles qui aiment affirmer leur présence. Découvrez le prochain chapitre de LELON."
+    }
+  ],
+  "presets": [
+    {
+      "name": "LELON · signature"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+{
+  "sections": {
+    "main": {
+      "type": "lelon-main-product",
+      "blocks": {
+        "title": { "type": "title", "settings": {} },
+        "price": { "type": "price", "settings": {} },
+        "lead": { "type": "short_description", "settings": {} },
+        "picker": { "type": "variant_picker", "settings": { "show_swatches": true } },
+        "buy": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": false } },
+        "reassurance": { "type": "reassurance", "settings": {} },
+        "accordions": { "type": "accordions", "settings": {} }
+      },
+      "block_order": ["title", "price", "lead", "picker", "buy", "reassurance", "accordions"],
+      "settings": {}
+    },
+    "lifestyle": {
+      "type": "lelon-product-lifestyle",
+      "settings": { "text": "" }
+    },
+    "recommendations": {
+      "type": "lelon-product-recommendations",
+      "settings": { "eyebrow": "LELON", "title": "D’autres silhouettes", "limit": 4 }
+    }
+  },
+  "order": ["main", "lifestyle", "recommendations"]
+}

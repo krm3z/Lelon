@@ -1,0 +1,47 @@
+{%- assign image = section.settings.image -%}
+{%- if image != blank or request.design_mode -%}
+  <section class="lifestyle lifestyle--{{ section.settings.height }}">
+    <figure class="lifestyle__media" data-reveal="image">
+      {%- if image != blank -%}
+        {{ image | image_url: width: 2400 | image_tag: widths: '600, 900, 1200, 1600, 2000, 2400', sizes: '100vw', loading: 'lazy', alt: image.alt | default: section.settings.caption, style: section.settings.focal }}
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder' }}
+      {%- endif -%}
+    </figure>
+    {%- if section.settings.caption != blank -%}
+      <p class="lifestyle__caption" data-reveal>{{ section.settings.caption | escape }}</p>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "03 · Respiration (photo)",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photographie portée" },
+    { "type": "text", "id": "caption", "label": "Légende (très courte)" },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Hauteur",
+      "options": [
+        { "value": "medium", "label": "Moyenne" },
+        { "value": "tall", "label": "Grande" }
+      ],
+      "default": "tall"
+    },
+    {
+      "type": "select",
+      "id": "focal",
+      "label": "Cadrage",
+      "options": [
+        { "value": "object-position: 50% 50%", "label": "Centre" },
+        { "value": "object-position: 50% 25%", "label": "Haut" },
+        { "value": "object-position: 50% 75%", "label": "Bas" }
+      ],
+      "default": "object-position: 50% 50%"
+    }
+  ],
+  "presets": [{ "name": "03 · Respiration (photo)" }]
+}
+{% endschema %}

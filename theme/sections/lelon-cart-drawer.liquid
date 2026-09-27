@@ -1,0 +1,50 @@
+<dialog id="CartDrawer" class="drawer drawer--right cart-drawer" aria-labelledby="CartDrawerTitle">
+  <div class="cart-drawer__content" data-cart-drawer-content>
+    <div class="drawer__head">
+      <h2 id="CartDrawerTitle" class="drawer__title" tabindex="-1">
+        {{- 'lelon.cart.title' | t -}}
+        {%- if cart.item_count > 0 %} <span class="drawer__count">({{ cart.item_count }})</span>{% endif -%}
+      </h2>
+      <button type="button" class="icon-btn" data-close aria-label="{{ 'lelon.a11y.close' | t }}">{% render 'lelon-icon', name: 'x' %}</button>
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      {% render 'lelon-free-shipping' %}
+      <div class="cart-drawer__lines">
+        {% render 'lelon-cart-lines', compact: true %}
+      </div>
+      <div class="cart-drawer__summary">
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          <ul class="cart-discounts" role="list">
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <li><span>{{ discount.title | escape }}</span><span>−{{ discount.total_allocated_amount | money }}</span></li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        <p class="cart-subtotal">
+          <span>{{ 'lelon.cart.subtotal' | t }}</span>
+          <strong>{{ cart.total_price | money }}</strong>
+        </p>
+        <p class="cart-note">{{ 'lelon.cart.shipping_note' | t }}</p>
+        <form action="{{ routes.cart_url }}" method="post" class="cart-drawer__actions">
+          <button type="submit" name="checkout" class="btn btn--primary btn--full">
+            {% render 'lelon-icon', name: 'lock' %}{{ 'lelon.cart.checkout' | t }}
+          </button>
+          <a class="btn btn--ghost btn--full" href="{{ routes.cart_url }}">{{ 'lelon.cart.view' | t }}</a>
+        </form>
+      </div>
+    {%- else -%}
+      <div class="cart-empty">
+        <p class="cart-empty__title">{{ 'lelon.cart.empty' | t }}</p>
+        <a class="btn btn--primary" href="{{ settings.main_collection.url | default: routes.all_products_collection_url }}">{{ 'lelon.cart.discover' | t }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "LELON · Panier (tiroir)",
+  "settings": []
+}
+{% endschema %}

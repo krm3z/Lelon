@@ -1,0 +1,22 @@
+{% doc %}
+  Outputs the color (lowercase) a media belongs to, read from its alt text, or nothing for a neutral media.
+  Alts follow "LELON X — Couleur — Vue n"; free alts such as "LELON ÉLÉA Cognac porté" also work.
+  "et" is read as "&" so "Beige et Cognac" matches the "Beige & Cognac" option. Longest match wins.
+  The gallery prints the result in data-media-color, which lelon.js reads when the color changes.
+
+  @param {string} alt - Media alt text.
+  @param {string[]} colors - Values of the product color option.
+{% enddoc %}
+{%- liquid
+  assign haystack = alt | downcase | replace: ' et ', ' & '
+  assign found = ''
+  for color in colors
+    assign needle = color | downcase
+    if haystack contains needle
+      if needle.size > found.size
+        assign found = needle
+      endif
+    endif
+  endfor
+  echo found
+-%}

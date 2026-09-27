@@ -1,0 +1,43 @@
+{% doc %}
+  Mobile navigation drawer (native dialog). Primary links from the main menu, then practical links.
+{% enddoc %}
+{%- assign menu = linklists['main-menu'] -%}
+<dialog id="MenuDrawer" class="drawer drawer--left" aria-label="{{ 'lelon.nav.menu' | t }}">
+  <div class="drawer__head">
+    <a class="brand brand--small" href="{{ routes.root_url }}" aria-label="{{ 'lelon.nav.home_label' | t }}">LELON</a>
+    <button type="button" class="icon-btn" data-close aria-label="{{ 'lelon.a11y.close' | t }}">{% render 'lelon-icon', name: 'x' %}</button>
+  </div>
+  <nav class="drawer__nav" aria-label="{{ 'lelon.nav.primary' | t }}">
+    <ul role="list" class="menu-primary">
+      {%- if menu.links.size > 0 -%}
+        {%- for link in menu.links -%}
+          <li><a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a></li>
+        {%- endfor -%}
+      {%- else -%}
+        <li><a href="{{ settings.main_collection.url | default: routes.all_products_collection_url }}">{{ 'lelon.nav.collection' | t }}</a></li>
+        {%- if settings.signature_collection -%}<li><a href="{{ settings.signature_collection.url }}">{{ 'lelon.nav.signature' | t }}</a></li>{%- endif -%}
+        <li><a href="{{ settings.story_url | default: '/pages/notre-histoire' }}">{{ 'lelon.nav.story' | t }}</a></li>
+        <li><a href="{{ settings.contact_url | default: '/pages/contact' }}">{{ 'lelon.nav.contact' | t }}</a></li>
+      {%- endif -%}
+    </ul>
+    <ul role="list" class="menu-secondary">
+      <li><a href="{{ routes.account_url }}">{% render 'lelon-icon', name: 'user' %}{{ 'lelon.nav.account' | t }}</a></li>
+      <li><a href="{{ routes.search_url }}" data-open="SearchDialog">{% render 'lelon-icon', name: 'search' %}{{ 'lelon.nav.search' | t }}</a></li>
+      <li><a href="{{ settings.faq_url | default: '/pages/faq' }}">{{ 'lelon.nav.faq' | t }}</a></li>
+      <li><a href="{{ settings.shipping_returns_url | default: '/pages/livraison-retours' }}">{{ 'lelon.nav.shipping_returns' | t }}</a></li>
+    </ul>
+  </nav>
+  <div class="drawer__foot">
+    {%- if settings.contact_email != blank -%}
+      <a href="mailto:{{ settings.contact_email | escape }}">{{ settings.contact_email | escape }}</a>
+    {%- endif -%}
+    <div class="social">
+      {%- if settings.instagram != blank -%}
+        <a href="{{ settings.instagram }}" target="_blank" rel="noopener" aria-label="Instagram — {{ 'lelon.a11y.new_window' | t }}">{% render 'lelon-icon', name: 'instagram' %}</a>
+      {%- endif -%}
+      {%- if settings.tiktok != blank -%}
+        <a href="{{ settings.tiktok }}" target="_blank" rel="noopener" aria-label="TikTok — {{ 'lelon.a11y.new_window' | t }}">{% render 'lelon-icon', name: 'tiktok' %}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</dialog>

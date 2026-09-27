@@ -1,0 +1,6 @@
+{% doc %}
+LELON reusable component.
+
+{% enddoc %}
+<script type="application/json" id="LelonConfig">{"campaign":{{ shop.metafields.lelon.launch_campaign.value | json }},"server_time":{{ 'now' | date: '%s' | json }},"root":{{ routes.root_url | json }},"intro_enabled":{{ settings.intro_enabled | json }},"motion_intensity":{{ settings.motion_intensity | json }},"text":{
+{% assign keys = 'available,prelaunch,soldout,unavailable,price_pending,cart_error,network_ambiguous,added,cart_updated,open_product,pause_motion,resume_motion' | split: ',' %}{% for key in keys %}{% assign translation = 'cinema.' | append: key %}{{ key | json }}:{{ translation | t | json }}{% unless forloop.last %},{% endunless %}{% endfor %}}}</script>

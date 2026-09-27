@@ -1,0 +1,250 @@
+{
+  "lelon": {
+    "meta": {
+      "home_title": "LELON — Sacs pour femme · L’élégance dans chaque détail",
+      "home_description": "LELON, marque française de sacs pour femme. Des silhouettes pensées pour vous accompagner chaque jour, avec style et intention. Chaque femme possède sa propre manière de s’épanouir."
+    },
+    "a11y": {
+      "skip": "Aller au contenu",
+      "close": "Fermer",
+      "new_window": "s’ouvre dans un nouvel onglet",
+      "reduce_motion": "Réduire les animations",
+      "enable_motion": "Réactiver les animations",
+      "breadcrumb": "Fil d’Ariane"
+    },
+    "nav": {
+      "primary": "Navigation principale",
+      "menu": "Menu",
+      "open_menu": "Ouvrir le menu",
+      "home": "Accueil",
+      "home_label": "LELON — accueil",
+      "collection": "Collection",
+      "signature": "Signature",
+      "story": "Notre histoire",
+      "contact": "Contact",
+      "search": "Rechercher",
+      "account": "Mon compte",
+      "cart": "Panier",
+      "faq": "FAQ",
+      "shipping_returns": "Livraison & retours",
+      "help": "À VOS CÔTÉS"
+    },
+    "price": {
+      "from": "À partir de",
+      "sale": "Prix réduit",
+      "regular": "Prix habituel"
+    },
+    "product": {
+      "add": "Ajouter au panier",
+      "soon": "Bientôt disponible",
+      "soldout": "Épuisé",
+      "unavailable": "Indisponible",
+      "in_stock": "Disponible",
+      "soon_note": "Bientôt disponible — les commandes ouvriront à l’arrivée du stock.",
+      "soldout_note": "Ce coloris est épuisé pour le moment.",
+      "unavailable_note": "Cette combinaison n’existe pas.",
+      "variant": "Variante",
+      "colors_count": {
+        "one": "{{ count }} coloris",
+        "other": "{{ count }} coloris"
+      },
+      "description": "Description",
+      "details": "Détails & matières",
+      "dimensions": "Dimensions",
+      "dimensions_figure": "Schéma des dimensions du sac",
+      "capacity": "Ce qu’il peut accueillir",
+      "capacity_note": "Indications fournies à titre de repère, selon les objets testés.",
+      "care": "Entretien",
+      "shipping_returns": "Livraison & retours",
+      "shipping_returns_link": "Toutes les informations de livraison et de retour",
+      "delivery_delay": "Livraison estimée : {{ delay }}",
+      "tracking": "Numéro de suivi communiqué à l’expédition",
+      "return_costs": "Frais de retour à votre charge en cas de simple changement d’avis",
+      "gallery": "Photos de {{ title }}",
+      "other_color_photos": "Pas encore de photo du coloris {{ color }} : les images présentent un autre coloris.",
+      "previous": "Photo précédente",
+      "next": "Photo suivante",
+      "full_page": "Voir la fiche complète"
+    },
+    "specs": {
+      "material": "Matière",
+      "lining": "Doublure",
+      "structure": "Structure",
+      "closure": "Fermeture",
+      "interior": "Intérieur",
+      "strap": "Bandoulière",
+      "carry": "Porté",
+      "details": "Détails",
+      "width": "Largeur",
+      "height": "Hauteur",
+      "depth": "Profondeur",
+      "strap_drop": "Hauteur de bandoulière"
+    },
+    "cart": {
+      "title": "Panier",
+      "count": {
+        "one": "{{ count }} article dans le panier",
+        "other": "{{ count }} articles dans le panier"
+      },
+      "empty": "Votre panier est vide.",
+      "discover": "Découvrir la collection",
+      "subtotal": "Sous-total",
+      "shipping_note": "Frais de livraison calculés à l’étape suivante.",
+      "checkout": "Commander",
+      "view": "Voir le panier",
+      "update": "Mettre à jour",
+      "summary": "Récapitulatif",
+      "note_label": "Note pour votre commande",
+      "remove": "Retirer",
+      "decrease": "Diminuer la quantité",
+      "increase": "Augmenter la quantité",
+      "quantity_for": "Quantité — {{ title }}",
+      "unit_price": "{{ price }} l’unité",
+      "free_shipping_remaining": "Plus que {{ amount }} pour la livraison offerte.",
+      "free_shipping_reached": "La livraison vous est offerte.",
+      "added": "Le sac a été ajouté à votre panier.",
+      "updated": "Panier mis à jour.",
+      "error": "Le panier n’a pas pu être mis à jour. Réessayez.",
+      "network_error": "La connexion a été interrompue. Vérifiez votre panier avant de réessayer."
+    },
+    "collection": {
+      "count": {
+        "one": "{{ count }} sac",
+        "other": "{{ count }} sacs"
+      },
+      "filters": "Filtrer",
+      "sort": "Trier par",
+      "apply": "Appliquer",
+      "clear": "Tout effacer",
+      "price_min": "Prix min. (€)",
+      "price_max": "Prix max. (€)",
+      "active_filters": "Filtres actifs",
+      "remove_filter": "Retirer ce filtre",
+      "empty": "Aucun sac ne correspond à cette sélection."
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Page précédente",
+      "next": "Page suivante",
+      "page": "Page {{ number }}"
+    },
+    "search": {
+      "title": "Rechercher",
+      "label": "Rechercher un sac",
+      "placeholder": "Un modèle, une couleur…",
+      "submit": "Rechercher",
+      "products": "Sacs",
+      "view_all": "Voir tous les résultats pour « {{ terms }} »",
+      "no_results": "Aucun résultat pour « {{ terms }} ».",
+      "results": {
+        "one": "{{ count }} résultat pour « {{ terms }} »",
+        "other": "{{ count }} résultats pour « {{ terms }} »"
+      },
+      "loading": "Recherche en cours…",
+      "error": "La recherche est momentanément indisponible.",
+      "suggestions": "Suggestions disponibles"
+    },
+    "footer": {
+      "maison": "La maison",
+      "help": "Aide",
+      "legal": "Informations légales",
+      "payment": "Moyens de paiement acceptés"
+    },
+    "legal": {
+      "eyebrow": "INFORMATIONS",
+      "terms": "Conditions générales de vente",
+      "notice": "Mentions légales",
+      "privacy": "Politique de confidentialité",
+      "cookies": "Politique de cookies",
+      "manage_cookies": "Gérer mes cookies",
+      "withdrawal": "Droit de rétractation",
+      "official": "Consulter le document officiel"
+    },
+    "newsletter": {
+      "label": "Votre adresse e-mail",
+      "placeholder": "prenom@exemple.fr",
+      "submit": "S’inscrire",
+      "success": "Merci, votre inscription est enregistrée.",
+      "note": "Désinscription possible à tout moment via le lien présent dans chaque e-mail."
+    },
+    "consent": {
+      "title": "Vos préférences cookies",
+      "text": "Nous utilisons des cookies nécessaires au fonctionnement de la boutique. Avec votre accord, d’autres cookies mesurent l’audience, mémorisent vos préférences ou servent nos communications.",
+      "learn": "En savoir plus",
+      "categories": "Catégories de cookies",
+      "necessary": "Nécessaires — toujours actifs",
+      "analytics": "Mesure d’audience",
+      "marketing": "Marketing",
+      "preferences": "Préférences",
+      "reject": "Tout refuser",
+      "customize": "Personnaliser",
+      "accept": "Tout accepter",
+      "save": "Enregistrer mes choix",
+      "saved": "Vos préférences sont enregistrées.",
+      "unavailable": "Le gestionnaire de consentement est momentanément indisponible."
+    },
+    "opening": {
+      "label": "Ouverture LELON",
+      "discover": "Découvrir",
+      "skip": "Passer"
+    },
+    "contact": {
+      "first_name": "Prénom",
+      "last_name": "Nom",
+      "email": "E-mail",
+      "phone": "Téléphone (facultatif)",
+      "subject": "Sujet",
+      "subjects": "Commande|Produit|Livraison|Retour|Presse / partenariat|Autre",
+      "order": "Numéro de commande (facultatif)",
+      "message": "Message",
+      "privacy": "Vos informations servent uniquement à traiter votre demande. En savoir plus :",
+      "send": "Envoyer",
+      "success": "Merci. Votre message a bien été envoyé."
+    },
+    "faq": {
+      "categories": "Catégories",
+      "more": "Vous ne trouvez pas votre réponse ?",
+      "contact": "Nous écrire"
+    },
+    "account": {
+      "eyebrow": "MON COMPTE",
+      "hello": "Bonjour {{ name }}",
+      "orders": "Commandes",
+      "orders_text": "Suivre et consulter vos commandes",
+      "profile": "Profil",
+      "profile_text": "Vos coordonnées et adresses",
+      "returns": "Retours",
+      "returns_text": "Comment exercer votre droit de rétractation",
+      "login": "Se connecter ou créer un compte",
+      "login_note": "Connexion sécurisée par e-mail avec un code à usage unique."
+    },
+    "referral": {
+      "eyebrow": "PARRAINAGE",
+      "link_label": "Votre lien personnel",
+      "copy": "Copier",
+      "copied": "Lien copié.",
+      "share": "Partager",
+      "invited": "Invitations",
+      "completed": "Premières commandes validées",
+      "bloomed": "Votre invitation a fleuri.",
+      "pending": "En cours de vérification.",
+      "not_yet": "Votre lien personnel apparaîtra ici dès qu’il sera disponible.",
+      "terms": "Conditions du parrainage"
+    },
+    "story": {
+      "cta": "Découvrir la collection"
+    },
+    "landing": {
+      "choose_product": "Choisissez un produit dans les réglages de la section."
+    },
+    "error": {
+      "title": "Cette page s’est envolée.",
+      "text": "Le lien est peut-être ancien, ou la page a changé d’adresse."
+    },
+    "password": {
+      "title": "LELON arrive bientôt.",
+      "label": "Mot de passe de la boutique",
+      "enter": "Entrer"
+    }
+  }
+}

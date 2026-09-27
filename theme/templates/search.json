@@ -1,0 +1,4 @@
+{
+  "sections": { "main": { "type": "lelon-main-search", "settings": {} } },
+  "order": ["main"]
+}

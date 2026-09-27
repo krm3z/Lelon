@@ -1,0 +1,70 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "lelon-legal-page",
+      "blocks": {
+        "definition": {
+          "type": "chapter",
+          "settings": {
+            "heading": "À propos des cookies"
+          }
+        },
+        "necessary": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Cookies nécessaires"
+          }
+        },
+        "analytics": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Mesure d’audience"
+          }
+        },
+        "marketing": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Marketing"
+          }
+        },
+        "management": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Gérer ou retirer votre consentement",
+            "body": "<p>Utilisez le lien « Gérer mes cookies » présent dans le pied de page pour rouvrir le panneau de préférences.</p>"
+          }
+        },
+        "third": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Services tiers"
+          }
+        }
+      },
+      "block_order": [
+        "definition",
+        "necessary",
+        "analytics",
+        "marketing",
+        "management",
+        "third"
+      ],
+      "settings": {
+        "title": "Politique de cookies",
+        "intro": "La liste des traceurs doit être actualisée selon les applications et services réellement actifs."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,31 @@
+{% doc %}
+  Real Shopify price. Never hardcoded; compare-at price only shown when set in Shopify.
+
+  @param {product} product - Product.
+  @param {variant} [variant] - Selected variant; when omitted a range-aware price is shown.
+  @param {string} [class] - Extra class.
+{% enddoc %}
+{%- liquid
+  if variant
+    assign price = variant.price
+    assign compare = variant.compare_at_price
+    assign show_from = false
+  else
+    assign price = product.price
+    assign compare = product.compare_at_price
+    assign show_from = product.price_varies
+  endif
+-%}
+<span class="price{% if class %} {{ class }}{% endif %}" data-price>
+  {%- if compare > price -%}
+    <span class="visually-hidden">{{ 'lelon.price.sale' | t }}</span>
+  {%- endif -%}
+  <span class="price__current" data-price-current>
+    {%- if show_from -%}{{ 'lelon.price.from' | t }} {% endif -%}
+    {{- price | money -}}
+  </span>
+  {%- if compare > price -%}
+    <span class="visually-hidden">{{ 'lelon.price.regular' | t }}</span>
+    <s class="price__compare" data-price-compare>{{ compare | money }}</s>
+  {%- endif -%}
+</span>

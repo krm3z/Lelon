@@ -1,0 +1,29 @@
+<section class="section detail-mosaic page-width">
+  <div class="section-heading section-heading--editorial" data-reveal>
+    <div><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.title | escape }}</h2></div>
+    {% if section.settings.copy != blank %}<p class="section-deck">{{ section.settings.copy | escape }}</p>{% endif %}
+  </div>
+  <div class="detail-mosaic__grid">
+    {% for block in section.blocks %}
+      {% if block.settings.image != blank %}
+        <figure class="detail-mosaic__item detail-mosaic__item--{{ forloop.index }}" data-image-reveal {{ block.shopify_attributes }}>
+          {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '360, 540, 750, 1000, 1200', sizes: '(max-width: 767px) 50vw, 28vw', alt: block.settings.image.alt | default: block.settings.caption }}
+          {% if block.settings.caption != blank %}<figcaption>{{ block.settings.caption | escape }}</figcaption>{% endif %}
+        </figure>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% schema %}
+{
+  "name":"LELON · détails",
+  "max_blocks":6,
+  "settings":[
+    {"type":"text","id":"eyebrow","label":"Surtitre","default":"MATIÈRES · LIGNES · PRÉSENCE"},
+    {"type":"text","id":"title","label":"Titre","default":"Des détails qui font la différence."},
+    {"type":"textarea","id":"copy","label":"Texte","default":"Une lecture rapprochée des formes, textures et gestes qui composent chaque silhouette."}
+  ],
+  "blocks":[{"type":"media","name":"Détail","settings":[{"type":"image_picker","id":"image","label":"Image approuvée"},{"type":"text","id":"caption","label":"Légende"}]}],
+  "presets":[{"name":"LELON · détails","blocks":[{"type":"media"},{"type":"media"},{"type":"media"}]}]
+}
+{% endschema %}

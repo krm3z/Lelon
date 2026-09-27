@@ -1,0 +1,37 @@
+<section class="section newsletter" id="nouveautes"><div class="page-width"><p class="eyebrow">{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.title | escape }}</h2><p>{{ section.settings.copy | escape }}</p>{% if section.settings.enabled and shop.privacy_policy != blank %}{% form 'customer', class: 'newsletter-form' %}{% if form.posted_successfully? %}<p class="form-success" role="status">{{ 'cinema.subscribed' | t }}</p>{% else %}{{ form.errors | default_errors }}<input type="hidden" name="contact[tags]" value="newsletter,lelon-lancement"><label class="form-label" for="NewsletterEmail-{{ section.id }}">{{ 'cinema.email' | t }}</label><div class="input-row"><input id="NewsletterEmail-{{ section.id }}" type="email" name="contact[email]" autocomplete="email" required><button class="button" type="submit">{{ 'cinema.subscribe' | t }}{% render 'lelon-icon', name: 'arrow-right' %}</button></div><label class="consent"><input type="checkbox" required><span>{{ 'cinema.consent' | t }} <a href="{{ shop.privacy_policy.url }}">{{ 'cinema.privacy' | t }}</a></span></label>{% endif %}{% endform %}{% else %}<a class="button button--outline" href="{{ settings.instagram }}">{{ 'cinema.follow' | t }}{% render 'lelon-icon', name: 'arrow-up-right' %}</a>{% endif %}</div></section>
+{% schema %}
+{
+  "name": "LELON · newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "LE PROCHAIN CHAPITRE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "L’éclosion ne fait que commencer."
+    },
+    {
+      "type": "textarea",
+      "id": "copy",
+      "label": "Texte",
+      "default": "Entrez dans l’univers LELON et suivez les nouvelles expressions de la collection."
+    },
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Activer les inscriptions avec une politique de confidentialité",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "LELON · newsletter"
+    }
+  ]
+}
+{% endschema %}

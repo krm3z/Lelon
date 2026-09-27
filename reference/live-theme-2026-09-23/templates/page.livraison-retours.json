@@ -1,0 +1,63 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "lelon-legal-page",
+      "blocks": {
+        "zones": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Zones desservies"
+          }
+        },
+        "times": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Délais de préparation et de livraison"
+          }
+        },
+        "costs": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Frais de livraison"
+          }
+        },
+        "returns": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Retours"
+          }
+        },
+        "contact": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Besoin d’aide ?",
+            "body": "<p>Écrivez à contact@lelon.fr.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "zones",
+        "times",
+        "costs",
+        "returns",
+        "contact"
+      ],
+      "settings": {
+        "title": "Livraison et retours",
+        "intro": "Les informations seront complétées à partir de la configuration logistique et des conditions commerciales réelles."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

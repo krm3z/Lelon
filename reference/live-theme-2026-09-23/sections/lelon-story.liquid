@@ -1,0 +1,45 @@
+{% assign contact_email = settings.contact_email | default: 'contact@lelon.fr' %}
+<section class="story-page" aria-labelledby="StoryTitle">
+  <div class="story-page__opening page-width">
+    <p class="eyebrow" data-reveal>{{ section.settings.eyebrow | escape }}</p>
+    <h1 id="StoryTitle" data-reveal>{{ page.title | default: 'Notre histoire' | escape }}</h1>
+    <p class="story-page__lead" data-reveal>{{ section.settings.lead | escape }}</p>
+  </div>
+  <div class="story-page__manifesto page-width">
+    <div class="story-page__rose" data-rose-bloom aria-hidden="true">
+      {% if settings.rose_image != blank %}{{ settings.rose_image | image_url: width: 700 | image_tag: loading: 'eager', widths: '320, 500, 700', sizes: '(max-width: 767px) 65vw, 34vw', alt: '' }}{% else %}<span class="story-page__petal"></span>{% endif %}
+    </div>
+    <blockquote data-reveal>« Chaque femme possède sa propre manière de <em>s’épanouir.</em> »</blockquote>
+  </div>
+  <div class="story-page__chapters page-width">
+    <article data-reveal><p class="eyebrow">01 · EXPRESSION</p><h2>À votre manière.</h2><p>LELON accompagne les gestes, les rythmes et les envies de chacune. La marque ne définit pas une allure unique&nbsp;: elle laisse à chaque femme la liberté de composer la sienne.</p></article>
+    <article data-reveal><p class="eyebrow">02 · ÉCLOSION</p><h2>Un mouvement.</h2><p>La rose traduit une idée simple&nbsp;: une présence se révèle à son rythme. Elle traverse l’univers LELON avec retenue, comme un signe vivant plutôt qu’un ornement.</p></article>
+    <article data-reveal><p class="eyebrow">03 · PRÉSENCE</p><h2>Des pièces à vivre.</h2><p>Chaque silhouette est présentée avec clarté, sans promesse inventée. L’émotion éditoriale accompagne le produit réel, ses lignes et sa matière.</p></article>
+  </div>
+  {% if page.content != blank %}<div class="story-page__merchant page-width rte">{{ page.content }}</div>{% endif %}
+  <div class="story-page__closing page-width" data-reveal>
+    <p class="eyebrow">PREMIÈRE ÉCLOSION</p>
+    <h2>L’allure en fleur.<br><em>À votre manière.</em></h2>
+    <div class="story-page__actions"><a class="button" href="{{ settings.main_collection.url | default: routes.all_products_collection_url }}">Découvrir la collection{% render 'lelon-icon', name: 'arrow-up-right' %}</a><a class="text-link" href="mailto:{{ contact_email | escape }}">{{ contact_email | escape }}</a></div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "LELON · notre histoire",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "MAISON LELON"
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Introduction",
+      "default": "Une vision féminine de l’allure, née du mouvement, de l’expression et de la liberté d’être soi."
+    }
+  ],
+  "presets": [{"name": "LELON · notre histoire"}]
+}
+{% endschema %}

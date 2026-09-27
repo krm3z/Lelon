@@ -1,0 +1,31 @@
+{% doc %}
+  Consent banner wired to the Shopify Customer Privacy API.
+  "Tout refuser" has the same weight as "Tout accepter". Preferences can be reopened from the footer.
+{% enddoc %}
+<section class="consent" data-consent hidden aria-labelledby="ConsentTitle" aria-describedby="ConsentText">
+  <div class="consent__inner">
+    <div class="consent__copy">
+      <h2 id="ConsentTitle" class="consent__title">{{ 'lelon.consent.title' | t }}</h2>
+      <p id="ConsentText">
+        {{ 'lelon.consent.text' | t }}
+        <a href="{{ settings.cookies_url | default: '/pages/politique-de-cookies' }}">{{ 'lelon.consent.learn' | t }}</a>
+      </p>
+    </div>
+
+    <fieldset class="consent__choices" data-consent-details hidden>
+      <legend class="visually-hidden">{{ 'lelon.consent.categories' | t }}</legend>
+      <label class="check"><input type="checkbox" checked disabled><span>{{ 'lelon.consent.necessary' | t }}</span></label>
+      <label class="check"><input type="checkbox" data-consent-category="analytics"><span>{{ 'lelon.consent.analytics' | t }}</span></label>
+      <label class="check"><input type="checkbox" data-consent-category="marketing"><span>{{ 'lelon.consent.marketing' | t }}</span></label>
+      <label class="check"><input type="checkbox" data-consent-category="preferences"><span>{{ 'lelon.consent.preferences' | t }}</span></label>
+    </fieldset>
+
+    <div class="consent__actions">
+      <button type="button" class="btn btn--ghost" data-consent-action="reject">{{ 'lelon.consent.reject' | t }}</button>
+      <button type="button" class="btn btn--ghost" data-consent-action="customize" aria-expanded="false">{{ 'lelon.consent.customize' | t }}</button>
+      <button type="button" class="btn btn--ghost" data-consent-action="accept">{{ 'lelon.consent.accept' | t }}</button>
+      <button type="button" class="btn btn--primary" data-consent-action="save" hidden>{{ 'lelon.consent.save' | t }}</button>
+    </div>
+    <p class="consent__status" role="status" aria-live="polite" data-consent-status></p>
+  </div>
+</section>

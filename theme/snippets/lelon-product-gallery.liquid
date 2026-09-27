@@ -1,0 +1,176 @@
+{% doc %}
+  Product gallery. Desktop: thumbnails left, large media center. Mobile: native scroll-snap swipe.
+
+  Sources: product media, plus the validated worn photos of the product metafield `lelon.lifestyle_media`
+  (Shopify Files, read only by this theme: filling it never changes the live theme's product pages).
+  Each media is tagged with the color named in its alt ("LELON X — Couleur — Vue n"). Media of another color
+  are hidden server-side (no flash, works without JavaScript); neutral media always stay. When the selected
+  color has no photo at all, every media stays visible and a note says the photos show another color.
+
+  @param {product} product - Product.
+  @param {variant} current_variant - Selected variant.
+  @param {boolean} [worn_first] - Show the worn photos of the selected color before the packshot.
+{% enddoc %}
+{%- liquid
+  assign first_media = current_variant.featured_media
+  if first_media == nil
+    assign first_media = product.featured_media
+  endif
+  assign worn = product.metafields.lelon.lifestyle_media.value
+
+  assign colors = ''
+  assign selected_color = ''
+  assign selected_label = ''
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_name == 'coloris' or option_name == 'couleur' or option_name == 'color' or option_name == 'colour'
+      assign colors = option.values
+      assign selected_label = current_variant.options[forloop.index0]
+      assign selected_color = selected_label | downcase
+    endif
+  endfor
+
+  comment
+    First pass: how many media show the selected color. Zero means "no photo yet for this color".
+  endcomment
+  assign media_total = 0
+  assign color_matches = 0
+  for media in worn
+    assign media_total = media_total | plus: 1
+    if colors != blank
+      capture media_color
+        render 'lelon-media-color', alt: media.alt, colors: colors
+      endcapture
+      assign media_color = media_color | strip
+      if media_color == selected_color
+        assign color_matches = color_matches | plus: 1
+      endif
+    endif
+  endfor
+  for media in product.media
+    assign media_total = media_total | plus: 1
+    if colors != blank
+      capture media_color
+        render 'lelon-media-color', alt: media.alt, colors: colors
+      endcapture
+      assign media_color = media_color | strip
+      if media_color == selected_color
+        assign color_matches = color_matches | plus: 1
+      endif
+    endif
+  endfor
+
+  assign filtering = false
+  if colors != blank and color_matches > 0
+    assign filtering = true
+  endif
+
+  comment
+    Second pass, in display order: [worn if worn_first] · variant media · [worn otherwise] · other media.
+  endcomment
+  assign thumbs_html = ''
+  assign slides_html = ''
+  assign visible_count = 0
+  assign eager_done = false
+  for pass in (1..4)
+    case pass
+      when 1
+        if worn_first
+          assign source = worn
+        else
+          continue
+        endif
+      when 2
+        if first_media
+          assign source = product.media | where: 'id', first_media.id
+        else
+          continue
+        endif
+      when 3
+        if worn_first
+          continue
+        endif
+        assign source = worn
+      when 4
+        assign source = product.media
+    endcase
+
+    for media in source
+      if pass == 4 and media.id == first_media.id
+        continue
+      endif
+      assign media_color = ''
+      if colors != blank
+        capture media_color
+          render 'lelon-media-color', alt: media.alt, colors: colors
+        endcapture
+        assign media_color = media_color | strip
+      endif
+      assign is_hidden = false
+      if filtering and media_color != '' and media_color != selected_color
+        assign is_hidden = true
+      endif
+      assign is_eager = false
+      unless is_hidden or eager_done
+        assign is_eager = true
+        assign eager_done = true
+      endunless
+      unless is_hidden
+        assign visible_count = visible_count | plus: 1
+      endunless
+      assign thumb_label = media.alt | default: product.title | escape
+
+      capture thumb
+        echo '<button type="button" class="gallery__thumb'
+        if media.media_type != 'image'
+          echo ' gallery__thumb--play'
+        endif
+        echo '" data-thumb data-media-id="' | append: media.id | append: '" data-media-color="' | append: media_color | append: '"'
+        if is_hidden
+          echo ' hidden'
+        endif
+        echo ' aria-current="' | append: is_eager | append: '" aria-label="' | append: thumb_label | append: '">'
+        echo media.preview_image | image_url: width: 180 | image_tag: widths: '90, 180', sizes: '80px', loading: 'lazy', alt: ''
+        echo '</button>'
+      endcapture
+      capture slide
+        echo '<li class="gallery__slide" data-slide data-media-id="' | append: media.id | append: '" data-media-color="' | append: media_color | append: '"'
+        if is_hidden
+          echo ' hidden'
+        endif
+        echo '>'
+        render 'lelon-media', media: media, eager: is_eager, product: product
+        echo '</li>'
+      endcapture
+      assign thumbs_html = thumbs_html | append: thumb
+      assign slides_html = slides_html | append: slide
+    endfor
+  endfor
+-%}
+<div class="gallery{% if media_total > 1 %} gallery--thumbs{% endif %}" data-gallery{% if worn_first %} data-worn-first{% endif %}>
+  {%- if media_total > 1 -%}
+    <div class="gallery__thumbs" data-gallery-thumbs>{{ thumbs_html }}</div>
+  {%- endif -%}
+
+  <div class="gallery__viewport">
+    <ul class="gallery__track" role="list" data-gallery-track tabindex="0" aria-label="{{ 'lelon.product.gallery' | t: title: product.title }}">
+      {%- if media_total > 0 -%}
+        {{ slides_html }}
+      {%- else -%}
+        <li class="gallery__slide gallery__slide--empty"><span>{{ product.title | escape }}</span></li>
+      {%- endif -%}
+    </ul>
+    {%- if media_total > 1 -%}
+      <div class="gallery__nav">
+        <button type="button" class="icon-btn icon-btn--round" data-gallery-prev aria-label="{{ 'lelon.product.previous' | t }}">{% render 'lelon-icon', name: 'arrow-left' %}</button>
+        <p class="gallery__counter" aria-hidden="true"><span data-gallery-index>1</span> / <span data-gallery-total>{{ visible_count }}</span></p>
+        <button type="button" class="icon-btn icon-btn--round" data-gallery-next aria-label="{{ 'lelon.product.next' | t }}">{% render 'lelon-icon', name: 'arrow-right' %}</button>
+      </div>
+    {%- endif -%}
+  </div>
+  {%- if colors != blank -%}
+    <p class="gallery__note" data-gallery-note data-template="{{ 'lelon.product.other_color_photos' | t: color: '__COLOR__' | escape }}"{% if filtering or media_total == 0 %} hidden{% endif %}>
+      {{- 'lelon.product.other_color_photos' | t: color: selected_label -}}
+    </p>
+  {%- endif -%}
+</div>

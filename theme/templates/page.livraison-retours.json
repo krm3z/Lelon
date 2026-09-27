@@ -1,0 +1,47 @@
+{
+  "sections": {
+    "main": {
+      "type": "lelon-shipping-returns",
+      "blocks": {
+        "zone": {
+          "type": "fact",
+          "settings": {
+            "icon": "truck",
+            "title": "Livraison en France",
+            "text": "<p>Livraison standard : 0,99 €. Livraison offerte à partir de 90 € d’achat. Les frais applicables sont affichés avant la validation de la commande.</p>"
+          }
+        },
+        "delay": {
+          "type": "fact",
+          "settings": {
+            "icon": "track",
+            "title": "3 à 10 jours ouvrables",
+            "text": "<p>Délai de livraison estimatif. Une fois la commande expédiée, les informations de suivi disponibles vous sont communiquées par e-mail.</p>"
+          }
+        },
+        "returns": {
+          "type": "fact",
+          "settings": {
+            "icon": "return",
+            "title": "14 jours pour changer d’avis",
+            "text": "<p>Vous disposez de 14 jours à compter de la réception pour exercer votre droit de rétractation. En cas de simple changement d’avis, les frais directs de retour sont à votre charge.</p>"
+          }
+        },
+        "contact": {
+          "type": "fact",
+          "settings": {
+            "icon": "mail",
+            "title": "Avant tout retour",
+            "text": "<p>Écrivez-nous à <a href=\"mailto:contact@lelon.fr\">contact@lelon.fr</a> pour recevoir les instructions et l’adresse de retour.</p>"
+          }
+        }
+      },
+      "block_order": ["zone", "delay", "returns", "contact"],
+      "settings": {
+        "title": "Livraison & retours",
+        "intro": "L’essentiel, en clair. Les politiques complètes sont détaillées ci-dessous."
+      }
+    }
+  },
+  "order": ["main"]
+}

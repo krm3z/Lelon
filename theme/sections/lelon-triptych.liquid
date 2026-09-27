@@ -1,0 +1,54 @@
+<section class="section triptych">
+  <div class="page-width">
+    <header class="section-head section-head--center" data-reveal>
+      {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      <h2 class="section-head__title">{{ section.settings.title | escape }}</h2>
+    </header>
+    <ol class="triptych__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="triptych__item" {{ block.shopify_attributes }} data-reveal>
+          {%- if block.settings.image != blank -%}
+            <figure class="triptych__media">
+              {{ block.settings.image | image_url: width: 900 | image_tag: widths: '400, 600, 900', sizes: '(min-width: 990px) 30vw, 90vw', loading: 'lazy', alt: block.settings.image.alt | default: block.settings.word }}
+            </figure>
+          {%- endif -%}
+          <p class="triptych__index" aria-hidden="true">0{{ forloop.index }}</p>
+          <h3 class="triptych__word">{{ block.settings.word | escape }}</h3>
+          {%- if block.settings.text != blank -%}<p>{{ block.settings.text | escape }}</p>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "09 · Art de s’épanouir",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "L’ART DE S’ÉPANOUIR" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "À votre manière." }
+  ],
+  "blocks": [
+    {
+      "type": "word",
+      "name": "Mot",
+      "settings": [
+        { "type": "text", "id": "word", "label": "Mot", "default": "Libre" },
+        { "type": "textarea", "id": "text", "label": "Texte" },
+        { "type": "image_picker", "id": "image", "label": "Image (facultatif)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "09 · Art de s’épanouir",
+      "blocks": [
+        { "type": "word", "settings": { "word": "Libre", "text": "Un sac qui suit le rythme de la journée, sans le contraindre." } },
+        { "type": "word", "settings": { "word": "Confidente", "text": "L’essentiel à portée de main, au plus près de soi." } },
+        { "type": "word", "settings": { "word": "Elle-même", "text": "Une allure qui ne cherche pas à ressembler. Seulement à exprimer." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

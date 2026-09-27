@@ -1,0 +1,67 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "lelon-legal-page",
+      "blocks": {
+        "identity": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Éditeur du site",
+            "body": "<p><strong>À compléter avant publication :</strong> dénomination sociale, forme juridique, capital social, siège social, SIREN, SIRET, RCS et numéro de TVA le cas échéant.</p>"
+          }
+        },
+        "director": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Direction de la publication",
+            "body": "<p><strong>À compléter avant publication.</strong></p>"
+          }
+        },
+        "hosting": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Hébergement",
+            "body": "<p>La boutique est hébergée par Shopify. Vérifiez et complétez les informations contractuelles applicables avant publication.</p>"
+          }
+        },
+        "contact": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Contact",
+            "body": "<p>Adresse e-mail : contact@lelon.fr. Ajouter les autres coordonnées publiques vérifiées le cas échéant.</p>"
+          }
+        },
+        "intellectual": {
+          "type": "chapter",
+          "settings": {
+            "heading": "Propriété intellectuelle",
+            "body": "<p>Texte à faire valider selon les actifs, marques, photographies et contenus effectivement détenus ou licenciés par LELON.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "identity",
+        "director",
+        "hosting",
+        "contact",
+        "intellectual"
+      ],
+      "settings": {
+        "title": "Mentions légales",
+        "intro": "Les informations propres à l’entreprise doivent être complétées et validées avant publication."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

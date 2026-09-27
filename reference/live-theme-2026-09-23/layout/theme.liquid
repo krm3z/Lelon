@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="{{ settings.cream }}">
+<link rel="canonical" href="{{ canonical_url }}">
+<title>{% if request.page_type == 'index' %}{{ 'cinema.page_title' | t }}{% else %}{{ page_title | escape }} — LELON{% endif %}</title>
+{% assign meta_description = page_description | default: shop.description %}{% if request.page_type == 'index' %}{% assign meta_description = 'cinema.page_description' | t %}{% endif %}
+<meta name="description" content="{{ meta_description | escape }}"><meta property="og:title" content="{{ page_title | escape }} — LELON"><meta property="og:description" content="{{ meta_description | escape }}"><meta property="og:url" content="{{ canonical_url }}"><meta property="og:site_name" content="LELON"><meta property="og:type" content="{% if request.page_type == 'product' %}product{% else %}website{% endif %}"><meta name="twitter:card" content="summary_large_image">
+{% if page_image %}<meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">{% endif %}
+{{ 'lelon-serif.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+{{ 'lelon-theme.css' | asset_url | stylesheet_tag }}
+{% style %}:root{--ivory:{{ settings.ivory }};--cream:{{ settings.cream }};--powder-pink:{{ settings.powder_pink }};--chocolate:{{ settings.chocolate }};--black:{{ settings.black }};--champagne:{{ settings.champagne }};}{% endstyle %}
+{{ content_for_header }}
+</head><body>
+<a class="skip-link" href="#MainContent">{{ 'cinema.skip' | t }}</a>
+{% if settings.review_mode %}<div class="review-banner">{{ 'cinema.preview_only' | t }}</div>{% endif %}
+{% section 'lelon-header' %}
+<main id="MainContent" tabindex="-1">{{ content_for_layout }}</main>
+{% section 'lelon-footer' %}
+{% section 'lelon-cart-drawer' %}
+{% render 'lelon-dialogs' %}{% render 'lelon-cookie-consent' %}{% render 'lelon-config' %}
+<div id="CartStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+<script type="module" src="{{ 'lelon-storefront.js' | asset_url }}"></script>
+</body></html>

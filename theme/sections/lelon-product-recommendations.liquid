@@ -1,0 +1,27 @@
+{%- liquid
+  assign limit = section.settings.limit
+-%}
+<section class="section page-width recommendations" data-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ limit }}&intent=related">
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <header class="section-head">
+      <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <h2 class="section-head__title">{{ section.settings.title | escape }}</h2>
+    </header>
+    <div class="grid grid--products grid--4">
+      {%- for product in recommendations.products -%}
+        {% render 'lelon-product-card', product: product, sizes: '(min-width: 990px) 23vw, 50vw' %}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "LELON · Recommandations",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "LELON" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "D’autres silhouettes" },
+    { "type": "range", "id": "limit", "label": "Nombre de produits", "min": 2, "max": 8, "step": 1, "default": 4 }
+  ]
+}
+{% endschema %}

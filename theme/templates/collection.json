@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "lelon-main-collection",
+      "settings": {
+        "per_page": 24,
+        "show_filters": true,
+        "main_title": "Notre collection",
+        "main_intro": "Des silhouettes pensées pour accompagner chaque histoire.",
+        "signature_eyebrow": "UNE AUTRE EXPRESSION",
+        "signature_intro": "Des lignes plus composées, un rythme plus lent. Le chapitre Signature prolonge l’univers LELON."
+      }
+    }
+  },
+  "order": ["main"]
+}

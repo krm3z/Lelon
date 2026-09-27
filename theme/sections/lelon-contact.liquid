@@ -1,0 +1,79 @@
+<section class="section page-width contact">
+  <div class="contact__intro">
+    <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    <h1 class="display-1">{{ page.title | default: 'Contact' | escape }}</h1>
+    {%- if section.settings.text != blank -%}<p class="contact__lead">{{ section.settings.text | escape }}</p>{%- endif -%}
+    <ul class="contact__details" role="list">
+      {%- if settings.contact_email != blank -%}
+        <li>{% render 'lelon-icon', name: 'mail' %}<a href="mailto:{{ settings.contact_email | escape }}">{{ settings.contact_email | escape }}</a></li>
+      {%- endif -%}
+      {%- if settings.contact_phone != blank -%}
+        <li><a href="tel:{{ settings.contact_phone | remove: ' ' | escape }}">{{ settings.contact_phone | escape }}</a></li>
+      {%- endif -%}
+    </ul>
+    {%- if page.content != blank -%}<div class="rte contact__content">{{ page.content }}</div>{%- endif -%}
+    <p class="contact__links">
+      <a class="link" href="{{ settings.faq_url | default: '/pages/faq' }}">{{ 'lelon.nav.faq' | t }}</a>
+      <a class="link" href="{{ settings.shipping_returns_url | default: '/pages/livraison-retours' }}">{{ 'lelon.nav.shipping_returns' | t }}</a>
+    </p>
+  </div>
+
+  <div class="contact__form">
+    {%- form 'contact', id: 'ContactForm', class: 'form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-message form-message--success" role="status" tabindex="-1" autofocus>{{ 'lelon.contact.success' | t }}</p>
+      {%- else -%}
+        {%- if form.errors -%}
+          <div class="form-message form-message--error" role="alert" id="ContactFormErrors">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+        <div class="form__row">
+          <div class="field">
+            <label class="field-label" for="ContactFirstName">{{ 'lelon.contact.first_name' | t }}</label>
+            <input id="ContactFirstName" type="text" name="contact[Prénom]" autocomplete="given-name" value="{{ form['Prénom'] | escape }}">
+          </div>
+          <div class="field">
+            <label class="field-label" for="ContactLastName">{{ 'lelon.contact.last_name' | t }}</label>
+            <input id="ContactLastName" type="text" name="contact[Nom]" autocomplete="family-name" value="{{ form['Nom'] | escape }}">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="ContactEmail">{{ 'lelon.contact.email' | t }} <span aria-hidden="true">*</span></label>
+          <input id="ContactEmail" type="email" name="contact[email]" autocomplete="email" required aria-required="true" value="{{ form.email | escape }}"{% if form.errors contains 'email' %} aria-invalid="true" aria-describedby="ContactFormErrors"{% endif %}>
+        </div>
+        <div class="field">
+          <label class="field-label" for="ContactPhone">{{ 'lelon.contact.phone' | t }}</label>
+          <input id="ContactPhone" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone | escape }}">
+        </div>
+        <div class="field">
+          <label class="field-label" for="ContactSubject">{{ 'lelon.contact.subject' | t }}</label>
+          <select id="ContactSubject" name="contact[Sujet]">
+            {%- assign subjects = 'lelon.contact.subjects' | t | split: '|' -%}
+            {%- for subject in subjects -%}
+              <option value="{{ subject | escape }}"{% if form['Sujet'] == subject %} selected{% endif %}>{{ subject | escape }}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="ContactOrder">{{ 'lelon.contact.order' | t }}</label>
+          <input id="ContactOrder" type="text" name="contact[Numéro de commande]" value="{{ form['Numéro de commande'] | escape }}">
+        </div>
+        <div class="field">
+          <label class="field-label" for="ContactMessage">{{ 'lelon.contact.message' | t }} <span aria-hidden="true">*</span></label>
+          <textarea id="ContactMessage" name="contact[body]" rows="6" required aria-required="true">{{ form.body | escape }}</textarea>
+        </div>
+        <p class="form__note">{{ 'lelon.contact.privacy' | t }} <a href="{{ settings.privacy_url | default: shop.privacy_policy.url }}">{{ 'lelon.legal.privacy' | t }}</a>.</p>
+        <button type="submit" class="btn btn--primary">{{ 'lelon.contact.send' | t }}</button>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LELON · Contact",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "À VOS CÔTÉS" },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Une question sur un sac, une commande ou un retour ? Écrivez-nous, nous vous répondons dans les meilleurs délais." }
+  ]
+}
+{% endschema %}

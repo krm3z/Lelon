@@ -1,0 +1,8 @@
+{% doc %}
+Current price from the Shopify variant. Launch promotions are disabled.
+@param {product} product - Shopify product.
+@param {variant} [variant] - Selected variant.
+@param {boolean} [compact] - Compact presentation.
+{% enddoc %}
+{% assign selected = variant | default: product.selected_or_first_available_variant %}
+<span class="price-component{% if compact %} price-component--compact{% endif %}" data-price-component data-normal="{{ selected.price }}" data-launch="{{ selected.price }}" data-prelaunch="false"><span class="price-number" data-price-number>{{ selected.price | money }}</span></span>

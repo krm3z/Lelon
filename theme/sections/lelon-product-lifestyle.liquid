@@ -1,0 +1,31 @@
+{%- liquid
+  assign image = section.settings.image
+  assign lifestyle = product.metafields.lelon.lifestyle_media.value
+  if lifestyle != blank
+    assign image = lifestyle.first
+  endif
+-%}
+{%- if image != blank -%}
+  <section class="lifestyle lifestyle--product">
+    <figure class="lifestyle__media" data-reveal="image">
+      {{ image | image_url: width: 2400 | image_tag: widths: '600, 900, 1200, 1600, 2000, 2400', sizes: '100vw', loading: 'lazy', alt: image.alt | default: product.title }}
+    </figure>
+    {%- if section.settings.text != blank -%}
+      <p class="lifestyle__caption" data-reveal>{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "LELON · Porté (fiche)",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Affiche la première image du metafield produit « lelon.lifestyle_media » ; à défaut, l’image choisie ici. Rien n’est affiché sans image."
+    },
+    { "type": "image_picker", "id": "image", "label": "Image de repli" },
+    { "type": "text", "id": "text", "label": "Légende courte" }
+  ]
+}
+{% endschema %}

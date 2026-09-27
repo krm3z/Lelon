@@ -1,0 +1,261 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "LELON Cinématique",
+    "theme_version": "1.0.0",
+    "theme_author": "LELON",
+    "theme_documentation_url": "https://shopify.dev/docs/storefronts/themes",
+    "theme_support_url": "https://www.instagram.com/lelon_officiel/"
+  },
+  {
+    "name": "Identité",
+    "settings": [
+      {
+        "type": "color",
+        "id": "ivory",
+        "label": "Ivoire",
+        "default": "#F6F0E8"
+      },
+      {
+        "type": "color",
+        "id": "cream",
+        "label": "Crème",
+        "default": "#FBF8F3"
+      },
+      {
+        "type": "color",
+        "id": "powder_pink",
+        "label": "Rose poudré",
+        "default": "#E7C4C8"
+      },
+      {
+        "type": "color",
+        "id": "chocolate",
+        "label": "Chocolat",
+        "default": "#49332D"
+      },
+      {
+        "type": "color",
+        "id": "black",
+        "label": "Typographie",
+        "default": "#111111"
+      },
+      {
+        "type": "color",
+        "id": "champagne",
+        "label": "Champagne",
+        "default": "#C6A46B"
+      }
+    ]
+  },
+  {
+    "name": "Collection et lancement",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "prelaunch",
+        "label": "Mode pré-lancement",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "launch_price_label",
+        "label": "Afficher Prix de lancement",
+        "default": true
+      },
+      {
+        "type": "collection",
+        "id": "main_collection",
+        "label": "Collection LELON"
+      },
+      {
+        "type": "collection",
+        "id": "signature_collection",
+        "label": "Collection Signature"
+      },
+      {
+        "type": "url",
+        "id": "contact_url",
+        "label": "Page de contact"
+      },
+      {
+        "type": "text",
+        "id": "contact_email",
+        "label": "E-mail public",
+        "default": "contact@lelon.fr"
+      },
+      {
+        "type": "url",
+        "id": "story_url",
+        "label": "Page Notre histoire"
+      },
+      {
+        "type": "url",
+        "id": "instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "url",
+        "id": "tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "image_picker",
+        "id": "rose_image",
+        "label": "Rose / signature de marque"
+      },
+      {
+        "type": "checkbox",
+        "id": "review_mode",
+        "label": "Bandeau de revue privée",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Calendrier de lancement",
+    "settings": [
+      {
+        "type": "text",
+        "id": "launch_start_at",
+        "label": "Début prévu (ISO, avec fuseau)",
+        "info": "Ex. 2026-10-05T00:00:00+02:00. À synchroniser avec la remise Shopify."
+      },
+      {
+        "type": "text",
+        "id": "launch_end_at",
+        "label": "Fin prévue (ISO, avec fuseau)",
+        "info": "Même heure, un mois calendaire plus tard. Le compteur reste inactif sans validation du moteur commercial."
+      },
+      {
+        "type": "paragraph",
+        "content": "Les dates actives proviennent du champ de boutique lelon.launch_campaign. Modifier un texte de thème ne modifie jamais les prix facturés par Shopify."
+      }
+    ]
+  },
+  {
+    "name": "Mouvement",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "intro_enabled",
+        "label": "Éclosion au premier passage",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "motion_intensity",
+        "label": "Intensité des effets",
+        "min": 0,
+        "max": 100,
+        "step": 10,
+        "unit": "%",
+        "default": 70
+      },
+      {
+        "type": "paragraph",
+        "content": "Ouverture de 4,8 secondes, passable et jouée une fois par session. Le contenu et les achats restent accessibles immédiatement. Réduction automatique selon appareil et préférences."
+      }
+    ]
+  },
+  {
+    "name": "Contact public",
+    "settings": [
+      {
+        "type": "text",
+        "id": "contact_phone",
+        "label": "Téléphone",
+        "info": "Laisser vide si aucun numéro public n’est disponible."
+      },
+      {
+        "type": "textarea",
+        "id": "business_address",
+        "label": "Adresse postale",
+        "info": "Ne pas saisir d’adresse non vérifiée."
+      },
+      {
+        "type": "textarea",
+        "id": "support_hours",
+        "label": "Horaires du service client"
+      }
+    ]
+  },
+  {
+    "name": "Pages et informations légales",
+    "settings": [
+      {
+        "type": "url",
+        "id": "faq_url",
+        "label": "FAQ"
+      },
+      {
+        "type": "url",
+        "id": "shipping_returns_url",
+        "label": "Livraison et retours"
+      },
+      {
+        "type": "url",
+        "id": "terms_url",
+        "label": "Conditions générales de vente"
+      },
+      {
+        "type": "url",
+        "id": "legal_url",
+        "label": "Mentions légales"
+      },
+      {
+        "type": "url",
+        "id": "privacy_url",
+        "label": "Politique de confidentialité"
+      },
+      {
+        "type": "url",
+        "id": "cookies_url",
+        "label": "Politique de cookies"
+      },
+      {
+        "type": "url",
+        "id": "withdrawal_url",
+        "label": "Droit de rétractation"
+      },
+      {
+        "type": "text",
+        "id": "legal_business_name",
+        "label": "Dénomination sociale",
+        "info": "À compléter avant publication."
+      },
+      {
+        "type": "text",
+        "id": "legal_registration",
+        "label": "SIREN / SIRET / RCS",
+        "info": "À compléter avant publication."
+      },
+      {
+        "type": "text",
+        "id": "legal_vat",
+        "label": "Numéro de TVA",
+        "info": "À compléter si applicable."
+      },
+      {
+        "type": "text",
+        "id": "publication_director",
+        "label": "Directeur de la publication"
+      },
+      {
+        "type": "text",
+        "id": "consumer_mediator_name",
+        "label": "Médiateur de la consommation"
+      },
+      {
+        "type": "textarea",
+        "id": "consumer_mediator_address",
+        "label": "Adresse du médiateur"
+      },
+      {
+        "type": "url",
+        "id": "consumer_mediator_url",
+        "label": "Site du médiateur"
+      }
+    ]
+  }
+]

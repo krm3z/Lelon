@@ -1,0 +1,44 @@
+{%- liquid
+  assign source = section.settings.collection | default: settings.signature_collection
+  assign products = section.settings.products
+-%}
+<section class="section signature surface-chocolate" id="signature">
+  <div class="page-width">
+    <header class="signature__head" data-reveal>
+      <p class="signature__mark">LELON<br><em>Signature</em></p>
+      <div class="signature__intro">
+        <h2 class="display-2">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.text != blank -%}<p>{{ section.settings.text | escape }}</p>{%- endif -%}
+      </div>
+    </header>
+    <div class="grid grid--products grid--3 grid--scroll-mobile">
+      {%- if products != blank -%}
+        {%- for product in products limit: section.settings.limit -%}
+          {% render 'lelon-product-card', product: product, tone: 'dark' %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for product in source.products limit: section.settings.limit -%}
+          {% render 'lelon-product-card', product: product, tone: 'dark' %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+    {%- if source -%}
+      <p class="signature__more"><a class="btn btn--light" href="{{ source.url }}">{{ section.settings.cta_label | escape }}</a></p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "08 · Signature",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection Signature" },
+    { "type": "product_list", "id": "products", "label": "Sélection Signature", "limit": 6 },
+    { "type": "range", "id": "limit", "label": "Nombre de produits", "min": 2, "max": 6, "step": 1, "default": 3 },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Une autre expression." },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Des lignes plus composées, un rythme plus lent. Signature prolonge l’univers LELON." },
+    { "type": "text", "id": "cta_label", "label": "Bouton", "default": "Découvrir Signature" }
+  ],
+  "presets": [{ "name": "08 · Signature" }]
+}
+{% endschema %}

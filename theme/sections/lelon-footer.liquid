@@ -1,0 +1,95 @@
+{%- liquid
+  assign main_url = settings.main_collection.url | default: routes.all_products_collection_url
+  assign form_id = 'FooterNewsletter-' | append: section.id
+-%}
+<footer class="footer">
+  <div class="page-width">
+    <div class="footer__top">
+      <div class="footer__intro">
+        <p class="footer__brand">LELON</p>
+        <p class="footer__line">{{ section.settings.tagline | escape }}</p>
+        {%- if section.settings.show_newsletter -%}
+          {% form 'customer', id: form_id, class: 'newsletter-form newsletter-form--compact' %}
+            <input type="hidden" name="contact[tags]" value="newsletter,footer">
+            {%- if form.posted_successfully? -%}
+              <p class="form-message form-message--success" role="status">{{ 'lelon.newsletter.success' | t }}</p>
+            {%- else -%}
+              <label class="field-label" for="{{ form_id }}-email">{{ 'lelon.newsletter.label' | t }}</label>
+              <div class="newsletter-form__row">
+                <input id="{{ form_id }}-email" type="email" name="contact[email]" autocomplete="email" required placeholder="{{ 'lelon.newsletter.placeholder' | t }}"{% if form.errors %} aria-invalid="true" aria-describedby="{{ form_id }}-error"{% endif %}>
+                <button type="submit" class="icon-btn icon-btn--framed" aria-label="{{ 'lelon.newsletter.submit' | t }}">{% render 'lelon-icon', name: 'arrow-right' %}</button>
+              </div>
+              {%- if form.errors -%}<div id="{{ form_id }}-error" class="form-message form-message--error">{{ form.errors | default_errors }}</div>{%- endif -%}
+              <p class="footer__legal-note">{{ 'lelon.newsletter.note' | t }} <a href="{{ settings.privacy_url | default: shop.privacy_policy.url }}">{{ 'lelon.legal.privacy' | t }}</a>.</p>
+            {%- endif -%}
+          {% endform %}
+        {%- endif -%}
+      </div>
+
+      <nav class="footer__col" aria-labelledby="FooterMaison">
+        <h2 id="FooterMaison" class="footer__heading">{{ 'lelon.footer.maison' | t }}</h2>
+        <ul role="list">
+          <li><a href="{{ main_url }}">{{ 'lelon.nav.collection' | t }}</a></li>
+          {%- if settings.signature_collection -%}<li><a href="{{ settings.signature_collection.url }}">{{ 'lelon.nav.signature' | t }}</a></li>{%- endif -%}
+          <li><a href="{{ settings.story_url | default: '/pages/notre-histoire' }}">{{ 'lelon.nav.story' | t }}</a></li>
+          <li><a href="{{ settings.contact_url | default: '/pages/contact' }}">{{ 'lelon.nav.contact' | t }}</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer__col" aria-labelledby="FooterHelp">
+        <h2 id="FooterHelp" class="footer__heading">{{ 'lelon.footer.help' | t }}</h2>
+        <ul role="list">
+          <li><a href="{{ settings.faq_url | default: '/pages/faq' }}">{{ 'lelon.nav.faq' | t }}</a></li>
+          <li><a href="{{ settings.shipping_returns_url | default: '/pages/livraison-retours' }}">{{ 'lelon.nav.shipping_returns' | t }}</a></li>
+          <li><a href="{{ routes.account_url }}">{{ 'lelon.nav.account' | t }}</a></li>
+          {%- if settings.contact_email != blank -%}<li><a href="mailto:{{ settings.contact_email | escape }}">{{ settings.contact_email | escape }}</a></li>{%- endif -%}
+        </ul>
+      </nav>
+
+      <nav class="footer__col" aria-labelledby="FooterLegal">
+        <h2 id="FooterLegal" class="footer__heading">{{ 'lelon.footer.legal' | t }}</h2>
+        <ul role="list">
+          <li><a href="{{ settings.terms_url | default: '/policies/terms-of-sale' }}">{{ 'lelon.legal.terms' | t }}</a></li>
+          <li><a href="{{ settings.legal_url | default: '/policies/legal-notice' }}">{{ 'lelon.legal.notice' | t }}</a></li>
+          <li><a href="{{ settings.privacy_url | default: shop.privacy_policy.url }}">{{ 'lelon.legal.privacy' | t }}</a></li>
+          <li><a href="{{ settings.cookies_url | default: '/pages/politique-de-cookies' }}">{{ 'lelon.legal.cookies' | t }}</a></li>
+          <li><button type="button" class="footer__link-btn" data-cookie-manage>{{ 'lelon.legal.manage_cookies' | t }}</button></li>
+          {%- if settings.withdrawal_url != blank -%}<li><a href="{{ settings.withdrawal_url }}">{{ 'lelon.legal.withdrawal' | t }}</a></li>{%- endif -%}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {{ 'now' | date: '%Y' }} LELON</p>
+      {%- if settings.instagram != blank or settings.tiktok != blank -%}
+        <div class="social">
+          {%- if settings.instagram != blank -%}
+            <a href="{{ settings.instagram }}" target="_blank" rel="noopener" aria-label="Instagram — {{ 'lelon.a11y.new_window' | t }}">{% render 'lelon-icon', name: 'instagram' %}</a>
+          {%- endif -%}
+          {%- if settings.tiktok != blank -%}
+            <a href="{{ settings.tiktok }}" target="_blank" rel="noopener" aria-label="TikTok — {{ 'lelon.a11y.new_window' | t }}">{% render 'lelon-icon', name: 'tiktok' %}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_payment and shop.enabled_payment_types.size > 0 -%}
+        <ul class="payment-icons" role="list" aria-label="{{ 'lelon.footer.payment' | t }}">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <button type="button" class="footer__link-btn" data-motion-toggle aria-pressed="false">{{ 'lelon.a11y.reduce_motion' | t }}</button>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "LELON · Pied de page",
+  "settings": [
+    { "type": "text", "id": "tagline", "label": "Phrase", "default": "Des sacs pensés pour vous accompagner chaque jour." },
+    { "type": "checkbox", "id": "show_newsletter", "label": "Inscription newsletter", "default": true },
+    { "type": "checkbox", "id": "show_payment", "label": "Moyens de paiement activés dans Shopify", "default": true }
+  ]
+}
+{% endschema %}

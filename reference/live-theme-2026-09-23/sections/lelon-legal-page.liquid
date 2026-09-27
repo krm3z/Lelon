@@ -1,0 +1,21 @@
+<article class="section page-width legal-page">
+  <header class="legal-page__header"><p class="eyebrow">LELON · INFORMATIONS</p><h1>{{ page.title | default: section.settings.title | escape }}</h1>{% if section.settings.intro != blank %}<p>{{ section.settings.intro | escape }}</p>{% endif %}{% if section.settings.review_notice %}<p class="legal-review-notice">{{ 'cinema.legal_review_notice' | t }}</p>{% endif %}</header>
+  {% if section.blocks.size > 2 %}<nav class="legal-toc" aria-label="{{ 'cinema.legal_toc' | t }}"><p>{{ 'cinema.legal_toc' | t }}</p><ol>{% for block in section.blocks %}<li><a href="#Legal-{{ section.id }}-{{ block.id }}">{{ block.settings.heading | escape }}</a></li>{% endfor %}</ol></nav>{% endif %}
+  <div class="legal-page__body">
+    {% if page.content != blank %}<div class="rte">{{ page.content }}</div>{% endif %}
+    {% for block in section.blocks %}<section id="Legal-{{ section.id }}-{{ block.id }}" class="legal-chapter" {{ block.shopify_attributes }}><h2>{{ block.settings.heading | escape }}</h2><div class="rte">{% if block.settings.body != blank %}{{ block.settings.body }}{% else %}<p><strong>{{ 'cinema.complete_before_publish' | t }}</strong></p>{% endif %}</div></section>{% endfor %}
+  </div>
+</article>
+{% schema %}
+{
+  "name":"LELON · page légale",
+  "max_blocks":20,
+  "settings":[
+    {"type":"text","id":"title","label":"Titre de secours","default":"Informations légales"},
+    {"type":"textarea","id":"intro","label":"Introduction"},
+    {"type":"checkbox","id":"review_notice","label":"Afficher l’avertissement de validation","default":true}
+  ],
+  "blocks":[{"type":"chapter","name":"Chapitre","settings":[{"type":"text","id":"heading","label":"Titre","default":"Section à compléter"},{"type":"richtext","id":"body","label":"Contenu"}]}],
+  "presets":[{"name":"LELON · page légale"}]
+}
+{% endschema %}

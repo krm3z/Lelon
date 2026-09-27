@@ -1,0 +1,75 @@
+{%- liquid
+  assign shipping = nil
+  assign refund = nil
+  for candidate in shop.policies
+    if candidate.url contains 'shipping-policy'
+      assign shipping = candidate
+    elsif candidate.url contains 'refund-policy'
+      assign refund = candidate
+    endif
+  endfor
+-%}
+<section class="section page-width shipping-returns">
+  <header class="page-head">
+    <p class="eyebrow">{{ 'lelon.nav.help' | t }}</p>
+    <h1 class="page-head__title">{{ page.title | default: section.settings.title | escape }}</h1>
+    {%- if section.settings.intro != blank -%}<p class="page-head__lead">{{ section.settings.intro | escape }}</p>{%- endif -%}
+  </header>
+
+  <div class="facts">
+    {%- for block in section.blocks -%}
+      <div class="facts__item" {{ block.shopify_attributes }}>
+        {% render 'lelon-icon', name: block.settings.icon %}
+        <h2 class="facts__title">{{ block.settings.title | escape }}</h2>
+        <div class="rte">{{ block.settings.text }}</div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="accordions accordions--page">
+    {%- if shipping and shipping.body != blank -%}
+      <details class="accordion">
+        <summary>{{ shipping.title | escape }}{% render 'lelon-icon', name: 'plus' %}</summary>
+        <div class="accordion__body rte">{% render 'lelon-policy-body', body: shipping.body %}</div>
+      </details>
+    {%- endif -%}
+    {%- if refund and refund.body != blank -%}
+      <details class="accordion">
+        <summary>{{ refund.title | escape }}{% render 'lelon-icon', name: 'plus' %}</summary>
+        <div class="accordion__body rte">{% render 'lelon-policy-body', body: refund.body %}</div>
+      </details>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LELON · Livraison/retours",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre de repli", "default": "Livraison & retours" },
+    { "type": "textarea", "id": "intro", "label": "Introduction" }
+  ],
+  "blocks": [
+    {
+      "type": "fact",
+      "name": "Information",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "truck", "label": "Livraison" },
+            { "value": "track", "label": "Suivi" },
+            { "value": "return", "label": "Retour" },
+            { "value": "mail", "label": "Contact" }
+          ],
+          "default": "truck"
+        },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Information" },
+        { "type": "richtext", "id": "text", "label": "Texte (vérifié)" }
+      ]
+    }
+  ]
+}
+{% endschema %}

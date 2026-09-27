@@ -1,0 +1,34 @@
+{%- assign form_id = 'Newsletter-' | append: section.id -%}
+<section class="section newsletter surface-ivory">
+  <div class="page-width newsletter__inner" data-reveal>
+    {%- if section.settings.eyebrow != blank -%}<p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+    <h2 class="display-2">{{ section.settings.title | escape }}</h2>
+    {%- if section.settings.text != blank -%}<p class="newsletter__text">{{ section.settings.text | escape }}</p>{%- endif -%}
+    {% form 'customer', id: form_id, class: 'newsletter-form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      {%- if form.posted_successfully? -%}
+        <p class="form-message form-message--success" role="status" tabindex="-1" autofocus>{{ 'lelon.newsletter.success' | t }}</p>
+      {%- else -%}
+        <label class="field-label" for="{{ form_id }}-email">{{ 'lelon.newsletter.label' | t }}</label>
+        <div class="newsletter-form__row">
+          <input id="{{ form_id }}-email" type="email" name="contact[email]" autocomplete="email" required placeholder="{{ 'lelon.newsletter.placeholder' | t }}"{% if form.errors %} aria-invalid="true" aria-describedby="{{ form_id }}-error"{% endif %}>
+          <button type="submit" class="btn btn--primary">{{ 'lelon.newsletter.submit' | t }}</button>
+        </div>
+        {%- if form.errors -%}<div id="{{ form_id }}-error" class="form-message form-message--error">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <p class="newsletter__note">{{ 'lelon.newsletter.note' | t }} <a href="{{ settings.privacy_url | default: shop.privacy_policy.url }}">{{ 'lelon.legal.privacy' | t }}</a>.</p>
+      {%- endif -%}
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "12 · Newsletter",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Entrez dans l’univers LELON." },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Recevez nos nouvelles, collections et inspirations." }
+  ],
+  "presets": [{ "name": "12 · Newsletter" }]
+}
+{% endschema %}
